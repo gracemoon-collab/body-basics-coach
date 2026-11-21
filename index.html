@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#15233b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="몸 기본기">
-<title>몸 기본기 코치 · 시제품 v0.3</title>
+<title>몸 기본기 코치 · 시제품 v0.4</title>
 <style>
 :root{--navy:#15233b;--blue:#356ee6;--blue-soft:#edf3ff;--ink:#18202c;--muted:#6f7886;--line:#e8ebf0;--bg:#f6f7f9;--card:#fff;--green:#1f9d63;--green-soft:#e6f6ee;--amber:#b7791f;--amber-soft:#fdf4e3;--red:#c94545;--red-soft:#fbeaea;--violet:#6b4fd8;--violet-soft:#f1edfd;--r:14px}
 *{box-sizing:border-box}
@@ -85,7 +85,7 @@ summary{cursor:pointer;font-size:14px;color:var(--blue)}
 </head>
 <body>
 <div class="app">
-  <header><h1>몸 기본기 코치</h1><span class="ver">시제품 v0.3<br>기록은 이 기기에만 저장</span></header>
+  <header><h1>몸 기본기 코치</h1><span class="ver">시제품 v0.4<br>기록은 이 기기에만 저장</span></header>
   <main id="view"></main>
 </div>
 <nav class="tabbar" id="tabbar">
@@ -515,7 +515,7 @@ function analyze(a){
  const recoveryFirst=!nu.protected&&(a.sleep==='5'||a.stress==='5'||+a.stiff>=6);
  const chair=num(a.chair);
  let stage='S1';
- if(!nu.protected&&!recoveryFirst&&!needs.includes('N2')&&!needs.includes('N3')&&!needs.includes('N4')&&a.freq==='3'&&chair!=null&&chair>=25) stage='S2';
+ if(!rf.length&&!nu.protected&&!recoveryFirst&&!needs.includes('N2')&&!needs.includes('N3')&&!needs.includes('N4')&&a.freq==='3'&&chair!=null&&chair>=25) stage='S2';
  const traits=(a.traits||[]).filter(x=>x!=='none');
  const sas=sasangScore(a.sasang);
  return {stop:rf.length>0,rf,flags,bc,en,nu,needs,stage,recoveryFirst,traits,sas,eight:a.eight&&a.eight!=='none'?a.eight:null,ladder:habitLadder(a,flags)};
@@ -589,8 +589,59 @@ function cautionsOf(r){
  if(r.flags.includes('dm')||r.flags.includes('dmmed')) c.push('당뇨: 혈당을 낮추는 약을 쓰면 운동·식사 변화 전에 저혈당 대처를 의료진과 확인하세요.');
  return c;
 }
+/* 선택한 항목은 중단하지 않고 모두 해석해 보여준다 */
+function labelsOf(k,vals){
+ const item=CHECK.flatMap(p=>p.items||[]).find(x=>x.k===k);
+ return (vals||[]).filter(v=>v!=='none').map(v=>[v,item?.opts?.find(o=>o[0]===v)?.[1]||v]);
+}
+function recoveryKeys(r){
+ const keys=[];
+ if(r.recoveryFirst) keys.push('lifestyle');
+ for(const k of ['pregnant','dmmed','kidney','ed']) if(r.flags.includes(k)) keys.push(k);
+ return [...new Set(keys)];
+}
+function selectedAnswersHTML(r){
+ const a=S.answers||{}, cards=[];
+ const rfText={
+  chest:'운동 중 가슴 통증·압박은 강도와 관계없이 의료 확인이 필요한 신호예요. 다른 분석 결과도 아래에 함께 보여드리되, 통증이 지속되거나 식은땀·호흡곤란이 동반되면 119에 연락해요.',
+  faint:'운동 중 실신하거나 쓰러질 듯한 느낌은 원인 확인이 필요한 신호예요. 선택한 체형·식사·움직임 결과는 계속 보여드리지만, 혼자 고강도 운동이나 공복 운동은 하지 않아요.',
+  breath:'평소와 다른 심한 숨참은 심폐 상태 확인이 필요해요. 식습관과 체형 분석은 계속 제공하고, 움직임은 편안한 호흡과 통증 없는 범위로 제한해요.',
+  numb:'점점 심해지는 저림은 신경 자극 여부를 확인해야 해요. 해당 부위와 움직임 결과는 계속 분석하고, 저림을 키우는 동작은 제외해요.',
+  pain7:'통증이 7점 이상이면 강한 운동보다 통증을 키우지 않는 자세와 생활 조절이 우선이에요. 선택한 나머지 결과도 함께 보여드려요.'
+ };
+ const condText={
+  syncope:'공복 운동, 숨 참고 버티기, 고강도 인터벌, 갑작스러운 자세 전환을 제외하고 식사와 수분을 규칙적으로 유지해요.',
+  pregnant:REC.pregnant.why+' '+REC.pregnant.lead,
+  hbp:'고혈압 진단을 반영해 숨을 오래 참는 동작과 갑작스러운 고강도 인터벌은 제외하고, 복용약과 운동 허용 범위를 의료진과 확인해요.',
+  dm:'당뇨 진단을 반영해 끼니를 거르지 않고 식사 시간과 운동 전후 상태를 기록해요. 약을 쓰는 경우 저혈당 대처 계획을 함께 확인해요.',
+  dmmed:REC.dmmed.why+' '+REC.dmmed.lead,
+  kidney:REC.kidney.why+' '+REC.kidney.lead,
+  ed:REC.ed.why+' '+REC.ed.lead
+ };
+ const painText={neck:'목을 세게 꺾거나 오래 버티지 않고 턱을 가볍게 당긴 중립 자세와 통증 없는 가동범위부터 시작해요.',shoulder:'팔을 억지로 끝까지 올리지 않고 통증 없는 범위의 어깨·등 움직임부터 시작해요.',back:'허리를 반복해서 세게 굽히거나 꺾지 않고 편안한 호흡, 골반 움직임, 쉬운 코어 안정화부터 시작해요.',hip:'깊은 스쿼트나 큰 보폭을 강요하지 않고 통증 없는 고관절 움직임과 엉덩이 근력부터 확인해요.',knee:'점프와 깊은 무릎 굽힘을 바로 하지 않고 의자 앉기·일어서기처럼 지지되는 동작부터 시작해요.',wrist:'손바닥으로 체중을 오래 받는 동작을 줄이고 벽 짚기나 팔꿈치 지지 동작으로 바꿔요.'};
+ const squatText={knee:'무릎이 안쪽으로 모이면 깊이를 줄이고 의자나 벽을 이용해 무릎이 발 방향을 따라가도록 연습해요.',heel:'뒤꿈치가 들리면 스쿼트 깊이를 줄이고 발목 가동성과 지지된 스쿼트부터 확인해요.',lumbar:'허리가 말리거나 과하게 꺾이면 통증 없는 깊이에서 갈비뼈와 골반을 편안하게 쌓는 연습부터 해요.',shift:'한쪽으로 치우치면 지지물을 잡고 좌우 체중을 비슷하게 싣는 쉬운 동작부터 시작해요.'};
+ const mobText={sh:'등 뒤로 손이 잘 닿지 않으면 어깨를 억지로 당기지 않고 앞가슴·어깨의 편안한 가동성부터 해요.',wall:'벽에서 팔을 올리기 어렵다면 허리를 꺾어 보상하지 않고 등과 어깨의 움직임을 나눠 연습해요.',ham:'누워 다리 들기가 불편하면 무릎을 약간 굽히고 허벅지 뒤쪽을 통증 없는 범위에서 움직여요.',ank:'발목 굽힘이 제한되면 벽을 잡고 뒤꿈치가 뜨지 않는 범위에서 발목 앞뒤 움직임을 연습해요.'};
+ const make=(title,items,map)=>{if(!items.length)return;cards.push(`<div class="card"><h3>${title}</h3>${items.map(([k,l])=>`<div class="row"><span><b>${l}</b><br><span class="small">${map[k]||'선택한 항목을 현재 계획에 반영했어요.'}</span></span></div>`).join('')}</div>`);};
+ make('선택한 위험 신호별 답변',labelsOf('rf',a.rf),rfText);
+ make('선택한 건강 상태별 답변',labelsOf('cond',a.cond),condText);
+ make('불편한 부위별 조절',labelsOf('painArea',a.painArea),painText);
+ make('스쿼트에서 선택한 항목',labelsOf('squat',a.squat),squatText);
+ make('불편한 움직임별 답변',labelsOf('mob',a.mob),mobText);
+ const allergies=labelsOf('allergy',a.allergy);
+ if(allergies.length) cards.push(`<div class="card"><h3>알레르기·먹지 않는 음식 반영</h3>${allergies.map(([,l])=>`<div class="row"><span><b>${l}</b><br><span class="small">식단 예시와 단백질 식품 추천에서 제외하고, 가공식품은 원재료·알레르기 표시를 확인해요.</span></span></div>`).join('')}</div>`);
+ return cards.join('');
+}
+function selectedRecoveryExtraHTML(r,primary,section){
+ const keys=recoveryKeys(r).filter(k=>k!==primary);
+ return keys.map(k=>{const R=REC[k];
+  if(section==='diet') return `<div class="card"><div class="small">추가 선택 항목 · ${R.label}</div><h3>${R.title}</h3><div class="note">${R.why}</div>${R.diet.map((x,i)=>`<div class="row"><span><b>${i+1}. ${x[0]}</b><br><span class="small">${x[1]}</span></span></div>`).join('')}<div class="note">${R.seek}</div></div>`;
+  if(section==='move') return `<div class="card"><div class="small">추가 선택 항목 · ${R.label}</div><h3>${R.title}</h3><p>${R.move}</p><div class="note">${R.seek}</div></div>`;
+  return `<div class="card"><div class="small">추가 선택 항목</div><h3>${R.label} · ${R.title}</h3><div class="note"><b>선택 결과</b><br>${R.why}</div><p>${R.lead}</p><h3>식습관</h3>${R.diet.map(x=>`<div class="row"><span><b>${x[0]}</b><br><span class="small">${x[1]}</span></span></div>`).join('')}<h3>움직임·이완</h3><p>${R.move}</p><div class="note">${R.seek}</div></div>`;
+ }).join('');
+}
+
 function stopView(r){
- return `<div class="card"><h2>먼저 확인이 필요해요</h2><div class="stop">답하신 증상(${r.rf.map(x=>({chest:'가슴 통증',faint:'실신·실신할 듯함',breath:'심한 숨참',numb:'저림 악화',pain7:'강한 통증'})[x]).join(', ')})이 있으면 운동·식단 계획보다 진료 확인이 먼저예요. 가슴 통증이 몇 분 이상 이어지거나 식은땀·호흡곤란이 함께 있으면 바로 119에 연락하세요.</div><p class="muted" style="margin-top:12px">확인 후 사전조사를 다시 해 주세요.</p></div>`;
+ return `<div class="card"><h2>선택한 안전 신호도 반영했어요</h2><div class="stop">답하신 증상(${r.rf.map(x=>({chest:'가슴 통증',faint:'실신·실신할 듯함',breath:'심한 숨참',numb:'저림 악화',pain7:'강한 통증'})[x]).join(', ')})에 대한 답변과 나머지 체형·식사·움직임 분석을 아래에 모두 이어서 보여드려요. 증상이 현재 지속되거나 가슴 통증에 식은땀·호흡곤란이 함께 있으면 119에 연락하세요.</div></div>`;
 }
 /* ===== 회복 우선 계획 (보호모드): 숫자 없이 식습관·이완·목표를 안내 ===== */
 const REC_PLATE=['한 접시에 세 칸','한 끼에 밥·곡류, 단백질 반찬(달걀·두부·생선·고기), 채소가 모두 있는지만 확인해요. 양을 재거나 줄이지 않아요.'];
@@ -640,22 +691,23 @@ function recGoals(r,p){
  return g;
 }
 function recVideos(r,p){
- const R=REC[p],tierW={P:3,H:3,E:2,C:1};
- if(p==='pregnant') return [];
+ const keys=recoveryKeys(r),R=REC[p],tierW={P:3,H:3,E:2,C:1};
+ if(keys.includes('pregnant')) return [];
+ const cats=keys.includes('ed')?['relax']:R.stretchCats;
  const bad=/뱃살|다이어트|체지방|칼로리|지방 ?연소|살 ?빼/;
- const list=VIDEOS.filter(v=>R.stretchCats.includes(v.cat)&&v.st.includes('S1')&&v.imp==='저'&&!v.avoid.some(x=>r.flags.includes(x))&&!(p==='pregnant'&&v.avoid.includes('pregnant'))&&!bad.test(v.t)&&v.min<=20)
+ const list=VIDEOS.filter(v=>cats.includes(v.cat)&&v.st.includes('S1')&&v.imp==='저'&&!v.avoid.some(x=>r.flags.includes(x))&&!(p==='pregnant'&&v.avoid.includes('pregnant'))&&!bad.test(v.t)&&v.min<=20)
   .map(v=>({...v,score:v.nd.filter(x=>x==='N2'||x==='N3'||(r.needs.includes(x)&&x!=='N7')).length*2+tierW[v.tier]}))
   .sort((x,y)=>y.score-x.score);
  const out=[],used={};for(const v of list){if((used[v.ch]||0)>=2)continue;out.push(v);used[v.ch]=(used[v.ch]||0)+1;if(out.length>=5)break;}
  return out;
 }
 function recTraitsHTML(r,p){
- const R=REC[p],ts=r.traits.filter(t=>R.safeTraits.includes(t));
+ const R=REC[p],ts=r.traits;
  if(!ts.length) return '';
  return `<div class="card"><h3>식사 반응에 맞춘 조절</h3>${ts.map(t=>{const T=TRAITS[t];return `<div style="margin-top:12px"><b style="font-size:14px">${T.label}</b><p style="font-size:14px">${T.tip}</p>${T.flag?`<p class="small">주의: ${T.flag}</p>`:''}</div>`}).join('')}</div>`;
 }
 function recoveryView(section){
- const r=S.result,p=r.nu.protected||(r.recoveryFirst?'lifestyle':null),R=REC[p],goals=recGoals(r,p);
+ const r=S.result,keys=recoveryKeys(r),p=keys[0],R=REC[p],goals=recGoals(r,p);
  let h='';
  const goalsHTML=`<div class="card"><h3>이번 2주 목표</h3>${goals.map((x,i)=>`<div class="row"><span><b>${i+1}. ${x[0]}</b><br><span class="small">${x[1]}</span></span></div>`).join('')}<p class="small">숫자 목표는 몸무게나 열량이 아니라 습관이에요. 2주 뒤 체크인에서 되돌아봐요.</p></div>`;
  const dietHTML=`<div class="card"><h3>식습관 바꾸기</h3>${R.diet.map((x,i)=>`<div class="row"><span><b>${i+1}. ${x[0]}</b><br><span class="small">${x[1]}</span></span></div>`).join('')}</div>`;
@@ -663,19 +715,19 @@ function recoveryView(section){
  const seekHTML=`<div class="card"><h3>이럴 땐 진료·상담을 먼저</h3><div class="note">${R.seek}</div></div>`;
  const cautions=cautionsOf(r).map(c=>`<div class="note">${c}</div>`).join('');
  if(section==='home'){
-  h=`<div class="card"><div class="small">${R.label}</div><h2>${R.title}</h2><div class="note"><b>이 계획이 먼저인 이유</b><br>${R.why}</div><p>${R.lead}</p>${cautions}</div>${goalsHTML}${dietHTML}${moveHTML()}${recTraitsHTML(r,p)}${seekHTML}<div class="card"><p class="small">진단이나 처방이 아닌 생활 습관 안내예요. 체형 유형, 열량·단백질·체중 목표, 체질별 음식 목록은 이 상태에서는 만들지 않아요.</p><button class="btn ghost" id="reset">기록 모두 지우기</button></div>`;
+  h=`<div class="card"><div class="small">${R.label}</div><h2>${R.title}</h2><div class="note"><b>이 계획이 먼저인 이유</b><br>${R.why}</div><p>${R.lead}</p>${cautions}</div>${goalsHTML}${dietHTML}${moveHTML()}${recTraitsHTML(r,p)}${seekHTML}${selectedRecoveryExtraHTML(r,p,'home')}${selectedAnswersHTML(r)}<div class="card"><p class="small">진단이나 처방이 아닌 생활 습관 안내예요. 체형 유형, 열량·단백질·체중 목표, 체질별 음식 목록은 이 상태에서는 만들지 않아요.</p><button class="btn ghost" id="reset">기록 모두 지우기</button></div>`;
  } else if(section==='diet'){
-  h=`<div class="card"><h2>식습관 회복</h2><p>${R.lead}</p></div>${dietHTML}${recTraitsHTML(r,p)}${goalsHTML}${seekHTML}`;
+  h=`<div class="card"><h2>식습관 회복</h2><p>${R.lead}</p></div>${dietHTML}${recTraitsHTML(r,p)}${goalsHTML}${seekHTML}${selectedRecoveryExtraHTML(r,p,'diet')}`;
  } else if(section==='move'){
-  h=`<div class="card"><h2>스트레칭과 긴장 완화</h2>${cautions}</div>${moveHTML()}${goalsHTML}${seekHTML}`;
+  h=`<div class="card"><h2>스트레칭과 긴장 완화</h2>${cautions}</div>${moveHTML()}${goalsHTML}${seekHTML}${selectedRecoveryExtraHTML(r,p,'move')}`;
  }
- $('view').innerHTML=h;
+ $('view').innerHTML=(r.stop?stopView(r):'')+h;
  if($('reset')) $('reset').onclick=()=>{if(confirm('이 기기의 기록을 모두 지울까요?')){localStorage.removeItem(KEY);S={};draft={};page=0;tab='check';render();}};
 }
 function recoveryCheckin(){
- const r=S.result,p=r.nu.protected||(r.recoveryFirst?'lifestyle':null),ci=S.recCheckins||[];
+ const r=S.result,p=recoveryKeys(r)[0],ci=S.recCheckins||[];
  const extra={lifestyle:['warn','일상생활이 힘들 정도의 피로·통증·어지럼','없음','있음'],ed:['gap','먹은 뒤 갚으려 한 일(굶기·운동·구토 등)','없음','있음'],dmmed:['low','저혈당 느낌(떨림·식은땀·어지럼)','없음','있음'],pregnant:['warn','출혈·복통·어지럼 같은 경고 증상','없음','있음'],kidney:['warn','부종 증가·숨참·소변량 변화','없음','있음']}[p];
- $('view').innerHTML=`<div class="card"><h2>회복 체크인</h2><p class="muted">한 주에 한 번, 체중 없이 습관만 기록해요. 같은 주에 다시 저장하면 기존 기록을 고쳐요.</p>
+ $('view').innerHTML=(r.stop?stopView(r):'')+`<div class="card"><h2>회복 체크인</h2><p class="muted">한 주에 한 번, 체중 없이 습관만 기록해요. 같은 주에 다시 저장하면 기존 기록을 고쳐요.</p>
  <label class="q">규칙적으로 식사한 날</label><div class="opts">${['0–2','3–4','5–7'].map(v=>`<span class="chip" data-k="meal" data-v="${v}">${v}일</span>`).join('')}</div>
  <label class="q">스트레칭·호흡을 한 날</label><div class="opts">${['0–1','2–3','4–7'].map(v=>`<span class="chip" data-k="str" data-v="${v}">${v}일</span>`).join('')}</div>
  <label class="q">몸의 긴장</label><div class="opts">${[['low','편함'],['mid','보통'],['high','많이 뻐근함']].map(([v,l])=>`<span class="chip" data-k="ten" data-v="${v}">${l}</span>`).join('')}</div>
@@ -705,12 +757,12 @@ function recoveryCheckin(){
 }
 
 function renderHome(){
- const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
+ const r=S.result;
  if(r.nu.protected||r.recoveryFirst){recoveryView('home');return;}
  const bc=r.bc,T=BODY_TYPES[bc.type],st=STAGES[S.stage],order=['S1','S2','S3','S4'],nu=r.nu;
  const wk=weeksBetween(S.stageStart,today())+1;
  const hb=r.ladder[Math.min(S.habit||0,r.ladder.length-1)];
- $('view').innerHTML=`
+ $('view').innerHTML=(r.stop?stopView(r):'')+`
  <div class="card">
   <div class="small">나의 체형 유형 · 자료 수준 ${bc.dataLevel}</div>
   <h2>${T.name}${bc.abd?' <span class="badge b-amber">복부형</span>':''}</h2>
@@ -741,7 +793,7 @@ function renderHome(){
   ${r.eight?`<span class="badge b-violet">8체질: ${r.eight}</span>`:''}
   ${cautionsOf(r).map(c=>`<div class="note">${c}</div>`).join('')}
  </div>
- <div class="card"><p class="small">진단이나 처방이 아니라 생활 운동·식사 습관 코칭 시제품이에요. 「보완」 표시는 공식 기준이 없어 실무값을 쓰거나 근거가 약한 부분이에요.</p>
+ ${selectedAnswersHTML(r)}<div class="card"><p class="small">진단이나 처방이 아니라 생활 운동·식사 습관 코칭 시제품이에요. 「보완」 표시는 공식 기준이 없어 실무값을 쓰거나 근거가 약한 부분이에요.</p>
  <button class="btn ghost" id="reset">기록 모두 지우기</button></div>`;
  $('reset').onclick=()=>{if(confirm('이 기기의 기록을 모두 지울까요?')){localStorage.removeItem(KEY);S={};draft={};page=0;tab='check';render();}};
 }
@@ -756,7 +808,7 @@ function proteinPlan(target,a){
  return {pick,sum};
 }
 function renderDiet(){
- const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
+ const r=S.result;
  const a=S.answers,nu=r.nu,en=r.en,bc=r.bc;
  if(nu.protected||r.recoveryFirst){recoveryView('diet');return;}
  const hbI=Math.min(S.habit||0,r.ladder.length-1);
@@ -808,9 +860,10 @@ function renderDiet(){
   if(r.eight) h+=`<h3>8체질: ${r.eight}체질</h3>${hasAllergy?'<div class="note">알레르기가 있어 8체질 음식 목록은 숨겼어요. 알레르기 제외가 체질 안내보다 항상 우선이에요.</div>':`<p style="font-size:14px">${EIGHT[r.eight]}</p>`}<p class="small">8체질 섭생표는 한의원마다 판본이 조금씩 달라요. 진단받은 한의원의 표를 기준으로 해 주세요.</p>`;
   h+=`<div class="supp">「보완」 체질별 음식 안내는 한국한의학연구원 국가한의임상정보포털(사상체질)과 8체질 한의원 공개 섭생표를 요약한 것이에요. 체질 식이가 일반 균형식보다 낫다는 임상 근거는 아직 약해요. 한국한의학연구원도 "골고루 먹는 것이 원칙이고, 같은 열량·영양 구성 안에서 체질에 맞는 식품으로 바꾸는 것"이라고 안내해요. 그래서 이 앱은 위의 열량·단백질·식사 반응을 먼저 지키고, 체질 정보로는 같은 영양의 식품을 고를 때만 참고하도록 해요.</div><p class="small"><a href="https://nikom.or.kr" target="_blank" rel="noopener">국가한의임상정보포털</a></p></div>`;
  }
- $('view').innerHTML=h;
+ $('view').innerHTML=(r.stop?stopView(r):'')+h;
 }
 function videoSafe(v,r){
+ if(r.stop&&(!['relax','mob','pain'].includes(v.cat)||v.imp!=='저')) return false;
  const avoid=new Set(r.flags);
  const noImpact=r.flags.includes('knee')||r.bc.bmi>=30||['syncope','hbp','dmmed','kidney'].some(x=>r.flags.includes(x));
  if(!v.st.includes(S.stage)||v.avoid.some(x=>avoid.has(x))||(noImpact&&v.imp==='충격')) return false;
@@ -827,12 +880,12 @@ function pickVideos(r,cats,n){
 function vidHTML(v,r){return `<a class="vid" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="" loading="lazy"><div><div class="t">${v.t}</div><div class="m">${v.ch} · ${v.min}분 · ${v.lv} · ${TIER_NAME[v.tier]}</div>${v.tip?`<div class="c">${v.tip}</div>`:''}</div></a>`;}
 let moveFilter='추천';
 function renderMove(){
- const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
+ const r=S.result;
  if(r.nu.protected||r.recoveryFirst){recoveryView('move');return;}
  const st=STAGES[S.stage];
  const noInterval=['syncope','hbp','dmmed','kidney'].some(x=>r.flags.includes(x));
- const planNow=st.plan.map(x=>noInterval?x.replace('유산소 주 150–300분, 인터벌은 선택','유산소 주 150–300분, 고강도 인터벌 제외'):x);
- const groups={S1:[['이완·가동성',['relax','mob'],2],['코어·정렬',['core','pain'],2],['기초 근력·걷기',['lower','full','walk'],2]],S2:[['워밍업·가동성',['mob','relax'],1],['코어·정렬',['core','pain'],2],['기본 근력',['full','lower','upper'],2],['유산소',['walk','cardio'],1]],S3:[['워밍업',['mob'],1],['근력',['full','lower','upper'],3],['유산소',['cardio','walk','hiit'],2]],S4:[['근력',['full','lower','upper'],3],['유산소·인터벌',['cardio','hiit','walk'],2],['회복',['relax','mob'],1]]}[S.stage];
+ const planNow=r.stop?['선택한 위험 신호별 해석은 결과에 모두 표시','증상을 유발하지 않는 편안한 호흡·이완 5–10분','저림·통증·숨참·어지럼을 만드는 동작은 제외']:st.plan.map(x=>noInterval?x.replace('유산소 주 150–300분, 인터벌은 선택','유산소 주 150–300분, 고강도 인터벌 제외'):x);
+ const groups=r.stop?[['선택 결과에 맞춘 이완·가동성',['relax','mob','pain'],5]]:{S1:[['이완·가동성',['relax','mob'],2],['코어·정렬',['core','pain'],2],['기초 근력·걷기',['lower','full','walk'],2]],S2:[['워밍업·가동성',['mob','relax'],1],['코어·정렬',['core','pain'],2],['기본 근력',['full','lower','upper'],2],['유산소',['walk','cardio'],1]],S3:[['워밍업',['mob'],1],['근력',['full','lower','upper'],3],['유산소',['cardio','walk','hiit'],2]],S4:[['근력',['full','lower','upper'],3],['유산소·인터벌',['cardio','hiit','walk'],2],['회복',['relax','mob'],1]]}[S.stage];
  let h=`<div class="card"><div class="small">${S.stage} · ${st.dur}</div><h2>${st.name}</h2><p>${st.goal}</p><h3>이번 주 운동</h3><ul class="plan">${planNow.map(x=>`<li>${x}</li>`).join('')}</ul>
  <div class="row"><span>체형 유형 반영</span><b>${BODY_TYPES[r.bc.type].ex}</b></div>
  ${cautionsOf(r).map(c=>`<div class="note">${c}</div>`).join('')}</div>`;
@@ -845,15 +898,15 @@ function renderMove(){
   h+=`<p class="small">${moveFilter} 영상 ${vs.length}편. 현재 단계와 건강 조건에 맞지 않는 영상은 제외했어요.</p>`+vs.map(v=>vidHTML(v,r).replace('</div></a>',`<div class="m">맞는 단계 ${v.st.join('·')}</div></div></a>`)).join('');
  }
  h+=`<p class="small" style="margin-top:12px">공공기관·병원·물리치료사·인기 홈트 채널 영상을 링크로 연결해요. 제목의 "뱃살 쏙·독소 배출·체형 교정" 같은 효과 문구는 근거가 약하니 동작 자체만 따라 해 주세요.</p></div>`;
- $('view').innerHTML=h;
+ $('view').innerHTML=(r.stop?stopView(r):'')+h;
  document.querySelectorAll('.seg span').forEach(s=>s.onclick=()=>{moveFilter=s.dataset.f;renderMove();});
 }
 function renderCheckin(){
- const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
+ const r=S.result;
  if(r.nu.protected||r.recoveryFirst){recoveryCheckin();return;}
  const ci=S.checkins||[];
  const hb=r.ladder[Math.min(S.habit||0,r.ladder.length-1)];
- $('view').innerHTML=`<div class="card"><h2>주간 체크인</h2><p class="muted">한 주에 한 번 기록해요. 같은 주에 다시 저장하면 기존 기록을 고쳐요.</p>
+ $('view').innerHTML=(r.stop?stopView(r):'')+`<div class="card"><h2>주간 체크인</h2><p class="muted">한 주에 한 번 기록해요. 같은 주에 다시 저장하면 기존 기록을 고쳐요.</p>
  <label class="q">이번 주 운동한 날</label><div class="opts">${['0','1','2','3','4','5+'].map(v=>`<span class="chip" data-k="days" data-v="${v}">${v}일</span>`).join('')}</div>
  <label class="q">운동 다음날 통증이 더 심해진 적</label><div class="opts"><span class="chip" data-k="worse" data-v="no">없음</span><span class="chip" data-k="worse" data-v="yes">있음</span></div>
  <label class="q">식단 습관 「${hb.name}」을 지킨 날</label><div class="opts">${['0–2','3–4','5–7'].map(v=>`<span class="chip" data-k="food" data-v="${v}">${v}일</span>`).join('')}</div>
