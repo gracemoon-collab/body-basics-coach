@@ -6,31 +6,33 @@
 <meta name="theme-color" content="#15233b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="몸 기본기">
-<title>몸 기본기 코치 · 시제품 v0.1</title>
+<title>몸 기본기 코치 · 시제품 v0.2</title>
 <style>
-:root{--navy:#15233b;--blue:#356ee6;--blue-soft:#edf3ff;--ink:#18202c;--muted:#6f7886;--line:#e8ebf0;--bg:#f6f7f9;--card:#fff;--green:#1f9d63;--green-soft:#e6f6ee;--amber:#b7791f;--amber-soft:#fdf4e3;--red:#c94545;--red-soft:#fbeaea;--r:14px}
+:root{--navy:#15233b;--blue:#356ee6;--blue-soft:#edf3ff;--ink:#18202c;--muted:#6f7886;--line:#e8ebf0;--bg:#f6f7f9;--card:#fff;--green:#1f9d63;--green-soft:#e6f6ee;--amber:#b7791f;--amber-soft:#fdf4e3;--red:#c94545;--red-soft:#fbeaea;--violet:#6b4fd8;--violet-soft:#f1edfd;--r:14px}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",sans-serif;-webkit-text-size-adjust:100%}
-.app{max-width:560px;margin:0 auto;padding:18px 16px 110px}
-header{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 18px}
+.app{max-width:580px;margin:0 auto;padding:18px 16px 110px}
+header{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 16px;gap:8px}
 header h1{font-size:19px;margin:0;letter-spacing:-.02em}
-header .ver{font-size:12px;color:var(--muted)}
+header .ver{font-size:12px;color:var(--muted);text-align:right}
 .card{background:var(--card);border-radius:var(--r);padding:18px;margin-bottom:12px;border:1px solid var(--line)}
 h2{font-size:18px;margin:0 0 6px;letter-spacing:-.02em}
 h3{font-size:15px;margin:16px 0 8px}
+h3:first-child{margin-top:0}
 p{margin:6px 0}
 .muted{color:var(--muted);font-size:14px}
 .small{font-size:13px;color:var(--muted)}
-label.q{display:block;font-weight:600;margin:16px 0 8px;font-size:15px}
+label.q{display:block;font-weight:600;margin:18px 0 8px;font-size:15px}
 .opts{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;font-size:14px;cursor:pointer;user-select:none;color:var(--ink)}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;font-size:14px;cursor:pointer;user-select:none;color:var(--ink);line-height:1.35}
 .chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-input[type=number]{width:100%;font-size:17px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+input[type=number]{width:100%;font-size:17px;padding:11px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid2 label.q{margin-top:10px}
 .btn{display:block;width:100%;border:0;border-radius:12px;padding:15px;font-size:16px;font-weight:600;background:var(--navy);color:#fff;cursor:pointer;margin-top:18px}
-.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line);margin-top:10px}
 .btn.blue{background:var(--blue)}
-.steps{display:flex;gap:6px;margin-bottom:14px}
+.steps{display:flex;gap:5px;margin-bottom:14px}
 .steps span{flex:1;height:4px;border-radius:4px;background:var(--line)}
 .steps span.on{background:var(--blue)}
 .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:600;margin:3px 4px 3px 0}
@@ -38,283 +40,752 @@ input[type=number]{width:100%;font-size:17px;padding:12px;border:1px solid var(-
 .b-green{background:var(--green-soft);color:var(--green)}
 .b-amber{background:var(--amber-soft);color:var(--amber)}
 .b-red{background:var(--red-soft);color:var(--red)}
+.b-violet{background:var(--violet-soft);color:var(--violet)}
+.big{font-size:26px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:10px 0}
+.stat{background:var(--bg);border-radius:10px;padding:12px}
+.stat .k{font-size:12px;color:var(--muted)}
+.stat .v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.stat .s{font-size:12px;color:var(--muted)}
 .stagebar{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:12px 0 4px}
 .stagebar div{text-align:center;font-size:11px;color:var(--muted);padding-top:8px;border-top:4px solid var(--line)}
 .stagebar div.done{border-color:#9db8f2}
 .stagebar div.cur{border-color:var(--blue);color:var(--ink);font-weight:700}
 ul.plan{padding-left:18px;margin:6px 0}
 ul.plan li{margin:4px 0}
-.vid{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+.vid{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--line);text-decoration:none;color:inherit}
 .vid:first-of-type{border-top:0}
-.vid img{width:112px;height:63px;object-fit:cover;border-radius:8px;flex:none;background:var(--line)}
+.vid img{width:108px;height:61px;object-fit:cover;border-radius:8px;flex:none;background:var(--line)}
 .vid .t{font-size:14px;font-weight:600;line-height:1.35}
 .vid .m{font-size:12px;color:var(--muted);margin-top:3px}
 .vid .c{font-size:12px;color:var(--amber);margin-top:3px}
 .note{background:var(--amber-soft);border-radius:10px;padding:12px;font-size:14px;margin-top:10px}
+.info{background:var(--blue-soft);border-radius:10px;padding:12px;font-size:14px;margin-top:10px}
+.supp{background:var(--violet-soft);border-radius:10px;padding:10px 12px;font-size:13px;margin-top:8px;color:#4a3a8f}
 .stop{background:var(--red-soft);border-radius:10px;padding:14px;font-size:15px}
-.tabbar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
-.tabbar button{flex:1;max-width:180px;border:0;background:none;font-size:13px;color:var(--muted);padding:8px;cursor:pointer}
+.row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-child{border-top:0}
+.row b{font-variant-numeric:tabular-nums}
+.tabbar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:9}
+.tabbar button{flex:1;max-width:120px;border:0;background:none;font-size:13px;color:var(--muted);padding:9px 4px;cursor:pointer}
 .tabbar button.on{color:var(--navy);font-weight:700}
-.hist{font-size:13px;border-top:1px solid var(--line);padding:8px 0;display:flex;justify-content:space-between}
-.hidden{display:none}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}
+.seg span{font-size:13px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);cursor:pointer;background:#fff}
+.seg span.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.sasang{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+.sasang .opts{flex-wrap:nowrap;gap:4px}
+.sasang .chip{padding:6px 9px;font-size:12.5px}
+.bar{height:8px;border-radius:8px;background:var(--line);overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--violet)}
+details{margin-top:8px}
+summary{cursor:pointer;font-size:14px;color:var(--blue)}
+.hist{font-size:13px;border-top:1px solid var(--line);padding:8px 0;display:flex;justify-content:space-between;gap:8px}
+@media (max-width:380px){.grid2{grid-template-columns:1fr}.sasang{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="app">
-  <header><h1>몸 기본기 코치</h1><span class="ver">시제품 v0.1 · 기록은 이 기기에만 저장</span></header>
+  <header><h1>몸 기본기 코치</h1><span class="ver">시제품 v0.2<br>기록은 이 기기에만 저장</span></header>
   <main id="view"></main>
 </div>
 <nav class="tabbar" id="tabbar">
-  <button data-tab="today">오늘</button>
-  <button data-tab="checkin">주간 체크인</button>
-  <button data-tab="check">자가점검</button>
+  <button data-tab="home">요약</button>
+  <button data-tab="diet">식단</button>
+  <button data-tab="move">운동</button>
+  <button data-tab="checkin">체크인</button>
+  <button data-tab="check">사전조사</button>
 </nav>
 <script>
-/* ===== 데이터 (맞춤운동식단 데이터셋 v0.4에서 발췌) ===== */
-const STAGES = {
-  S1:{name:'기본 다지기',dur:'2–4주',goal:'긴장을 풀고 움직임 범위와 정렬 감각을 되찾아요',
-      plan:['매일 이완·가동성 10분','걷기 주 3–5회, 20–30분','쉬운 근력 주 2회, 15분 (브릿지·벽 푸시업·데드버그 변형)'],
-      next:'최소 2주, 주 3회 이상을 2주 연속 + 다음날 통증 악화 없음'},
-  S2:{name:'안정화·기초 근력',dur:'4–6주',goal:'맨몸 기본 6패턴을 바른 자세로 해요',
-      plan:['근력 주 2–3회, 30분 (가동성 워밍업 5–10분 포함)','6패턴: 스쿼트 · 엉덩이 들기 · 밀기 · 당기기(밴드) · 코어 버티기 · 한발 균형','걷기 등 유산소를 주 150분 쪽으로 조금씩'],
-      next:'최소 4주, 6패턴 각 2세트×10–12회를 다음날 악화 없이 + 의자 일어서기 기준선 +2회'},
-  S3:{name:'근력 강화',dur:'6–12주',goal:'부하를 조금씩 올려 근력과 근육을 늘려요',
-      plan:['근력 주 2–4회 (덤벨·밴드)','목표 반복보다 1–2회 더 되면 무게를 조금(2–10%) 올리기','유산소 주 150–300분, 인터벌은 선택'],
-      next:'8주 이상 꾸준히 + 부하 증가 기록'},
-  S4:{name:'목표별 심화·유지',dur:'지속',goal:'우선 목표에 맞추고, 최소 유지량은 지켜요',
-      plan:['근력 주 2회 이상 + 활동 주 150분 이상 유지','8–12주마다 자가점검 다시 하기'],
-      next:'-'}
+/* ==================================================================
+   데이터: 맞춤운동식단 데이터셋 v0.5 (근거·출처는 데이터셋 09_출처, 20~24 시트)
+   「보완」= 공식 기준이 없어 실무값을 쓰거나 근거가 약한 부분
+   ================================================================== */
+const STAGES={
+ S1:{name:'기본 다지기',dur:'2–4주',goal:'긴장을 풀고 움직임 범위와 정렬 감각을 되찾아요',plan:['매일 이완·가동성 10분','걷기 주 3–5회, 20–30분','쉬운 근력 주 2회, 15분'],next:'최소 2주, 주 3회 이상을 2주 연속 + 다음날 통증 악화 없음'},
+ S2:{name:'안정화·기초 근력',dur:'4–6주',goal:'맨몸 기본 6패턴을 바른 자세로 해요',plan:['근력 주 2–3회, 30분 (가동성 워밍업 5–10분 포함)','6패턴: 스쿼트 · 엉덩이 들기 · 밀기 · 당기기(밴드) · 코어 버티기 · 한발 균형','유산소를 주 150분 쪽으로 조금씩'],next:'최소 4주, 6패턴 각 2세트×10–12회를 다음날 악화 없이 + 의자 일어서기 기준선 +2회'},
+ S3:{name:'근력 강화',dur:'6–12주',goal:'부하를 조금씩 올려 근력과 근육을 늘려요',plan:['근력 주 2–4회 (덤벨·밴드)','목표 반복보다 1–2회 더 되면 무게를 2–10% 올리기','유산소 주 150–300분, 인터벌은 선택'],next:'8주 이상 꾸준히 + 부하 증가 기록'},
+ S4:{name:'목표별 심화·유지',dur:'지속',goal:'우선 목표에 맞추고, 최소 유지량은 지켜요',plan:['근력 주 2회 이상 + 활동 주 150분 이상 유지','8–12주마다 사전조사 다시 하기'],next:'-'}
 };
-const FOOD = [
-  {id:'F0',name:'관찰',habit:'먹은 것을 판단 없이 사진이나 한 줄로 기록하기'},
-  {id:'F1',name:'규칙성',habit:'하루 식사 2–3번의 시간을 대략 고정하기. 거른 뒤 다음 끼니를 줄이지 않기'},
-  {id:'F2',name:'접시 구성',habit:'매 끼 단백질 식품 하나 + 채소 하나 + 밥·빵 적당히'},
-  {id:'F3',name:'질 높이기',habit:'가장 자주 먹는 가공식품이나 단 음료 하나를 다른 걸로 바꾸기'},
-  {id:'F4',name:'유지·유연성',habit:'무너진 날엔 다음 끼니를 평소대로. 굶거나 운동으로 갚지 않기'}
+const NEEDS={N2:{name:'이완·회복',cls:'b-blue',why:'뻐근함이 잦거나 잠·스트레스 회복이 필요해요'},N3:{name:'가동성',cls:'b-blue',why:'움직임 범위가 좁거나 좌우 차이가 있어요'},N4:{name:'정렬·조절',cls:'b-blue',why:'동작 중 보상이나 균형 흔들림이 보여요'},N5:{name:'근력·근지구력',cls:'b-green',why:'근력 기초가 필요해요'},N6:{name:'심폐체력',cls:'b-green',why:'빠르게 걸을 때 숨이 쉽게 차요'},N7:{name:'체지방 관리',cls:'b-amber',why:'체지방이나 허리 기준이 높거나 목표로 고르셨어요'}};
+
+/* 체형 유형 (데이터셋 20_체형유형) */
+const BODY_TYPES={
+ skinnyfat:{name:'마른 비만형',desc:'체중은 정상 범위인데 체지방 비율이 높은 편이에요.',ex:'근력운동 주 2–3회가 1순위, 유산소는 보조',diet:'체중을 크게 줄이기보다 유지~소폭 적자에서 단백질을 충분히',kcal:'recomp'},
+ sarcoobese:{name:'근감소성 비만 의심형',desc:'체지방은 높고 근육은 적은 편이에요. 근력·기능 확인이 필요해요.',ex:'근력운동이 최우선, 유산소 병행',diet:'완만한 감량 + 충분한 단백질, 급감량 금지',kcal:'lose',warn:'악력·의자 일어서기 같은 기능 확인과 전문가 상담을 권해요.'},
+ fatexcess:{name:'체지방 과다형',desc:'근육은 적당한데 체지방이 많은 편이에요.',ex:'유산소 + 근력 병행',diet:'완만한 열량 적자 + 충분한 단백질',kcal:'lose'},
+ bothhigh:{name:'근육·지방 모두 많은형',desc:'근육량도 많고 체지방도 높은 편이에요.',ex:'근력은 유지하고 유산소 비중을 늘리기',diet:'완만한 열량 적자, 단백질 유지',kcal:'lose'},
+ muscular:{name:'근육형',desc:'체중이 높아 보여도 근육이 많고 체지방은 표준 이하예요.',ex:'목적에 맞는 근력·체력 유지',diet:'활동량에 맞는 열량 유지',kcal:'keep'},
+ overstd:{name:'과체중 표준형',desc:'체중은 높은 편이지만 체지방·근육은 표준 범위예요.',ex:'유산소 + 근력 균형',diet:'유지 또는 아주 완만한 적자',kcal:'keep'},
+ standard:{name:'표준형',desc:'체중·체지방·근육이 고른 편이에요.',ex:'기본기 유지와 목표별 보완',diet:'유지 열량, 식사 질 높이기',kcal:'keep'},
+ weakstd:{name:'근력 부족 표준형',desc:'체중·체지방은 표준인데 근육이 적은 편이에요.',ex:'근력운동 우선',diet:'유지~소폭 잉여 + 단백질 충분히',kcal:'gain'},
+ lean:{name:'마른형',desc:'체중이나 체지방이 낮고 근육도 적은 편이에요.',ex:'근력운동 우선 + 충분한 회복',diet:'감량 금지, 유지~소폭 잉여 + 단백질',kcal:'gain',warn:'의도하지 않은 체중 감소나 어지럼이 있으면 진료를 먼저 받아 주세요.'},
+ athletic:{name:'슬림 근육형',desc:'체지방은 낮고 근육은 표준 이상이에요.',ex:'목표별 근력·체력 유지',diet:'활동량에 맞는 열량 유지',kcal:'keep'},
+ unknown:{name:'체형 판정 보류',desc:'체지방과 근육 자료가 부족해 세부 유형을 정하지 않았어요.',ex:'기초 움직임과 근력부터 확인',diet:'규칙적인 균형식부터 시작',kcal:'keep'}
+};
+
+/* 식사 반응 특성 (데이터셋 22_식사반응특성) */
+const TRAITS={
+ oily:{label:'기름진 음식 먹으면 더부룩하거나 불편',tip:'튀김·삼겹살·크림 요리는 양을 줄이고 굽기·찌기·삶기로. 한 번에 많이 먹지 말고 천천히, 자기 3시간 전엔 식사 마무리.',flag:'기름진 식사 뒤 명치·오른쪽 윗배 통증이 30분 이상 가거나 등·어깨로 뻗치면 진료(담낭 확인).',ev:'B'},
+ cold:{label:'찬 음식·찬 음료 먹으면 속이 불편',tip:'불편하면 물·음료를 미지근하게 바꿔 비교 기록해 보세요. 식사 중 물은 조금씩.',flag:'',ev:'C',supp:'찬 음식이 원인이라는 현대 근거는 약해요(소화불량 환자 대상 소규모 연구). 한의학의 "속이 차다"는 전통 해석이에요.'},
+ heat:{label:'몸에 열이 많고 더위를 많이 탐·땀이 많음',tip:'식단으로 열을 내린다는 근거는 없어요. 수분을 충분히, 카페인·술·매운 음식과의 관계를 기록해 보세요.',flag:'더위를 못 참고 땀이 늘면서 체중이 빠지고 두근거림·손떨림이 있으면 갑상선 검사를 권해요.',ev:'경고신호만'},
+ chill:{label:'추위를 많이 타고 손발이 참',tip:'끼니를 거르지 말고 충분한 에너지·단백질을 유지하세요. 극단적인 식사 제한은 피해요.',flag:'추위와 함께 피로·체중 증가·변비·피부 건조가 여러 개면 갑상선 검사를 권해요.',ev:'경고신호만'},
+ slow:{label:'소화가 느리고 잘 체함·식후 오래 더부룩',tip:'세 끼를 규칙적으로, 양은 조금 적게 + 필요하면 간식. 꼭꼭 씹고 식후 바로 눕지 말고 가볍게 걷기. 채소는 익혀서.',flag:'식후 구토, 금방 배부름이 반복되며 체중이 줄거나, 삼키기 어렵거나 검은 변이면 진료.',ev:'B'},
+ reflux:{label:'속쓰림·신물 올라옴',tip:'자기 2–3시간 전엔 먹지 않기, 과식 피하기, 체중이 많다면 감량. 커피·초콜릿·탄산·매운 것·고지방은 나에게 유발되는지 기록 후 그것만 줄이기.',flag:'삼킬 때 통증·체중 감소·반복 구토·검은 변·가슴 통증, 주 2회 이상 계속되면 진료.',ev:'A'},
+ constip:{label:'변비 (주 3회 미만, 딱딱한 변)',tip:'채소·통곡·과일로 섬유를 몇 주에 걸쳐 천천히 늘리고 물을 함께. 식후 걷기, 아침 식후 화장실 시간 만들기.',flag:'변 습관이 갑자기 바뀜, 혈변, 원인 모를 체중 감소, 빈혈이면 진료.',ev:'A~B'},
+ diarrhea:{label:'묽은 변이 잦음',tip:'커피·유제품·단 음료·무설탕 껌(감미료)·밀가루와의 관계를 기록해 보세요. 수분 보충.',flag:'4주 넘게 지속, 혈변, 밤에도 설사, 체중 감소면 진료.',ev:'B'},
+ dairy:{label:'우유·아이스크림 먹으면 가스·복통',tip:'한국 성인은 유당불내가 흔해요. 락토프리 우유, 요거트·치즈를 소량부터, 식사와 함께. 칼슘·단백질은 다른 음식으로 채우기.',flag:'두드러기·호흡곤란은 알레르기 응급.',ev:'A~B'},
+ wheat:{label:'빵·면 먹으면 더부룩·복통',tip:'스스로 밀가루를 끊기 전에 며칠 기록하고 진료를 먼저. 셀리악 검사는 밀가루를 먹는 상태에서 해야 정확해요.',flag:'지속 설사·체중 감소·빈혈·발진이 있으면 검사.',ev:'A'},
+ spicy:{label:'매운 음식 먹으면 속쓰림·복통',tip:'맵기와 양을 낮춰서 비교 기록. 속쓰림이 같이 있으면 위 속쓰림 항목도 참고.',flag:'검은 변·지속 통증·체중 감소면 진료.',ev:'B'},
+ hunger:{label:'금방 배고파짐',tip:'매 끼 단백질 식품 + 채소·통곡·콩을 함께. 천천히 먹고 규칙적으로.',flag:'심한 허기 + 갈증·소변 증가 + 체중 감소면 진료(혈당 확인).',ev:'B'},
+ sleepy:{label:'식후 졸림·단 것이 당김',tip:'밥·빵만 먹기보다 단백질·채소를 같이, 과식 줄이기, 식후 10분 걷기, 수면 부족 확인.',flag:'식후 떨림·식은땀·어지러움이 있으면 진료(실신 이력이 있다면 꼭).',ev:'C'},
+ caffeine:{label:'커피·술 마시면 두근거림·속쓰림·설사',tip:'카페인은 양과 시간대를 기록하고, 불편하면 줄이거나 디카페인·식후로. 건강한 성인 상한은 하루 400mg(커피 약 3–4잔).',flag:'소량에도 심한 두근거림·흉통이면 진료.',ev:'A~B'}
+};
+
+/* 사상체질 참고 자가체크 (데이터셋 23_체질 — 공식 자료의 체질별 특징으로 새로 작성, 원 설문 복제 아님) */
+const SASANG_Q=[
+ ['같은 조건의 다른 사람보다 몸이 차고 손발이 자주 차다',{so:2}],
+ ['더위를 많이 타고 열이 얼굴·상체로 잘 오른다',{yang:1,eum:1}],
+ ['조금만 움직여도 땀이 많이 나고, 땀이 나면 개운하다',{eum:2}],
+ ['땀이 거의 안 나고, 땀이 나면 오히려 기운이 빠진다',{so:2}],
+ ['식사량이 많고 빨리 먹는 편이며 소화도 잘 된다',{eum:2,yang:1}],
+ ['식사량이 적고, 조금 과식하거나 찬 걸 먹으면 설사·더부룩함이 생긴다',{so:2}],
+ ['많이 먹어도 살이 잘 안 찌고 마르기 쉽다',{yang:2,so:1}],
+ ['살이 잘 찌고 특히 배·허리에 붙는다',{eum:2}],
+ ['어깨·가슴 윗부분은 발달했는데 엉덩이·하체는 빈약한 편이다',{yang:2}],
+ ['체격이 작고 마른 편이며, 가슴이 좁고 엉덩이가 상대적으로 크다',{so:2}],
+ ['체격과 골격이 크고 허리·하체가 굵은 편이다',{eum:2}],
+ ['성격이 급하고 활발하며, 시작은 잘하는데 마무리가 약하다',{yang:2}],
+ ['느긋하고 끈기 있으며 속마음을 잘 드러내지 않고, 새로운 시작이 부담스럽다',{eum:2}],
+ ['꼼꼼하고 섬세하며 내성적이고, 일하기 전에 걱정하며 철저히 준비한다',{so:2}],
+ ['변이 굳고 시원하지 않으며 속이 답답하고 열이 오른다',{yang:2}],
+ ['변비가 잦고, 배변이 불규칙하면 체중도 같이 는다',{eum:2}],
+ ['배가 차고, 스트레스·피곤할 때 설사나 아랫배 가스가 먼저 온다',{so:2}],
+ ['차가운 음식·날것을 먹으면 속이 불편하다',{so:2}],
+ ['시원한 음식이 속이 편하고, 맵고 자극적인 건 불편하다',{yang:2}]
 ];
-const NEEDS = {
-  N2:{name:'이완·회복',cls:'b-blue',why:'뻐근함이 잦거나 잠·스트레스 회복이 필요해요'},
-  N3:{name:'가동성',cls:'b-blue',why:'움직임 범위가 좁거나 좌우 차이가 있어요'},
-  N4:{name:'정렬·조절',cls:'b-blue',why:'동작 중 보상이나 균형 흔들림이 보여요'},
-  N5:{name:'근력·근지구력',cls:'b-green',why:'하체·전신 근력 기초가 필요해요'},
-  N6:{name:'심폐체력',cls:'b-green',why:'빠르게 걸을 때 숨이 쉽게 차요'},
-  N7:{name:'체지방 관리',cls:'b-amber',why:'목표로 고르셨거나 허리 기준이 높아요'}
+const SASANG={
+ yang:{name:'소양인 경향',feat:'열이 많고 활동적이며, 상체가 발달한 편으로 설명돼요.',good:'보리·팥·녹두, 배추·오이·상추·호박·가지, 수박·참외·딸기, 굴·해삼·새우 등 해산물, 돼지고기',caution:'고추·마늘·생강·후추 같은 열성·자극성 음식, 닭고기·인삼·꿀',habit:'서늘하고 담백하게, 천천히 먹기'},
+ eum:{name:'태음인 경향',feat:'소화·식욕이 좋고 체격이 큰 편이며 살이 찌기 쉽다고 설명돼요. 연구에서 복부비만·대사증후군과 연관성이 가장 높게 나왔어요(인과 아님).',good:'현미·수수·율무 등 잡곡, 콩·두부, 고구마, 무·도라지·당근·해조류, 소고기(자료에 따라 다름)',caution:'과식·폭식·야식, 기름지고 열량 높은 음식, 술',habit:'과식 피하기, 식후 바로 눕지 않기, 땀 날 정도의 운동'},
+ so:{name:'소음인 경향',feat:'몸이 차고 소화 기능이 약해지기 쉬우며, 마른 편으로 설명돼요.',good:'멥쌀·찹쌀, 감자, 닭고기, 흰살 생선, 시금치·부추·양배추·파·마늘, 사과·귤·대추',caution:'냉면·수박·참외·찬 우유·생맥주처럼 차거나 날것, 기름진 음식, 밀가루',habit:'규칙적으로 따뜻하게, 소량씩 천천히'}
 };
-/* 채널 영상: 평가 결과(19_채널영상라이브러리)에서 '제외' 빼고 수록. avoid = 이 조건이면 숨김 */
-const VIDEOS = [
-  {id:'sLe6jgHoYtk',ch:'자세요정',t:'아침 10분 이완·가동성 루틴',st:['S1'],nd:['N2','N3'],min:12,lv:'왕초보',avoid:[],tip:'누웠다 일어나는 전환은 천천히'},
-  {id:'50WCSpZtdmA',ch:'심으뜸',t:'아침 10분 전신 스트레칭',st:['S1'],nd:['N2','N3'],min:10,lv:'왕초보',avoid:['knee'],tip:'무릎 꿇는 동작은 범위 줄이기'},
-  {id:'kgCj8UUEWjU',ch:'자세요정',t:'목·등 가동성과 견갑 조절',st:['S1','S2'],nd:['N3','N4','N2'],min:11,lv:'초보',avoid:['neck'],tip:'팔 저림이 있으면 먼저 진료 확인'},
-  {id:'Pe75tA4Z7gQ',ch:'자세요정',t:'고관절 안정화·가동성',st:['S1','S2'],nd:['N4','N3','N5'],min:11,lv:'초보',avoid:['hip'],tip:''},
-  {id:'v7UY7ebQV7Y',ch:'자세요정',t:'허리 안정화(코어 조절) 루틴',st:['S1','S2'],nd:['N4','N5','N3'],min:13,lv:'초보',avoid:['back'],tip:'엎드림→네발 전환은 천천히'},
-  {id:'qbh47coIh70',ch:'이지은 다이어트',t:'어깨·팔 가동성과 상체 기초',st:['S1','S2'],nd:['N3','N4','N5'],min:15,lv:'초보',avoid:['shoulder','wrist'],tip:'아프면 참지 말고 멈추기',ref:true},
-  {id:'q6hBSSfokzY',ch:'심으뜸',t:'스쿼트로 하체 기초 근력',st:['S2','S3'],nd:['N5','N6'],min:12,lv:'초보',avoid:['knee'],tip:'처음엔 5분·하프 스쿼트로',syn:'쉬지 않고 10분 반복 → 중간에 쉬기'},
-  {id:'v54Jtmi2BwU',ch:'심으뜸',t:'플랭크(코어 버티기)',st:['S2'],nd:['N4','N5'],min:6,lv:'중급',avoid:['wrist','shoulder','back'],tip:'15–20초나 무릎 플랭크로 시작',syn:'숨 참지 말고 짧게 끊어서'},
-  {id:'uXOUG_VfS78',ch:'이지은 다이어트',t:'코어 조절 8분 (호흡·허리 중립 위주)',st:['S2'],nd:['N4','N5'],min:11,lv:'초보',avoid:['back','pregnant'],tip:'뱃살이 빠진다는 효과는 기대하지 않기',ref:true},
-  {id:'dpBYYEhdofI',ch:'이지은 다이어트',t:'하체 근력 루틴',st:['S2','S3'],nd:['N3','N5','N7'],min:20,lv:'중급',avoid:['knee','back','syncope'],tip:'셀룰라이트·부분 감량 효과는 근거 없음',ref:true},
-  {id:'zruKSHfD7b4',ch:'심으뜸',t:'20분 전신 근력+유산소 (타바타는 선택)',st:['S3'],nd:['N4','N5','N6','N7'],min:19,lv:'중급',avoid:['knee','syncope','hbp'],tip:'앞부분 근력 구간 위주로',ref:true},
-  {id:'g_rbKsabkxA',ch:'이지은 다이어트',t:'전신 유·무산소 루틴',st:['S3'],nd:['N5','N6','N7'],min:22,lv:'중급',avoid:['syncope','hbp','knee','ed'],tip:'먹은 걸 갚는 운동으로 쓰지 않기',ref:true},
-  {id:'J4ewoypgqP4',ch:'SNPE',t:'의자 스쿼트 버티기 참고(SNPE 1번 동작)',st:['S2','S3'],nd:['N4','N5'],min:17,lv:'중급',avoid:['syncope','neck','knee','back'],tip:'10–20초로 시작, 턱 들기 큐는 따르지 않기',ref:true}
+const EIGHT={
+ 금양:'바다생선·조개·새우, 흰쌀·메밀이 유익 / 육류·유제품·콩·견과·밀가루를 피하라고 안내되는 경우가 많아요.',
+ 금음:'금양과 비슷하게 바다생선·조개·흰쌀이 유익 / 육류·유제품·밀가루를 피하라고 안내돼요.',
+ 토양:'돼지·소고기, 해산물, 보리가 유익 / 닭고기·찹쌀·현미·견과·고구마를 피하라고 안내돼요.',
+ 토음:'돼지고기, 해산물, 보리가 유익 / 닭고기·찹쌀·현미·견과를 피하라고 안내돼요.',
+ 목양:'소고기, 뿌리채소, 현미·밀가루, 견과가 유익 / 바다생선·조개, 메밀을 피하라고 안내돼요.',
+ 목음:'소·돼지고기, 뿌리채소, 콩·견과가 유익 / 바다생선·조개, 술을 피하라고 안내돼요.',
+ 수양:'닭고기, 현미·찹쌀, 감자, 미역이 유익 / 돼지고기·보리·찬 음식을 피하라고 안내돼요.',
+ 수음:'닭고기, 현미·찹쌀·감자, 따뜻한 음식과 소식이 유익 / 돼지고기·보리·찬 음료·맥주를 피하라고 안내돼요.'
+};
+
+/* 단백질 식품 대략값 (식품영양성분 DB 기준의 대략 범위, 제품·조리마다 다름) */
+const PROTEIN_FOODS=[
+ {n:'달걀 2개',g:12,tag:['egg']},{n:'닭가슴살 100g',g:23,tag:['meat']},{n:'두부 반 모(150g)',g:13,tag:['soy']},
+ {n:'생선 한 토막(80g)',g:16,tag:['fish']},{n:'그릭요거트 100g',g:9,tag:['dairy']},{n:'우유 200ml',g:6,tag:['dairy']},
+ {n:'소고기 살코기 100g',g:21,tag:['meat']},{n:'돼지 안심 100g',g:22,tag:['meat']},{n:'삶은 콩 ½컵',g:7,tag:['soy']},{n:'병아리콩·렌틸콩 1컵',g:15,tag:['legume']},{n:'퀴노아 1컵',g:8,tag:['grain']},
+ {n:'참치캔 작은 것(85g)',g:17,tag:['fish']},{n:'새우 100g',g:18,tag:['shell']},{n:'두유 1팩(190ml)',g:6,tag:['soy']}
 ];
 
+/* 운동 영상 라이브러리 (데이터셋 19·24 시트). tier: P 공공기관 / H 병원·의료진 / E 물리치료사·운동전문가 / C 인기 홈트·요가(참고)
+   cat: relax 이완 / mob 가동성 / core 코어·정렬 / lower 하체 / upper 상체 / full 전신근력 / walk 걷기·저충격 / cardio 유산소 / hiit 고강도 / pain 통증 친화 */
+const V=(id,ch,tier,t,min,cat,st,nd,lv,imp,avoid=[],tip='')=>({id,ch,tier,t,min,cat,st,nd,lv,imp,avoid,tip});
+const VIDEOS=[
+ V('i8l72wdPPTY','국민체력100','P','직장인 근골격계 관리 운동(초급)',30,'mob',['S1'],['N2','N3','N4'],'초급','저'),
+ V('5U8T4_tOXHI','국민체력100','P','척추·골반·고관절 5분 운동',7,'mob',['S1'],['N3','N4'],'초급','저'),
+ V('9B58JBknwV4','국민체력100 구미센터','P','쉬운 전신 스트레칭',6,'relax',['S1'],['N2','N3'],'왕초보','저'),
+ V('CE5_xepb3HI','국민체력100','P','근력 강화 운동(초급)',31,'full',['S2'],['N5'],'초급','저'),
+ V('_HrJK-q4nfY','국민체력100 세종센터','P','누구나 따라하는 전신근력',10,'full',['S2'],['N5'],'초급','저'),
+ V('GEdx7PAGTkU','국민체력100','P','중장년 10분 전신 운동',13,'full',['S2'],['N5','N6'],'초급','저'),
+ V('c5kNdIk9jgc','국민체육진흥공단','P','홈트 초보 전신운동',14,'full',['S2'],['N5','N6'],'초급','저'),
+ V('DsA_DDepUPk','국민체력100','P','다이어트 웜업 운동(초급)',32,'cardio',['S2'],['N6','N7'],'초급','저'),
+ V('GDhmQ9kZQtc','국민체력100','P','심폐지구력 향상 10분',14,'cardio',['S2','S3'],['N6'],'중급','충격',['knee','syncope']),
+ V('bQ7NNdUbLKs','국민체력100','P','근력 강화 운동(상급)',31,'full',['S3','S4'],['N5'],'상급','저',['knee']),
+ V('LfLyD4snaaA','국민체육진흥공단','P','집콕홈트 전신 체력 30분',31,'cardio',['S3'],['N5','N6','N7'],'중급','충격',['knee','syncope']),
+ V('oLu9kwDzBdg','NHS','P','기본 워밍업 5분 (영어)',8,'mob',['S1','S2'],['N2','N3'],'왕초보','저'),
+ V('44HquH6QyXc','NHS','P','필라테스 입문 (영어)',31,'core',['S1','S2'],['N4','N5'],'초급','저'),
+ V('zVjKoDJT8pc','NHS','P','만성 요통을 위한 필라테스 (영어)',29,'pain',['S1','S2'],['N4'],'초급','저'),
+ V('06SW69PYAXI','NHS','P','복부·코어 10분 (영어)',11,'core',['S2'],['N4','N5'],'초급','저',['back']),
+ V('ZCbOZyLeQoQ','NHS','P','중급 에어로빅 30분 (영어)',31,'cardio',['S3'],['N6','N7'],'중급','충격',['knee','syncope']),
+ V('PT4MNCTQvPM','Mayo Clinic','H','짧은 전신 스트레칭 (영어)',4,'relax',['S1'],['N2'],'왕초보','저'),
+ V('CyciAb6X7SU','대한비만학회','H','흉추 가동성 운동',2,'mob',['S1'],['N3'],'왕초보','저'),
+ V('tdeDK72dboM','분당서울대병원','H','따라하는 스트레칭',8,'relax',['S1'],['N2','N3'],'왕초보','저'),
+ V('Mo2bVgti9cE','분당서울대병원','H','따라하는 근력운동',9,'full',['S1','S2'],['N5'],'초급','저'),
+ V('I-l9G6yrta8','분당서울대병원','H','일자목·거북목 목운동',12,'mob',['S1'],['N3','N4'],'초급','저',[],'팔 저림이 있으면 먼저 진료'),
+ V('snOSN-MmJHY','분당서울대병원','H','허리 튼튼 운동',8,'pain',['S1','S2'],['N4'],'초급','저'),
+ V('1rPttw9z-DU','분당서울대병원','H','낙상 예방 균형운동',10,'core',['S1','S2'],['N4'],'왕초보','저',[],'지지할 의자 옆에서'),
+ V('dismp4Vw7UQ','강남세브란스병원','H','건강한 허리를 위한 코어운동',24,'core',['S2'],['N4','N5'],'초급','저'),
+ V('HGf7zlGooB4','세브란스병원','H','요통을 위한 복부운동',8,'pain',['S1','S2'],['N4'],'초급','저'),
+ V('eX_BQ8XGdp8','삼성서울병원','H','건강체조(선 자세)',5,'mob',['S1'],['N2','N3'],'왕초보','저'),
+ V('YvmFpomiiv4','삼성서울병원','H','어깨 통증·오십견 운동',7,'pain',['S1'],['N3'],'초급','저',[],'통증이 심하면 진료 먼저'),
+ V('VGjc4mach_U','서울아산병원','H','쉬운 하체 운동(어르신용)',11,'lower',['S1','S2'],['N5'],'왕초보','저'),
+ V('zgL5kiuDkWQ','서울아산병원','H','건강한 노년 운동요법',33,'full',['S2'],['N4','N5'],'초급','저'),
+ V('sUHrGnz4HK8','서울대병원 노두현 교수','H','무릎 스트레칭 운동',16,'pain',['S1'],['N3'],'초급','저'),
+ V('WQGXtBvQ7tc','서울대병원 노두현 교수','H','무릎 근력 강화 운동',16,'pain',['S1','S2'],['N5'],'초급','저'),
+ V('KV0FesxC9Sk','정선근 TV(재활의학과)','H','허리에 좋은 뒤꿈치 들기',13,'pain',['S1'],['N4'],'왕초보','저'),
+ V('xymMdl4UWrE','정선근 TV(재활의학과)','H','흉추 세우기 운동',11,'mob',['S1'],['N3','N4'],'초급','저',['shoulder']),
+ V('tNtiUsdL5_8','람PT(물리치료사)','E','누워서 하는 코어 7분',8,'core',['S1','S2'],['N4'],'초급','저'),
+ V('ROc9hYC0acA','람PT(물리치료사)','E','누워서 하는 복부 10분',11,'core',['S2'],['N4','N5'],'초급','저',['back']),
+ V('vIX7datlPqI','람PT(물리치료사)','E','거북목·굽은등 15분 루틴',18,'mob',['S1'],['N3','N4'],'초급','저'),
+ V('5r8c37p7Hew','람PT(물리치료사)','E','목·어깨·등 20분',20,'mob',['S1','S2'],['N3','N4'],'초급','저'),
+ V('QM6d9Pf-CY8','람PT(물리치료사)','E','허리 코어강화 초급',17,'core',['S1','S2'],['N4'],'초급','저'),
+ V('EN3wkYAQNss','람PT(물리치료사)','E','앉아서 하는 전신 스트레칭 8분',9,'relax',['S1'],['N2'],'왕초보','저'),
+ V('8gvDaLv-RQ8','람PT(물리치료사)','E','폼롤러 전신 35분',38,'relax',['S1','S2'],['N2','N3'],'초급','저'),
+ V('3CgPjAui260','람PT(물리치료사)','E','서서 하는 복부 유산소(층간소음X)',14,'cardio',['S2'],['N6','N4'],'초급','저'),
+ V('2peZL9Z_jDQ','Mr.Physio(물리치료사)','E','코어운동의 기본',9,'core',['S2'],['N4'],'초급','저'),
+ V('qYx_PoRD8pU','Mr.Physio(물리치료사)','E','발목 가동성 3가지',6,'mob',['S1'],['N3'],'초급','저'),
+ V('1u_q0DjaKVU','Mr.Physio(물리치료사)','E','누워서 하는 골반운동',6,'core',['S1'],['N4'],'초급','저',[],'골반 "교정" 효과는 기대하지 않기'),
+ V('0GEx801-mD4','물리치료사 재석','E','10분 고관절 스트레칭',10,'mob',['S1'],['N3'],'초급','저'),
+ V('plrLB3EnO1g','물리치료사 재석','E','폼롤러 전신 스트레칭',25,'relax',['S1'],['N2','N3'],'초급','저'),
+ V('TAajkq-17PE','모스틱 자세연구소','E','누워서 하는 하체 근력(무릎 편한)',19,'lower',['S1','S2'],['N5'],'초급','저'),
+ V('kU4mt16Iqxk','모스틱 자세연구소','E','무릎 편한 10분 운동',15,'pain',['S1'],['N5'],'초급','저'),
+ V('CTa3kRaJfZs','모스틱 자세연구소','E','고관절 스트레칭 17분',18,'mob',['S1'],['N3'],'초급','저'),
+ V('dcgvfrLDqiM','모스틱 자세연구소','E','상체 근력 15분',16,'upper',['S2'],['N5'],'초급','저',['wrist','shoulder']),
+ V('YIaJWBmGSoc','관절사용설명서','E','무릎 편한 초보 하체 20분',20,'lower',['S1','S2'],['N5'],'초급','저'),
+ V('u5GPq0CC7U8','관절사용설명서','E','앉아서 하는 하체 운동',10,'lower',['S1'],['N5'],'왕초보','저'),
+ V('soRBhLxFHiw','관절사용설명서','E','폼롤러 스트레칭 25분',27,'relax',['S1'],['N2','N3'],'초급','저'),
+ V('-ujUWkv2skY','운동힐러','E','고관절 스트레칭',28,'mob',['S1'],['N3'],'초급','저'),
+ V('DtgvXiv7BSI','호주 바른움직임연구소','E','골반 앞기울기 관련 운동',14,'core',['S1','S2'],['N4'],'초급','저',[],'자세가 통증 원인이라는 단정은 근거가 약해요'),
+ V('sLe6jgHoYtk','자세요정','E','아침 10분 이완·가동성',12,'relax',['S1'],['N2','N3'],'왕초보','저',[],'누웠다 일어날 땐 천천히'),
+ V('kgCj8UUEWjU','자세요정','E','목·등 가동성과 견갑 조절',11,'mob',['S1','S2'],['N3','N4','N2'],'초급','저',['neck']),
+ V('Pe75tA4Z7gQ','자세요정','E','고관절 안정화·가동성',11,'mob',['S1','S2'],['N4','N3','N5'],'초급','저',['hip']),
+ V('v7UY7ebQV7Y','자세요정','E','허리 안정화(코어 조절)',13,'core',['S1','S2'],['N4','N5'],'초급','저',['back'],'엎드림→네발 전환은 천천히'),
+ V('ezEs6sbSsOg','요가소년','C','15분 모닝 요가',18,'relax',['S1'],['N2','N3'],'초급','저'),
+ V('YKLdBhAVNxk','요가소년','C','앉아서 하는 전신 스트레칭 20분',20,'relax',['S1'],['N2'],'왕초보','저'),
+ V('H06zAcHqjYU','요가소년','C','척추를 위한 요가 25분',29,'mob',['S1','S2'],['N3','N2'],'초급','저',['back'],'통증이 심한 날은 범위 줄이기'),
+ V('kv1bUAMIYoQ','요가소년','C','피로·스트레스 풀기 스트레칭',35,'relax',['S1'],['N2'],'왕초보','저'),
+ V('dn_oJ7SCseU','강하나 스트레칭','C','기상 스트레칭',12,'relax',['S1'],['N2','N3'],'왕초보','저'),
+ V('djnCTOctbrY','강하나 스트레칭','C','전신 피로 푸는 스트레칭',15,'relax',['S1'],['N2'],'왕초보','저'),
+ V('EbGh3ME7NLI','빵느','C','아침 10분 기상 스트레칭',12,'relax',['S1'],['N2'],'왕초보','저'),
+ V('9Xe9r1UuapY','빵느','C','운동 전 전신 스트레칭',9,'mob',['S1','S2','S3'],['N3'],'초급','저'),
+ V('21iOcDfoOGg','빵느','C','10분 기본 전신근력',14,'full',['S2'],['N5'],'초급','저'),
+ V('HTthpM84ILQ','빵느','C','5분 스쿼트 초급',6,'lower',['S2'],['N5'],'초급','저',['knee']),
+ V('orEGOGBRldQ','빵느','C','스쿼트·런지 없는 초급 하체',11,'lower',['S2'],['N5'],'초급','저'),
+ V('anzqzR9bR_Q','빵느','C','10분 기본 상체 근력',11,'upper',['S2'],['N5'],'초급','저',['wrist','shoulder']),
+ V('9zLD6cSgHdY','빵느','C','15분 기본 덤벨 상체',16,'upper',['S3'],['N5'],'중급','저',['shoulder']),
+ V('L2-74-K-9VM','빵느','C','덤벨 30분 전신',31,'full',['S3','S4'],['N5'],'중급','저',['knee','back']),
+ V('OF3wpPZs2aI','빵느','C','30분 실내 걷기(스쿼트·런지X)',31,'walk',['S1','S2'],['N6','N7'],'초급','저'),
+ V('jjTjeNghWoM','빵느','C','20분 유산소(층간소음X)',21,'cardio',['S2','S3'],['N6','N7'],'초급','저'),
+ V('0IWibGOf1jU','빅씨스','C','관절 무리 없는 28분 유산소(초보)',29,'walk',['S2'],['N6','N7'],'초급','저'),
+ V('_yjAaOBaGh8','빅씨스','C','관절 무리 없는 30분 논스톱',31,'cardio',['S2','S3'],['N6','N7'],'중급','저',['syncope']),
+ V('Nhgx_qkXinM','빅씨스','C','모닝 20분 전신운동',21,'full',['S2','S3'],['N5','N6'],'중급','저'),
+ V('ERhNj7i3Bw4','빅씨스','C','덤벨 30분 전신(중고급)',31,'full',['S4'],['N5'],'상급','저',['knee','back']),
+ V('IgsyvlKKFzM','빅씨스','C','15분 고강도 인터벌(HIIT)',16,'hiit',['S4'],['N6','N7'],'상급','충격',['knee','syncope','hbp','back']),
+ V('t70t-sklypk','땅끄부부','C','걷기 유산소(순한맛)',29,'walk',['S1','S2'],['N6','N7'],'초급','저'),
+ V('MWnD6DhLjyc','땅끄부부','C','실내 걷기 30분',30,'walk',['S2'],['N6','N7'],'초급','저'),
+ V('hesjApxDlj0','땅끄부부','C','무릎 부담 적은 유산소+근력',28,'cardio',['S2','S3'],['N6','N5'],'중급','저',['syncope']),
+ V('Iaa8YNDRbhg','땅끄부부','C','전신 근력운동 5가지',11,'full',['S2','S3'],['N5'],'중급','저',['knee']),
+ V('CkRDw4En_78','땅끄부부','C','단시간 고강도 전신',16,'hiit',['S4'],['N6','N7'],'상급','충격',['knee','syncope','hbp','back']),
+ V('Me3IaZS3CdY','임피티','C','식후 15분 걷기 홈트',16,'walk',['S1','S2'],['N6'],'왕초보','저'),
+ V('sdkVfIBg2p0','임피티','C','30분 걷기 홈트',31,'walk',['S2'],['N6','N7'],'초급','저'),
+ V('9Sg9unHcyV4','이상대 중년홈트','C','중년 전신근력 10분',11,'full',['S2'],['N5'],'초급','저'),
+ V('hoj6DIbJTdk','이상대 중년홈트','C','서서 15분(관절 부담 적은)',16,'full',['S2'],['N5','N6'],'초급','저'),
+ V('GIjHfDQtwd8','심으뜸(힙으뜸)','C','고관절 스트레칭',16,'mob',['S1'],['N3'],'초급','저'),
+ V('50WCSpZtdmA','심으뜸(힙으뜸)','C','아침 10분 전신 스트레칭',10,'relax',['S1'],['N2','N3'],'왕초보','저',['knee']),
+ V('q6hBSSfokzY','심으뜸(힙으뜸)','C','스쿼트로 하체 기초 근력',12,'lower',['S2','S3'],['N5','N6'],'초급','저',['knee'],'처음엔 5분·하프 스쿼트로'),
+ V('v54Jtmi2BwU','심으뜸(힙으뜸)','C','플랭크 챌린지',6,'core',['S2'],['N4','N5'],'중급','저',['wrist','shoulder','back'],'15–20초 또는 무릎 플랭크로 시작'),
+ V('pDFuLG0xrsU','심으뜸(힙으뜸)','C','하체 집중 근력 15분',16,'lower',['S3'],['N5'],'중급','저',['knee']),
+ V('zruKSHfD7b4','심으뜸(힙으뜸)','C','20분 전신+타바타(선택)',19,'hiit',['S3','S4'],['N5','N6','N7'],'중급','충격',['knee','syncope','hbp']),
+ V('qbh47coIh70','이지은 다이어트','C','어깨·팔 가동성과 상체 기초',15,'upper',['S1','S2'],['N3','N5'],'초급','저',['shoulder','wrist'],'아프면 참지 말고 멈추기'),
+ V('uXOUG_VfS78','이지은 다이어트','C','코어 조절 8분',11,'core',['S2'],['N4','N5'],'초급','저',['back','pregnant']),
+ V('dpBYYEhdofI','이지은 다이어트','C','하체 근력 루틴',20,'lower',['S2','S3'],['N5','N7'],'중급','저',['knee','back','syncope'],'셀룰라이트·부분 감량 효과는 근거 없음'),
+ V('g_rbKsabkxA','이지은 다이어트','C','전신 유·무산소 루틴',22,'hiit',['S3','S4'],['N5','N6','N7'],'중급','충격',['syncope','hbp','knee','ed'],'먹은 걸 갚는 운동으로 쓰지 않기'),
+ V('J4ewoypgqP4','SNPE','C','의자 스쿼트 버티기 참고',17,'lower',['S2','S3'],['N4','N5'],'중급','저',['syncope','neck','knee','back'],'10–20초로 시작, 턱 드는 동작은 생략')
+];
+const CAT_NAME={relax:'이완',mob:'가동성',core:'코어·정렬',lower:'하체 근력',upper:'상체 근력',full:'전신 근력',walk:'걷기·저충격',cardio:'유산소',hiit:'고강도 인터벌',pain:'통증 친화'};
+const TIER_NAME={P:'공공기관',H:'병원·의료진',E:'물리치료사·전문가',C:'인기 홈트·요가(참고)'};
+
 /* ===== 저장 ===== */
-const KEY='bodyBasicsCoach.v1';
+const KEY='bodyBasicsCoach.v2';
 const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}};
 const save=s=>localStorage.setItem(KEY,JSON.stringify(s));
 let S=load();
 const $=id=>document.getElementById(id);
 const today=()=>new Date().toISOString().slice(0,10);
 const weeksBetween=(a,b)=>Math.floor((new Date(b)-new Date(a))/(7*864e5));
+const daysBetween=(a,b)=>Math.floor((new Date(b)-new Date(a))/864e5);
+const weekKey=d=>{const x=new Date(d+'T12:00:00'),day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x.toISOString().slice(0,10);};
+const r5=x=>Math.round(x/5)*5, r10=x=>Math.round(x/10)*10, r50=x=>Math.round(x/50)*50, c50=x=>Math.ceil(x/50)*50, f50=x=>Math.floor(x/50)*50;
+const num=x=>(x===''||x==null||isNaN(+x))?null:+x;
 
-/* ===== 자가점검 질문 ===== */
+/* ===== 사전조사 문항 ===== */
 const CHECK=[
- {page:'안전 확인',items:[
-  {k:'rf',q:'최근 이런 게 있나요? (해당되는 것 모두)',multi:true,opts:[['chest','운동 중 가슴 통증·압박'],['faint','운동 중 실신하거나 쓰러질 듯함'],['breath','평소와 다른 심한 숨참'],['numb','팔다리 저림이 점점 심해짐'],['pain7','통증이 10점 중 7점 이상'],['none','해당 없음']]},
-  {k:'cond',q:'해당되는 건강 상태 (모두)',multi:true,opts:[['syncope','실신·심한 어지럼 이력'],['pregnant','임신 중'],['hbp','고혈압 진단'],['dm','당뇨 진단'],['ed','식사를 극단적으로 제한하거나 먹고 나서 갚으려 한 적이 자주 있음'],['none','해당 없음']]},
-  {k:'painArea',q:'불편한 부위 (모두)',multi:true,opts:[['neck','목'],['shoulder','어깨'],['back','허리'],['hip','고관절'],['knee','무릎'],['wrist','손목'],['none','없음']]}
+ {page:'안전 확인',intro:'몇 가지 질문과 집에서 하는 간단한 테스트로 지금 필요한 것부터 찾아요. 아프거나 어지러우면 바로 멈추세요.',items:[
+  {k:'rf',q:'최근 이런 게 있나요? (해당되는 것 모두)',multi:true,req:true,opts:[['chest','운동 중 가슴 통증·압박'],['faint','운동 중 실신하거나 쓰러질 듯함'],['breath','평소와 다른 심한 숨참'],['numb','팔다리 저림이 점점 심해짐'],['pain7','통증이 10점 중 7점 이상'],['none','해당 없음']]},
+  {k:'cond',q:'해당되는 건강 상태 (모두)',multi:true,req:true,opts:[['syncope','실신·심한 어지럼 이력'],['pregnant','임신·수유 중'],['hbp','고혈압 진단'],['dm','당뇨 진단'],['dmmed','혈당 낮추는 약·인슐린 사용'],['kidney','신장 질환 진단'],['ed','식사를 극단적으로 제한하거나 먹고 나서 갚으려 한 적이 자주 있음'],['none','해당 없음']]},
+  {k:'painArea',q:'불편한 부위 (모두)',multi:true,req:true,opts:[['neck','목'],['shoulder','어깨'],['back','허리'],['hip','고관절'],['knee','무릎'],['wrist','손목'],['none','없음']]}
  ]},
- {page:'생활·회복',items:[
+ {page:'몸 정보',intro:'열량·단백질 계산과 체형 유형에 써요. 인바디 결과가 있으면 정확도가 올라가요.',items:[
+  {k:'sex',q:'기준표 (영양소 기준이 성별로 달라요)',opts:[['F','여성'],['M','남성']],req:true},
+  {k:'age',q:'나이',num:true,req:true,half:true},
+  {k:'h',q:'키 (cm)',num:true,req:true,half:true},
+  {k:'w',q:'현재 체중 (kg)',num:true,req:true,half:true},
+  {k:'tw',q:'목표 체중 (kg, 선택)',num:true,half:true},
+  {k:'waist',q:'허리둘레 (cm, 선택 · 배꼽 높이, 숨 내쉰 뒤)',num:true},
+  {k:'fat',q:'인바디 체지방률 (%, 있으면)',num:true,half:true},
+  {k:'smm',q:'인바디 골격근량 (kg, 기록용)',num:true,half:true},
+  {k:'muscleBar',q:'인바디 결과지의 골격근량 막대 (유형 판정에 사용)',opts:[['low','표준이하'],['std','표준'],['high','표준이상'],['na','결과 없음']]},
+  {k:'shape',q:'거울로 볼 때 내 몸은 어느 쪽에 가까운가요? (인바디가 없을 때 참고)',opts:[['sf','마른 편인데 배·옆구리 살이 있다'],['fat','근육은 보통인데 전체적으로 살이 많다'],['both','근육도 있고 살도 많다'],['lowboth','마르고 근육도 적다'],['fit','날씬하고 탄탄하다'],['mus','근육이 많은 편이다'],['avg','보통이다']]},
+  {k:'fatPlace',q:'살이 주로 어디에 붙나요?',opts:[['belly','배·허리'],['lower','엉덩이·허벅지'],['upper','팔·등·상체'],['even','고르게']]}
+ ]},
+ {page:'목표와 생활',items:[
+  {k:'goal',q:'지금 가장 원하는 것',opts:[['lose','체중 감량'],['recomp','체지방 줄이고 근육 지키기(몸매·체형)'],['muscle','근육·근력 늘리기'],['stamina','체력 늘리기'],['health','건강·통증 관리'],['keep','지금 유지']],req:true},
+  {k:'pa',q:'평소 활동량',opts:[['sed','거의 앉아 있고 운동 안 함'],['low','가볍게 걷고 운동 주 1–2회'],['act','운동 주 3–5회 또는 서서 일함'],['very','매일 운동하거나 몸 쓰는 일']],req:true},
+  {k:'freq',q:'최근 한 달 운동 횟수 (주당)',opts:[['0','거의 안 함'],['1','1–2회'],['3','3회 이상']]},
   {k:'stiff',q:'몸이 뻐근하거나 긴장된 날은 일주일에 며칠?',opts:[['0','0–1일'],['2','2–3일'],['4','4–5일'],['6','거의 매일']]},
   {k:'sleep',q:'평균 수면 시간',opts:[['5','6시간 미만'],['6','6–7시간'],['7','7시간 이상']]},
   {k:'stress',q:'요즘 스트레스',opts:[['1','낮음'],['3','보통'],['5','높음']]},
-  {k:'sit',q:'하루 앉아 있는 시간',opts:[['4','6시간 미만'],['7','6–8시간'],['9','8시간 이상']]},
-  {k:'freq',q:'최근 한 달 운동 횟수 (주당)',opts:[['0','거의 안 함'],['1','1–2회'],['3','3회 이상']]}
+  {k:'sit',q:'하루 앉아 있는 시간',opts:[['4','6시간 미만'],['7','6–8시간'],['9','8시간 이상']]}
  ]},
- {page:'움직임 점검',items:[
+ {page:'움직임 점검',intro:'모르는 항목은 비워도 괜찮아요. 남과 비교하는 점수가 아니라 내 출발점 기록이에요.',items:[
   {k:'chair',q:'① 30초 의자 일어서기: 팔짱 끼고 30초 동안 몇 번? (무릎이 아프면 건너뛰기)',num:true},
-  {k:'slsL',q:'② 한발서기 왼발 (초, 벽 옆에서 눈 뜨고 최대 30초)',num:true},
-  {k:'slsR',q:'② 한발서기 오른발 (초)',num:true},
-  {k:'squat',q:'③ 맨몸 스쿼트 5회를 거울이나 촬영으로 보면 (모두)',multi:true,opts:[['knee','무릎이 안쪽으로 모임'],['heel','뒤꿈치가 들림'],['lumbar','허리가 말리거나 과하게 꺾임'],['shift','몸이 한쪽으로 치우침'],['none','특별히 없음']]},
-  {k:'mob',q:'④ 가동성: 불편하거나 좌우 차이가 큰 것 (모두)',multi:true,opts:[['sh','손을 등 뒤로 닿기'],['wall','벽에 등 대고 팔 머리 위로'],['ham','누워서 한 다리 들기'],['ank','무릎을 벽에 대고 발목 굽히기'],['none','다 편함']]},
+  {k:'slsL',q:'② 한발서기 왼발 (초, 벽 옆, 눈 뜨고 최대 30초)',num:true,half:true},
+  {k:'slsR',q:'② 오른발 (초)',num:true,half:true},
+  {k:'squat',q:'③ 맨몸 스쿼트 5회를 거울·촬영으로 보면 (모두)',multi:true,opts:[['knee','무릎이 안쪽으로 모임'],['heel','뒤꿈치가 들림'],['lumbar','허리가 말리거나 과하게 꺾임'],['shift','몸이 한쪽으로 치우침'],['none','특별히 없음']]},
+  {k:'mob',q:'④ 불편하거나 좌우 차이가 큰 동작 (모두)',multi:true,opts:[['sh','손을 등 뒤로 닿기'],['wall','벽에 등 대고 팔 머리 위로'],['ham','누워서 한 다리 들기'],['ank','무릎을 벽에 대고 발목 굽히기'],['none','다 편함']]},
   {k:'bridge',q:'⑤ 바른 자세로 엉덩이 들기 몇 번?',num:true},
   {k:'talk',q:'⑥ 빠르게 10분 걸으며 문장으로 말할 수 있나요?',opts:[['yes','편하게 가능'],['hard','숨이 차서 끊김']]}
  ]},
- {page:'목표',items:[
-  {k:'goal',q:'지금 가장 원하는 것',opts:[['base','몸 기본기·통증 덜하기'],['fat','체지방 줄이기'],['muscle','근육·근력 늘리기'],['stamina','체력 늘리기']]},
-  {k:'h',q:'키 (cm, 선택)',num:true},
-  {k:'w',q:'허리둘레 (cm, 선택 · 배꼽 높이에서 숨 내쉰 뒤)',num:true}
+ {page:'식사 습관',intro:'식단 제안의 출발점이에요. 평소 모습 그대로 골라 주세요.',items:[
+  {k:'meals',q:'하루 식사 횟수',opts:[['1','1끼'],['2','2끼'],['3','3끼'],['irr','날마다 들쭉날쭉']]},
+  {k:'bfast',q:'아침을 거르는 날',opts:[['often','자주'],['some','가끔'],['rare','거의 없음']]},
+  {k:'late',q:'밤 9시 이후 식사·야식 (주당)',opts:[['0','0–1번'],['2','2–3번'],['4','4번 이상']]},
+  {k:'snack',q:'간식 (하루)',opts:[['0','거의 안 먹음'],['1','1–2번'],['3','3번 이상']]},
+  {k:'sweet',q:'단 음료·달달한 커피 (주당)',opts:[['0','0–1잔'],['2','2–4잔'],['5','5잔 이상']]},
+  {k:'eatout',q:'외식·배달·편의점 식사 (주당)',opts:[['0','0–3번'],['4','4–7번'],['8','8번 이상']]},
+  {k:'protein',q:'끼니마다 고기·생선·달걀·두부 같은 단백질 반찬이 있나요?',opts:[['most','대부분'],['half','절반 정도'],['rare','거의 없음']]},
+  {k:'veg',q:'채소 반찬 (하루)',opts:[['2','2번 이상'],['1','1번'],['0','거의 없음']]},
+  {k:'alcohol',q:'술 (주당)',opts:[['0','안 마심'],['1','1–2번'],['3','3번 이상']]},
+  {k:'speed',q:'한 끼 먹는 시간',opts:[['fast','10분 이내'],['mid','10–20분'],['slow','20분 이상']]},
+  {k:'cook',q:'직접 요리',opts:[['daily','자주 함'],['some','가끔'],['hard','거의 못 함']]},
+  {k:'emo',q:'기분 때문에(스트레스·심심함) 먹는 일',opts:[['often','자주'],['some','가끔'],['rare','거의 없음']]},
+  {k:'loss',q:'먹기 시작하면 조절이 어려운 일',opts:[['often','자주'],['some','가끔'],['rare','거의 없음']]},
+  {k:'style',q:'식사 스타일',opts:[['all','일반식'],['ovo','채식(달걀·유제품은 먹음)'],['vegan','완전 채식'],['other','종교·기타 제한']]},
+  {k:'allergy',q:'알레르기·먹지 않는 음식 (모두)',multi:true,opts:[['dairy','우유·유제품'],['egg','달걀'],['soy','콩'],['fish','생선'],['shell','갑각류·조개'],['nut','견과'],['wheat','밀'],['meat','육류'],['none','없음']]}
+ ]},
+ {page:'식사 반응 · 몸의 성향',intro:'체질을 볼 때 실제로 가장 쓸모 있는 정보예요. 평소 자주 느끼는 것만 골라 주세요.',items:[
+  {k:'traits',q:'해당되는 것 모두',multi:true,opts:[...Object.entries(TRAITS).map(([k,t])=>[k,t.label]),['none','해당 없음']]}
+ ]},
+ {page:'사상체질 참고 체크',intro:'한국한의학연구원 등 공식 자료에 나온 체질별 특징으로 만든 참고용 체크예요. 진단이 아니고, 건너뛰어도 돼요.',sasang:true},
+ {page:'8체질',items:[
+  {k:'eight',q:'한의원에서 8체질 진단을 받은 적이 있나요?',opts:[['none','없음·모름'],...Object.keys(EIGHT).map(k=>[k,k+'체질'])]}
  ]}
 ];
 
-/* ===== 판정 로직 (데이터셋 15_필요유형 · 17_운동단계, 기준값은 실무값) ===== */
+/* ===== 분석 ===== */
+function bodyComp(a){
+ const h=num(a.h),w=num(a.w),age=num(a.age),sex=a.sex;
+ const bmi=w/((h/100)**2);
+ const waist=num(a.waist);
+ let fat=num(a.fat),fatSrc='인바디 입력';
+ if(fat==null&&waist){fat=(sex==='F'?76:64)-20*(h/waist);fatSrc='허리·키로 추정(RFM 공식, 오차 큼)';}
+ if(fat==null){fatSrc=a.shape?'거울 자가인식(정확도 낮음)':'측정 자료 없음';}
+ let fatLv=null;
+ if(fat!=null){const hi=sex==='F'?36:26,bd=sex==='F'?30:20.6,lo=sex==='F'?20:12;fatLv=fat>=hi?'high':fat>=bd?'border':fat<lo?'low':'normal';}
+ else if(a.shape){fatLv={sf:'border',fat:'high',both:'high',lowboth:'low',fit:'low',mus:'normal',avg:'normal'}[a.shape]||null;}
+ let mus=null,musSrc='측정 자료 없음';
+ if(a.muscleBar&&a.muscleBar!=='na'){mus=a.muscleBar==='std'?'normal':a.muscleBar;musSrc='인바디 골격근량 막대';}
+ else if(num(a.fat)!=null){const ffmi=w*(1-num(a.fat)/100)/((h/100)**2);mus=ffmi>(sex==='F'?18.5:22.2)?'high':ffmi<(sex==='F'?13.2:16)?'low':'normal';musSrc='제지방지수(근육량 직접 측정 아님)';}
+ else if(a.shape){mus={sf:'low',fat:'normal',both:'high',lowboth:'low',fit:'normal',mus:'high',avg:'normal'}[a.shape]||null;musSrc='거울 자가인식';}
+ const fatHigh=fatLv==='high'||fatLv==='border';
+ let type='unknown';
+ if(bmi<18.5) type='lean';
+ else if(fatHigh&&mus==='low'&&bmi>=23&&num(a.fat)!=null&&a.muscleBar==='low') type='sarcoobese';
+ else if(fatHigh&&bmi<23) type='skinnyfat';
+ else if(fatHigh&&mus==='high') type='bothhigh';
+ else if(fatHigh) type='fatexcess';
+ else if(fatLv!=null&&mus==='high'&&fatLv==='low') type='athletic';
+ else if(fatLv!=null&&mus==='high') type='muscular';
+ else if(fatLv==='low'&&mus==='low') type='lean';
+ else if(fatLv!=null&&mus==='low') type='weakstd';
+ else if(fatLv!=null&&bmi>=23) type='overstd';
+ else if(fatLv!=null&&mus!=null) type='standard';
+ const abd=waist?(waist>=(sex==='F'?85:90)||waist/h>=0.5):a.fatPlace==='belly';
+ const dataLevel=num(a.fat)!=null&&a.muscleBar&&a.muscleBar!=='na'?'측정값 충분':(num(a.fat)!=null||waist||a.muscleBar&&a.muscleBar!=='na')?'일부 측정':'자가인식 또는 자료 부족';
+ const bmiCat=bmi<18.5?'저체중':bmi<23?'정상':bmi<25?'비만 전단계':bmi<30?'1단계 비만':bmi<35?'2단계 비만':'3단계 비만';
+ return {bmi,bmiCat,fat,fatSrc,fatLv,mus,musSrc,type,abd,dataLevel,waist};
+}
+function energy(a,bc){
+ const h=num(a.h),w=num(a.w),age=num(a.age),F=a.sex==='F';
+ const bmr=10*w+6.25*h-5*age+(F?-161:5);
+ const PA={sed:1.0,low:F?1.12:1.11,act:F?1.27:1.25,very:F?1.45:1.48}[a.pa||'low'];
+ const hm=h/100;
+ const tdee=F?354-6.91*age+PA*(9.36*w+726*hm):662-9.53*age+PA*(15.91*w+539.6*hm);
+ const floor=Math.max(F?1200:1500,Math.round(bmr));
+ return {bmr,tdee,floor,bmrSrc:'Mifflin-St Jeor 식'};
+}
+function nutrition(a,bc,en,flags){
+ const w=num(a.w),h=num(a.h),age=num(a.age),F=a.sex==='F';
+ const out={blocks:[],notes:[]};
+ let mode={lose:'lose',recomp:'recomp',muscle:'gain',stamina:'keep',health:'keep',keep:'keep'}[a.goal]||'keep';
+ const tmode=BODY_TYPES[bc.type].kcal;
+ if(a.goal==='recomp'&&tmode==='lose') mode='lose';
+ if(a.goal==='muscle'&&(bc.type==='fatexcess'||bc.type==='sarcoobese'||bc.type==='bothhigh')){mode='recomp';out.notes.push('체지방이 높은 편이라 열량을 늘리기보다 유지 수준에서 근력운동과 단백질로 근육을 키우는 쪽을 권해요.');}
+ if(a.goal==='lose'&&(bc.type==='skinnyfat'||bc.type==='weakstd')){mode='recomp';out.notes.push('체중을 많이 줄이기보다 체지방은 줄이고 근육은 늘리는 쪽이 더 맞아요.');}
+ if(a.goal==='lose'&&bc.bmi>=18.5&&bc.bmi<23&&!['high','border'].includes(bc.fatLv)){mode='keep';out.notes.push('현재 BMI와 체지방 자료로는 일반 감량보다 유지하면서 근력·식사 질을 높이는 쪽이 안전해요.');}
+ if(bc.bmi<18.5){mode='gain';out.notes.push('저체중 범위라 감량 계획은 만들지 않아요. 유지~소폭 증량과 영양 회복, 근력이 먼저예요.');}
+ const protectedType=flags.includes('pregnant')?'pregnant':flags.includes('ed')?'ed':flags.includes('kidney')?'kidney':flags.includes('dmmed')?'dmmed':null;
+ const hideNum=!!protectedType, hideProtein=!!protectedType;
+ if(flags.includes('ed')) out.notes.push('식사 제한·보상 경험이 있다고 하셔서 체형 라벨과 열량·영양소·체중 감량 숫자는 보여드리지 않아요. 세 끼를 규칙적으로 먹는 것부터 시작하고, 힘들면 섭식 문제를 다루는 의료진·상담가와 이야기해 주세요.');
+ if(flags.includes('pregnant')) out.notes.push('임신·수유 중에는 일반 감량 계획과 계산된 열량·단백질 목표를 쓰지 않아요. 산과·영양 전문가의 안내를 따라 주세요.');
+ if(flags.includes('kidney')) out.notes.push('신장 질환은 단계·투석 여부에 따라 단백질·나트륨·칼륨·인 목표가 크게 달라요. 이 앱은 식사 숫자를 제시하지 않으니 담당 의료진의 처방을 따라 주세요.');
+ if(flags.includes('dmmed')) out.notes.push('혈당을 낮추는 약·인슐린을 쓰면 식사량이나 운동량 변화가 저혈당을 일으킬 수 있어요. 의료진과 개인 계획과 저혈당 대처를 확인하기 전에는 양을 줄이거나 강도를 올리지 마세요.');
+ if(protectedType) mode='keep';
+ let lo,hi,label;
+ const T=en.tdee;
+ if(mode==='lose'){const tgt=Math.max(en.floor,T-500);lo=Math.max(en.floor,T-600);hi=Math.max(lo,T-400);label='완만한 감량';if(T-500<en.floor) out.notes.push('활동량에 비해 줄일 여유가 크지 않아요. 식사를 더 줄이기보다 걷기·근력으로 활동을 늘리는 게 안전해요.');out.target=tgt;}
+ else if(mode==='recomp'){lo=Math.max(en.floor,T-250);hi=Math.max(lo,T);label='유지~아주 작은 적자 (체형 개선)';out.target=Math.max(en.floor,(lo+hi)/2);}
+ else if(mode==='gain'){lo=Math.max(en.floor,T+200);hi=Math.max(lo,T+400);label='소폭 늘리기 (근육 증가)';out.target=(lo+hi)/2;}
+ else {lo=Math.max(en.floor,T-100);hi=Math.max(lo,T+100);label='유지';out.target=Math.max(en.floor,T);}
+ const dlo=c50(lo),dhi=Math.max(dlo,f50(hi));
+ out.mode=mode;out.protected=protectedType;out.kcal={lo:dlo,hi:dhi,label,hide:hideNum};
+ const tw=num(a.tw);
+ if(tw&&w){
+  const minW=18.5*(h/100)**2;
+  if(tw<minW){out.twWarn=`목표 체중이 저체중 범위(BMI 18.5 미만)예요. 최소 ${minW.toFixed(1)}kg 이상으로 잡아 주세요.`;}
+  if(tw<w&&mode==='lose'&&!hideNum){
+   const deficit=T-out.target;const perWeek=deficit>0?deficit*7/7700:0;
+   const goalW=Math.max(tw,minW);
+   if(perWeek>0){const weeks=Math.ceil((w-goalW)/perWeek);out.timeline={perWeek,weeks,goalW,m5:w*0.05,m10:w*0.10,toLose:w-goalW};}
+  }
+ }
+ const bmi=bc.bmi;const refW=bmi>=30?25*(h/100)**2:w;
+ const rni=F?(age<30?55:50):(age<50?65:60);
+ let pl,ph,pwhy;
+ if(flags.includes('kidney')){pl=rni;ph=rni;pwhy='신장 질환은 개인 처방이 필요해요.';}
+ else if(mode==='gain'||a.goal==='muscle'){pl=1.4*refW;ph=2.0*refW;pwhy='근력운동을 하는 건강한 성인의 근육 증가 범위(체중 1kg당 1.4–2.0g)';}
+ else if(mode==='lose'||mode==='recomp'){pl=1.2*refW;ph=1.6*refW;pwhy='감량·체형 개선 중 근육을 지키는 범위(체중 1kg당 1.2–1.6g)';}
+ else {pl=Math.max(rni,0.9*refW);ph=Math.max(rni,1.2*refW);pwhy='일반 성인 권장량~활동하는 성인 범위';}
+ if(age>=65&&!flags.includes('kidney')){pl=Math.max(pl,1.0*refW);ph=Math.max(ph,1.2*refW);}
+ const mealN=3,plo=Math.round(Math.max(rni,pl)),phi=Math.round(Math.max(rni,ph));
+ out.protein={min:plo,lo:plo,hi:Math.max(plo,phi),rni,why:pwhy,perMeal:[Math.round(plo/mealN),Math.round(Math.max(plo,phi)/mealN)],refNote:bmi>=30?'체중이 많이 나가서 BMI 25에 해당하는 체중 기준으로 계산했어요(보완).':'',hide:hideProtein};
+ const K=out.target;
+ out.macro={carb:[r5(K*0.5/4),r5(K*0.65/4)],fat:[r5(K*0.15/9),r5(K*0.30/9)],fiber:F?(age>=50?25:20):30,sugar:r5(K*0.10/4),sodium:age>=75?1800:age>=65?1900:2300};
+ return out;
+}
+function needsOf(a,bc){
+ const needs=[];
+ if(+a.stiff>=4||a.sleep==='5'||a.stress==='5') needs.push('N2');
+ if((a.mob||[]).some(x=>x!=='none')) needs.push('N3');
+ const comp=(a.squat||[]).filter(x=>x!=='none').length;
+ const L=num(a.slsL),R=num(a.slsR);
+ const slsWeak=(L!=null&&L<20)||(R!=null&&R<20)||(L!=null&&R!=null&&Math.abs(L-R)>=10);
+ if(comp>=2||slsWeak||a.sit==='9') needs.push('N4');
+ const chair=num(a.chair);
+ if((chair!=null&&chair<20)||(num(a.bridge)!=null&&+a.bridge<10)||a.freq==='0'||['skinnyfat','sarcoobese','weakstd','lean'].includes(bc.type)) needs.push('N5');
+ if(a.talk==='hard') needs.push('N6');
+ if(bc.bmi>=18.5&&(['lose','recomp'].includes(a.goal)||['skinnyfat','sarcoobese','fatexcess','bothhigh'].includes(bc.type)||bc.abd)) needs.push('N7');
+ return [...new Set(needs)];
+}
+function sasangScore(ans){
+ if(!ans) return null;
+ const sc={yang:0,eum:0,so:0},max={yang:0,eum:0,so:0};let answered=0;
+ SASANG_Q.forEach(([,m],i)=>{const v=ans[i];Object.entries(m).forEach(([k,p])=>{max[k]+=p*2;if(v!=null){sc[k]+=p*v;}});if(v!=null)answered++;});
+ if(answered<10) return {answered,insufficient:true};
+ const pct=Object.fromEntries(Object.keys(sc).map(k=>[k,Math.round(sc[k]/max[k]*100)]));
+ const sorted=Object.entries(pct).sort((x,y)=>y[1]-x[1]);
+ const top=sorted[0][1]-sorted[1][1]>=12&&sorted[0][1]>=40?sorted[0][0]:null;
+ return {answered,pct,top};
+}
+function habitLadder(a,flags){
+ const L=[];
+ const add=(id,name,habit,why)=>L.push({id,name,habit,why});
+ if(flags.includes('ed')||a.loss==='often') add('support','규칙적으로 먹기','세 끼를 비슷한 시간에 먹고, 거른 뒤 다음 끼니를 줄이지 않기. 조절이 어려운 날이 이어지면 전문가와 이야기하기','조절이 어렵다고 답하셨어요');
+ add('observe','관찰','먹은 것을 판단 없이 사진이나 한 줄로 기록하기','기록만으로도 도움이 된다는 연구가 많아요');
+ if(['1','irr'].includes(a.meals)||a.bfast==='often') add('regular','식사 시간 고정','하루 2–3끼의 시간을 대략 정해두기','식사가 들쭉날쭉하다고 답하셨어요');
+ if(a.protein==='rare'||a.protein==='half') add('protein','끼니마다 단백질','매 끼 손바닥 크기 단백질 반찬 하나(달걀·두부·생선·살코기)','단백질 반찬이 없는 끼니가 있어요');
+ if(a.veg==='0'||a.veg==='1') add('veg','채소 두 번','하루 두 끼 이상 채소 반찬 한 가지','채소가 적은 편이에요');
+ if(a.sweet==='5'||a.sweet==='2') add('sweet','단 음료 바꾸기','가장 자주 마시는 단 음료 하나를 물·무가당 차·아메리카노로','단 음료를 자주 드세요');
+ if(a.late==='4'||a.late==='2') add('late','저녁 정리','저녁을 너무 늦지 않게, 야식은 미리 정한 가벼운 것으로','늦은 식사가 잦아요');
+ if(a.eatout==='8'||a.eatout==='4') add('eatout','편의식 조합','외식·편의점에서 "밥 + 단백질 + 채소" 세 칸 맞추기','외식·배달이 잦아요');
+ if(a.snack==='3') add('snack','간식 계획','간식은 정해둔 시간에, 단백질·과일 위주로','간식이 잦아요');
+ if(a.alcohol==='3') add('alcohol','술 줄이기','술 마시는 날을 주 1–2번으로, 안주는 단백질·채소로','술 마시는 날이 많아요');
+ if(a.speed==='fast') add('slow','천천히 먹기','한 끼 15–20분, 수저 내려놓으며 먹기','빨리 드시는 편이에요');
+ if(a.emo==='often') add('emo','기분 기록','먹기 전에 "배고픔인지 기분인지" 한 단어로 적어보기','기분 때문에 드시는 일이 잦아요');
+ add('flex','유지·유연성','무너진 날엔 다음 끼니를 평소대로. 굶거나 운동으로 갚지 않기','오래 가는 식단의 마지막 단계');
+ const seen=new Set();return L.filter(x=>!seen.has(x.id)&&seen.add(x.id));
+}
 function analyze(a){
-  const has=(k,v)=>(a[k]||[]).includes(v);
-  const rf=(a.rf||[]).filter(x=>x!=='none');
-  const needs=[];
-  if(+a.stiff>=4||a.sleep==='5'||a.stress==='5') needs.push('N2');
-  if((a.mob||[]).some(x=>x!=='none')) needs.push('N3');
-  const comp=(a.squat||[]).filter(x=>x!=='none').length;
-  const L=+a.slsL,R=+a.slsR;
-  const slsWeak=(a.slsL!==''&&a.slsL!=null&&L<20)||(a.slsR!==''&&a.slsR!=null&&R<20)||(L&&R&&Math.abs(L-R)>=10);
-  if(comp>=2||slsWeak||a.sit==='9') needs.push('N4');
-  const chair=a.chair===''||a.chair==null?null:+a.chair;
-  if((chair!=null&&chair<20)||(a.bridge!==''&&a.bridge!=null&&+a.bridge<10)||a.freq==='0') needs.push('N5');
-  if(a.talk==='hard') needs.push('N6');
-  const whtr=(+a.h&&+a.w)?(+a.w/+a.h):null;
-  if(a.goal==='fat'||(whtr&&whtr>=0.5)) needs.push('N7');
-  let stage='S1';
-  if(!needs.includes('N2')&&!needs.includes('N3')&&!needs.includes('N4')&&a.freq==='3'&&chair!=null&&chair>=25) stage='S2';
-  const flags=[...(a.cond||[]),...(a.painArea||[])].filter(x=>x!=='none');
-  return {stop:rf.length>0,rf,needs,stage,flags,whtr,chair};
+ const rf=(a.rf||[]).filter(x=>x!=='none');
+ const flags=[...(a.cond||[]),...(a.painArea||[])].filter(x=>x!=='none');
+ const bc=bodyComp(a);
+ const en=energy(a,bc);
+ const nu=nutrition(a,bc,en,flags);
+ const needs=needsOf(a,bc);
+ const chair=num(a.chair);
+ let stage='S1';
+ if(!needs.includes('N2')&&!needs.includes('N3')&&!needs.includes('N4')&&a.freq==='3'&&chair!=null&&chair>=25) stage='S2';
+ const traits=(a.traits||[]).filter(x=>x!=='none');
+ const sas=sasangScore(a.sasang);
+ return {stop:rf.length>0,rf,flags,bc,en,nu,needs,stage,traits,sas,eight:a.eight&&a.eight!=='none'?a.eight:null,ladder:habitLadder(a,flags)};
 }
 
 /* ===== 화면 ===== */
-let tab='today',page=0,draft={};
-function setTab(t){tab=t;render();}
-document.querySelectorAll('#tabbar button').forEach(b=>b.onclick=()=>{if(b.dataset.tab==='check'){draft={};page=0;}setTab(b.dataset.tab)});
+let tab='home',page=0,draft={};
+document.querySelectorAll('#tabbar button').forEach(b=>b.onclick=()=>{if(b.dataset.tab==='check'){draft=JSON.parse(JSON.stringify(S.answers||{}));page=0;}tab=b.dataset.tab;render();});
 function render(){
-  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
-  if(!S.result&&tab!=='check'){tab='check';page=page||0;}
-  ({today:renderToday,checkin:renderCheckin,check:renderCheck})[tab]();
-  window.scrollTo(0,0);
+ document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+ if(!S.result&&tab!=='check'){tab='check';}
+ ({home:renderHome,diet:renderDiet,move:renderMove,checkin:renderCheckin,check:renderCheck})[tab]();
+ window.scrollTo(0,0);
 }
+function chipHTML(it){return `<div class="opts">${it.opts.map(([v,l])=>{const on=it.multi?(draft[it.k]||[]).includes(v):draft[it.k]===v;return `<span class="chip ${on?'on':''}" data-k="${it.k}" data-v="${v}" data-m="${it.multi?1:0}">${l}</span>`}).join('')}</div>`;}
 function renderCheck(){
-  const P=CHECK[page];
-  let h=`<div class="card"><div class="steps">${CHECK.map((_,i)=>`<span class="${i<=page?'on':''}"></span>`).join('')}</div>
-  <h2>${P.page}</h2>`;
-  if(page===0) h+=`<p class="muted">처음 1주는 '시작 점검'이에요. 몇 가지 질문과 집에서 하는 간단한 테스트로 지금 필요한 것부터 찾습니다. 아프거나 어지러우면 바로 멈추세요.</p>`;
-  if(page===2) h+=`<p class="muted">모르는 항목은 비워도 괜찮아요. 남과 비교하는 점수가 아니라 내 출발점 기록이에요.</p>`;
+ const P=CHECK[page];
+ let h=`<div class="card"><div class="steps">${CHECK.map((_,i)=>`<span class="${i<=page?'on':''}"></span>`).join('')}</div><div class="small">${page+1} / ${CHECK.length}</div><h2>${P.page}</h2>${P.intro?`<p class="muted">${P.intro}</p>`:''}`;
+ if(P.sasang){
+  draft.sasang=draft.sasang||{};
+  h+=SASANG_Q.map(([q],i)=>`<div class="sasang"><div>${q}</div><div class="opts">${[['0','아니다'],['1','보통'],['2','그렇다']].map(([v,l])=>`<span class="chip ${draft.sasang[i]===+v?'on':''}" data-sq="${i}" data-v="${v}">${l}</span>`).join('')}</div></div>`).join('');
+  h+=`<div class="supp">「보완」 사상체질 설문은 전문가 진단과 일치율이 60% 안팎으로 알려져 있어요(공식 설문 KS-15 기준). 그래서 '경향'으로만 보여드리고, 식단의 중심은 앞에서 고른 식사 반응이에요.</div>`;
+ } else {
+  let half=[];
+  const flush=()=>{if(half.length){h+=`<div class="grid2">${half.join('')}</div>`;half=[];}};
   P.items.forEach(it=>{
-    h+=`<label class="q">${it.q}</label>`;
-    if(it.num){h+=`<input type="number" inputmode="numeric" data-k="${it.k}" value="${draft[it.k]??''}">`;}
-    else{h+=`<div class="opts">${it.opts.map(([v,l])=>{const on=it.multi?(draft[it.k]||[]).includes(v):draft[it.k]===v;return `<span class="chip ${on?'on':''}" data-k="${it.k}" data-v="${v}" data-m="${it.multi?1:0}">${l}</span>`}).join('')}</div>`;}
-  });
-  h+=`<button class="btn" id="nextBtn">${page<CHECK.length-1?'다음':'결과 보기'}</button>`;
-  if(page>0) h+=`<button class="btn ghost" id="prevBtn">이전</button>`;
-  h+=`</div>`;
-  $('view').innerHTML=h;
-  document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
-    const k=c.dataset.k,v=c.dataset.v;
-    if(c.dataset.m==='1'){let arr=(draft[k]||[]).slice();if(v==='none')arr=['none'];else{arr=arr.filter(x=>x!=='none');arr.includes(v)?arr=arr.filter(x=>x!==v):arr.push(v);}draft[k]=arr;}
-    else draft[k]=v;
-    renderCheckKeep();
-  });
-  document.querySelectorAll('input[type=number]').forEach(i=>i.oninput=()=>draft[i.dataset.k]=i.value);
-  $('nextBtn').onclick=()=>{
-    if(page<CHECK.length-1){page++;render();return;}
-    const r=analyze(draft);
-    S.answers=draft;S.result=r;S.baseline={date:today(),chair:draft.chair||'',slsL:draft.slsL||'',slsR:draft.slsR||''};
-    S.stage=r.stage;S.stageStart=today();S.food=S.food??0;S.foodStart=S.foodStart||today();S.checkins=S.checkins||[];
-    save(S);tab='today';render();
-  };
-  if($('prevBtn')) $('prevBtn').onclick=()=>{page--;render();};
+   const block=`<div><label class="q">${it.q}${it.req?' *':''}</label>${it.num?`<input type="number" inputmode="decimal" data-k="${it.k}" value="${draft[it.k]??''}">`:chipHTML(it)}</div>`;
+   if(it.half){half.push(block);if(half.length===2)flush();}else{flush();h+=block;}
+  });flush();
+ }
+ h+=`<button class="btn" id="nextBtn">${page<CHECK.length-1?'다음':'결과 보기'}</button>`;
+ if(P.sasang) h+=`<button class="btn ghost" id="skipBtn">건너뛰기</button>`;
+ if(page>0) h+=`<button class="btn ghost" id="prevBtn">이전</button>`;
+ h+=`</div>`;
+ $('view').innerHTML=h;
+ document.querySelectorAll('.chip[data-k]').forEach(c=>c.onclick=()=>{
+  const k=c.dataset.k,v=c.dataset.v;
+  if(c.dataset.m==='1'){let arr=(draft[k]||[]).slice();if(v==='none')arr=['none'];else{arr=arr.filter(x=>x!=='none');arr.includes(v)?arr=arr.filter(x=>x!==v):arr.push(v);}draft[k]=arr;}
+  else draft[k]=v;
+  keep();
+ });
+ document.querySelectorAll('.chip[data-sq]').forEach(c=>c.onclick=()=>{draft.sasang[c.dataset.sq]=+c.dataset.v;keep();});
+ document.querySelectorAll('input[type=number]').forEach(i=>i.oninput=()=>draft[i.dataset.k]=i.value);
+ $('nextBtn').onclick=()=>{
+  const miss=(P.items||[]).filter(it=>it.req&&(draft[it.k]==null||draft[it.k]===''||(Array.isArray(draft[it.k])&&draft[it.k].length===0)));
+  if(miss.length){alert('* 표시 항목을 채워 주세요: '+miss.map(m=>m.q.split(' (')[0]).join(', '));return;}
+  if(page===0){const danger=(draft.rf||[]).filter(x=>x!=='none');if(danger.length){$('view').innerHTML=`<div class="card"><h2>자가점검을 진행하지 마세요</h2><div class="stop">운동 중 가슴 통증·실신할 듯함·평소와 다른 심한 숨참·점점 심해지는 저림·강한 통증은 먼저 의료진의 확인이 필요해요. 현재 심한 흉통, 호흡곤란, 의식 이상이 있으면 기다리지 말고 119에 연락하세요.</div><button class="btn ghost" id="backSafety">안전 문항으로 돌아가기</button></div>`;$('backSafety').onclick=renderCheck;return;}}
+  if(page===1){const ranges=[['age',19,100,'나이(만 19–100세)'],['h',120,230,'키(120–230cm)'],['w',30,300,'체중(30–300kg)'],['tw',30,300,'목표 체중(30–300kg)',true],['waist',40,200,'허리둘레(40–200cm)',true],['fat',3,70,'체지방률(3–70%)',true],['smm',5,100,'골격근량(5–100kg)',true]];for(const [k,lo,hi,label,opt] of ranges){if(opt&&(draft[k]==null||draft[k]===''))continue;const v=Number(draft[k]);if(!Number.isFinite(v)||v<lo||v>hi){alert(label+' 범위로 입력해 주세요.');return;}}}
+  if(page<CHECK.length-1){page++;render();return;}
+  finish();
+ };
+ if($('skipBtn')) $('skipBtn').onclick=()=>{draft.sasang=null;page++;render();};
+ if($('prevBtn')) $('prevBtn').onclick=()=>{page--;render();};
 }
-function renderCheckKeep(){const y=window.scrollY;renderCheck();window.scrollTo(0,y);}
+function keep(){const y=window.scrollY;renderCheck();window.scrollTo(0,y);}
+function finish(){
+ const r=analyze(draft);
+ const first=!S.result;
+ S.answers=draft;S.result=r;
+ const order=['S1','S2','S3','S4'];
+ if(first||!S.stage){S.stage=r.stage;S.stageStart=today();S.habit=0;S.habitStart=today();S.checkins=[];S.baseline={date:today(),chair:draft.chair||''};}
+ else if(r.stop||r.nu.protected||order.indexOf(S.stage)>order.indexOf(r.stage)){S.stage='S1';S.stageStart=today();}
+ save(S);tab='home';render();
+}
 
-function videosFor(stage,needs,flags){
-  const avoid=new Set(flags);
-  return VIDEOS.filter(v=>v.st.includes(stage)&&!v.avoid.some(x=>avoid.has(x)))
-    .map(v=>({...v,score:v.nd.filter(n=>needs.includes(n)).length+(v.ref?0:0.5)}))
-    .sort((a,b)=>b.score-a.score).slice(0,4);
+function cautionsOf(r){
+ const c=[];
+ if(r.flags.includes('syncope')) c.push('실신·어지럼 이력: 공복 운동, 숨 참고 버티기, 고강도 인터벌, 갑자기 일어나는 동작은 피하고, 끼니를 거르지 마세요.');
+ if(r.flags.includes('pregnant')) c.push('임신·수유 중: 일반 계획 대신 산과 의료진이 허용한 범위에서만 해 주세요.');
+ if(r.flags.includes('hbp')) c.push('고혈압: 갑작스러운 고강도는 피하고 점진적으로. 180/110 이상인 날은 운동을 쉬어요.');
+ if(r.flags.includes('dm')||r.flags.includes('dmmed')) c.push('당뇨: 혈당을 낮추는 약을 쓰면 운동·식사 변화 전에 저혈당 대처를 의료진과 확인하세요.');
+ return c;
 }
-function renderToday(){
-  const r=S.result;
-  if(r.stop){
-    $('view').innerHTML=`<div class="card"><h2>먼저 확인이 필요해요</h2><div class="stop">답하신 증상(${r.rf.map(x=>({chest:'가슴 통증',faint:'실신·실신할 듯함',breath:'심한 숨참',numb:'저림 악화',pain7:'강한 통증'})[x]).join(', ')})이 있으면 운동 계획보다 진료 확인이 먼저예요. 가슴 통증이 몇 분 이상 이어지거나 식은땀·호흡곤란이 함께 있으면 바로 119에 연락하세요.</div>
-    <p class="muted" style="margin-top:12px">확인 후 괜찮다는 이야기를 들으면 자가점검을 다시 해 주세요. 그동안은 편안한 걷기와 호흡 정도만 권해요.</p>
-    <button class="btn ghost" onclick="draft={};page=0;setTab('check')">자가점검 다시 하기</button></div>`;return;
+function stopView(r){
+ return `<div class="card"><h2>먼저 확인이 필요해요</h2><div class="stop">답하신 증상(${r.rf.map(x=>({chest:'가슴 통증',faint:'실신·실신할 듯함',breath:'심한 숨참',numb:'저림 악화',pain7:'강한 통증'})[x]).join(', ')})이 있으면 운동·식단 계획보다 진료 확인이 먼저예요. 가슴 통증이 몇 분 이상 이어지거나 식은땀·호흡곤란이 함께 있으면 바로 119에 연락하세요.</div><p class="muted" style="margin-top:12px">확인 후 사전조사를 다시 해 주세요.</p></div>`;
+}
+function renderHome(){
+ const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
+ if(r.nu.protected){const title={pregnant:'임신·수유 맞춤 계획이 필요해요',ed:'숫자보다 회복이 먼저예요',kidney:'신장 상태에 맞춘 식사 처방이 필요해요',dmmed:'저혈당을 막는 개인 계획이 필요해요'}[r.nu.protected];$('view').innerHTML=`<div class="card"><h2>${title}</h2>${r.nu.notes.map(n=>`<div class="note">${n}</div>`).join('')}<p class="muted">이 앱은 열량·단백질·체중 감량 목표를 만들지 않아요. 담당 의료진과 계획을 정한 뒤에는 기록용으로 활용할 수 있어요.</p>${cautionsOf(r).map(c=>`<div class="note">${c}</div>`).join('')}</div><div class="card"><button class="btn ghost" id="reset">기록 모두 지우기</button></div>`;$('reset').onclick=()=>{if(confirm('이 기기의 기록을 모두 지울까요?')){localStorage.removeItem(KEY);S={};draft={};page=0;tab='check';render();}};return;}
+ const bc=r.bc,T=BODY_TYPES[bc.type],st=STAGES[S.stage],order=['S1','S2','S3','S4'],nu=r.nu;
+ const wk=weeksBetween(S.stageStart,today())+1;
+ const hb=r.ladder[Math.min(S.habit||0,r.ladder.length-1)];
+ $('view').innerHTML=`
+ <div class="card">
+  <div class="small">나의 체형 유형 · 자료 수준 ${bc.dataLevel}</div>
+  <h2>${T.name}${bc.abd?' <span class="badge b-amber">복부형</span>':''}</h2>
+  <p>${T.desc}</p>
+  <div class="stats">
+   <div class="stat"><div class="k">BMI</div><div class="v">${bc.bmi.toFixed(1)}</div><div class="s">${bc.bmiCat}</div></div>
+   <div class="stat"><div class="k">체지방률</div><div class="v">${bc.fat!=null?bc.fat.toFixed(1)+'%':'-'}</div><div class="s">${bc.fatSrc}</div></div>
+  </div>
+  <div class="row"><span>운동 우선순위</span><b>${T.ex}</b></div>
+  <div class="row"><span>식단 방향</span><b>${T.diet}</b></div>
+  ${T.warn?`<div class="note">${T.warn}</div>`:''}
+  ${bc.dataLevel==='자가인식 또는 자료 부족'?'<div class="info">체형 판정을 보류했거나 자가인식만 반영했어요. 인바디 체지방률과 골격근량 막대를 넣으면 자료가 더 충분해져요.</div>':''}
+ </div>
+ <div class="card">
+  <h3>오늘 할 일</h3>
+  <div class="row"><span>식단 습관</span><b>${hb.name}</b></div>
+  <p class="small">${hb.habit}</p>
+  ${nu.kcal.hide?'':`<div class="row"><span>하루 열량</span><b>${nu.kcal.lo.toLocaleString()}–${nu.kcal.hi.toLocaleString()} kcal</b></div>`}
+  ${nu.protein.hide?'':`<div class="row"><span>단백질</span><b>최소 ${nu.protein.min}g · 목표 ${nu.protein.lo}–${nu.protein.hi}g</b></div>`}
+  <div class="row"><span>운동 단계</span><b>${S.stage} ${st.name} · ${wk}주차</b></div>
+  <div class="stagebar">${['S0','S1','S2','S3','S4'].map(s=>`<div class="${s===S.stage?'cur':(s==='S0'||order.indexOf(s)<order.indexOf(S.stage))?'done':''}">${s}</div>`).join('')}</div>
+ </div>
+ <div class="card">
+  <h3>나에게 필요한 것</h3>
+  <div>${r.needs.length?r.needs.map(n=>`<span class="badge ${NEEDS[n].cls}">${NEEDS[n].name}</span>`).join(''):'<span class="badge b-green">고른 편이에요</span>'}</div>
+  ${r.traits.length?`<h3>식사 반응</h3><div>${r.traits.map(t=>`<span class="badge b-violet">${TRAITS[t].label.split(' ')[0]} ${TRAITS[t].label.split(' ').slice(1,3).join(' ')}</span>`).join('')}</div>`:''}
+  ${r.sas&&r.sas.top?`<h3>사상체질 참고</h3><span class="badge b-violet">${SASANG[r.sas.top].name}</span>`:''}
+  ${r.eight?`<span class="badge b-violet">8체질: ${r.eight}</span>`:''}
+  ${cautionsOf(r).map(c=>`<div class="note">${c}</div>`).join('')}
+ </div>
+ <div class="card"><p class="small">진단이나 처방이 아니라 생활 운동·식사 습관 코칭 시제품이에요. 「보완」 표시는 공식 기준이 없어 실무값을 쓰거나 근거가 약한 부분이에요.</p>
+ <button class="btn ghost" id="reset">기록 모두 지우기</button></div>`;
+ $('reset').onclick=()=>{if(confirm('이 기기의 기록을 모두 지울까요?')){localStorage.removeItem(KEY);S={};draft={};page=0;tab='check';render();}};
+}
+function proteinPlan(target,a){
+ const ban=new Set((a.allergy||[]).filter(x=>x!=='none'));
+ if(a.style==='ovo') ban.add('meat'),ban.add('fish'),ban.add('shell');
+ if(a.style==='vegan') ['meat','fish','shell','egg','dairy'].forEach(x=>ban.add(x));
+ const pool=PROTEIN_FOODS.filter(f=>!f.tag.some(t=>ban.has(t)));
+ const pick=[];let sum=0;const seenTag={};
+ for(const f of [...pool].sort((x,y)=>y.g-x.g)){if(sum>=target) break;const t=f.tag[0];if((seenTag[t]||0)>=1&&pool.length>4) continue;pick.push(f);sum+=f.g;seenTag[t]=(seenTag[t]||0)+1;}
+ if(sum<target) for(const f of pool){if(sum>=target) break;pick.push(f);sum+=f.g;}
+ return {pick,sum};
+}
+function renderDiet(){
+ const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
+ const a=S.answers,nu=r.nu,en=r.en,bc=r.bc;
+ if(nu.protected){const title={pregnant:'임신·수유 식사는 개별 상담이 필요해요',ed:'규칙적인 식사와 회복이 먼저예요',kidney:'신장 상태에 맞춘 처방을 따라 주세요',dmmed:'저혈당을 막는 개인 계획을 먼저 정해 주세요'}[nu.protected];$('view').innerHTML=`<div class="card"><h2>${title}</h2>${nu.notes.map(n=>`<div class="note">${n}</div>`).join('')}<p class="muted">이 화면은 열량, 단백질, 체중 목표, 식품 제한을 제안하지 않아요. 의료진이 정한 계획이 있다면 그 계획을 우선해 주세요.</p></div>`;return;}
+ const hbI=Math.min(S.habit||0,r.ladder.length-1);
+ const pp=proteinPlan(nu.protein.lo,a);
+ const hasAllergy=(a.allergy||[]).some(x=>x!=='none');
+ const eatoutProtein=pp.pick[0]?.n||'알레르기 표기를 확인한 단백질 식품';
+ const plate=nu.mode==='lose'?'밥 ⅔공기':nu.mode==='gain'?'밥 1공기 이상':'밥 1공기';
+ let h=`<div class="card"><h2>하루 식단 처방</h2><p class="small">${({lose:'체중 감량',recomp:'체지방↓ 근육 지키기',muscle:'근육·근력',stamina:'체력',health:'건강·통증 관리',keep:'유지'})[a.goal]} 목표 · ${BODY_TYPES[bc.type].name} 기준</p>`;
+ if(nu.kcal.hide){h+=`<div class="info">열량 숫자 대신 규칙적인 세 끼와 접시 구성으로 안내해요.</div>`;}
+ else{h+=`<div class="stats">
+  <div class="stat"><div class="k">하루 열량 (${nu.kcal.label})</div><div class="v">${nu.kcal.lo.toLocaleString()}–${nu.kcal.hi.toLocaleString()}</div><div class="s">kcal</div></div>
+  <div class="stat"><div class="k">평소 소모 추정</div><div class="v">${r50(en.tdee).toLocaleString()}</div><div class="s">기초대사 약 ${r10(en.bmr).toLocaleString()} kcal</div></div></div>
+  <p class="small">계산: 한국인 영양소 섭취기준의 에너지필요추정량(활동량 반영), 기초대사는 ${en.bmrSrc}. 개인 오차가 ±300kcal 정도 있을 수 있어 2–3주 체중 추세를 보고 조정해요. 하한 ${en.floor.toLocaleString()}kcal 아래로는 내리지 않아요(「보완」 앱의 안전 원칙).</p>`;}
+ nu.notes.forEach(n=>h+=`<div class="note">${n}</div>`);
+ if(nu.twWarn) h+=`<div class="note">${nu.twWarn}</div>`;
+ if(nu.timeline){const t=nu.timeline;h+=`<h3>목표까지</h3>
+  <div class="row"><span>줄일 체중</span><b>${t.toLose.toFixed(1)} kg</b></div>
+  <div class="row"><span>예상 속도</span><b>주 약 ${t.perWeek.toFixed(2)} kg</b></div>
+  <div class="row"><span>단순 계산 기간</span><b>약 ${t.weeks}주 이상</b></div>
+  <div class="row"><span>첫 목표 (6개월, 체중의 5–10%)</span><b>${t.m5.toFixed(1)}–${t.m10.toFixed(1)} kg</b></div>
+  <p class="small">감량 속도는 시간이 갈수록 느려져서 실제로는 더 걸리는 게 보통이에요. 대한비만학회는 6개월에 5–10%를 첫 목표로 권해요. 더 정밀한 예측은 <a href="https://www.niddk.nih.gov/bwp" target="_blank" rel="noopener">NIH 체중 계획 도구</a>로 볼 수 있어요.</p>`;}
+ h+=`</div>`;
+ h+=`<div class="card"><h3>단백질</h3>
+  <div class="stats"><div class="stat"><div class="k">최소</div><div class="v">${nu.protein.min}g</div><div class="s">하루</div></div><div class="stat"><div class="k">목표 범위</div><div class="v">${nu.protein.lo}–${nu.protein.hi}g</div><div class="s">한 끼 ${nu.protein.perMeal[0]}–${nu.protein.perMeal[1]}g씩</div></div></div>
+  <p class="small">${nu.protein.why}. 한국인 권장섭취량은 ${nu.protein.rni}g이에요. ${nu.protein.refNote}</p>
+  <h3>이렇게 채우면 약 ${pp.sum}g</h3><ul class="plan">${pp.pick.map(f=>`<li>${f.n} · 약 ${f.g}g</li>`).join('')}</ul>
+  <p class="small">대략값이에요(식품·조리법마다 달라요). 알레르기·식사 스타일에 맞춰 골랐어요.${pp.sum<nu.protein.lo?' 선택 가능한 식품만으로 목표를 채우기 어려워서, 등록 영양사와 안전한 대체 식품을 확인해 주세요.':''}</p></div>`;
+ if(!nu.kcal.hide) h+=`<div class="card"><h3>하루 영양 구성 (2025 한국인 영양소 섭취기준)</h3>
+  <div class="row"><span>탄수화물 (50–65%)</span><b>${nu.macro.carb[0]}–${nu.macro.carb[1]}g</b></div>
+  <div class="row"><span>지방 (15–30%)</span><b>${nu.macro.fat[0]}–${nu.macro.fat[1]}g</b></div>
+  <div class="row"><span>식이섬유</span><b>${nu.macro.fiber}g 이상</b></div>
+  <div class="row"><span>첨가당</span><b>${nu.macro.sugar}g 이하</b></div>
+  <div class="row"><span>나트륨</span><b>${nu.macro.sodium.toLocaleString()}mg 이하</b></div></div>`;
+ h+=`<div class="card"><h3>한 끼 접시</h3><ul class="plan"><li>${plate} (잡곡이면 더 좋아요)</li><li>단백질 반찬 손바닥 1개 크기 (${nu.protein.perMeal[0]}–${nu.protein.perMeal[1]}g)</li><li>채소 반찬 2가지, 익힌 것 포함</li><li>국·찌개는 건더기 위주, 국물은 적게</li></ul>
+  ${a.eatout==='8'||a.eatout==='4'?`<p class="small">외식·편의점: 밥·김밥 + ${eatoutProtein} + 알레르기 표기를 확인한 샐러드처럼 세 칸을 맞춰요.</p>`:''}</div>`;
+ // 맞춤 습관 사다리
+ h+=`<div class="card"><h3>나에게 맞춘 습관 순서</h3><p class="small">한 번에 하나만. 2주 동안 일주일에 5일 이상 지켜지면 다음으로 넘어가요.</p>${r.ladder.map((x,i)=>`<div class="row"><span>${x.name}<br><span class="small">${i===hbI?x.habit:x.why}</span></span><b>${i===hbI?'지금':i<hbI?'완료':''}</b></div>`).join('')}</div>`;
+ // 식사 반응
+ if(r.traits.length){h+=`<div class="card"><h3>식사 반응에 맞춘 조절</h3>${r.traits.map(t=>{const T=TRAITS[t];return `<div style="margin-top:12px"><b style="font-size:14px">${T.label}</b> <span class="small">근거 ${T.ev}</span><p style="font-size:14px">${T.tip}</p>${T.supp?`<div class="supp">「보완」 ${T.supp}</div>`:''}${T.flag?`<p class="small">주의: ${T.flag}</p>`:''}</div>`}).join('')}<p class="small" style="margin-top:12px">음식군을 통째로 끊기보다 기록하며 나에게 맞지 않는 것만 줄이는 게 원칙이에요.</p></div>`;}
+ // 체질
+ if(r.sas||r.eight){
+  h+=`<div class="card"><h3>체질 참고</h3>`;
+  if(r.sas&&r.sas.insufficient) h+=`<p class="small">사상체질 체크 응답이 적어서(${r.sas.answered}/19) 경향을 내지 않았어요.</p>`;
+  else if(r.sas){
+   h+=['yang','eum','so'].map(k=>`<div style="margin-top:8px;font-size:14px">${SASANG[k].name.replace(' 경향','')} <span class="small">${r.sas.pct[k]}%</span><div class="bar"><i style="width:${r.sas.pct[k]}%"></i></div></div>`).join('');
+   if(r.sas.top){const s=SASANG[r.sas.top];h+=`<h3>${s.name}</h3><p style="font-size:14px">${s.feat}</p>${hasAllergy?'<div class="note">알레르기가 있어 체질별 음식 목록은 숨겼어요. 알레르기 제외가 체질 안내보다 항상 우선이에요.</div>':`<div class="row"><span>잘 맞는다고 안내되는 음식</span></div><p style="font-size:14px">${s.good}</p><div class="row"><span>주의하라고 안내되는 음식</span></div><p style="font-size:14px">${s.caution}</p>`}<div class="row"><span>식사 습관</span><b>${s.habit}</b></div>`;}
+   else h+=`<p class="small" style="margin-top:8px">세 체질 점수 차이가 작아서 한 가지 경향으로 정하지 않았어요.</p>`;
   }
-  const st=STAGES[S.stage],order=['S1','S2','S3','S4'];
-  const vids=videosFor(S.stage,r.needs,r.flags);
-  const f=FOOD[S.food||0];
-  const cautions=[];
-  if(r.flags.includes('syncope')) cautions.push('실신·어지럼 이력: 공복 운동, 숨 참고 버티기, 고강도 인터벌, 갑자기 일어나는 동작은 피하고 천천히 일어나세요.');
-  if(r.flags.includes('pregnant')) cautions.push('임신 중: 일반 계획 대신 산과 의료진이 허용한 범위에서만 해 주세요.');
-  if(r.flags.includes('hbp')) cautions.push('고혈압: 갑작스러운 고강도는 피하고 점진적으로. 수축기 180/이완기 110 이상이면 그날은 쉬어요.');
-  if(r.flags.includes('dm')) cautions.push('당뇨: 혈당을 낮추는 약을 쓰면 운동·식사 변화 전에 저혈당 대처를 의료진과 확인하세요.');
-  if(r.flags.includes('ed')) cautions.push('식사를 극단적으로 줄이거나 갚으려 한 경험이 있다면, 감량보다 규칙적으로 먹기를 우선해요. 힘들면 전문가와 이야기해 보세요.');
-  const wk=weeksBetween(S.stageStart,today())+1;
-  $('view').innerHTML=`
-  <div class="card">
-    <div class="small">지금 단계 · ${wk}주차</div>
-    <h2>${S.stage} ${st.name} <span class="small">(${st.dur})</span></h2>
-    <div class="stagebar">${['S0','S1','S2','S3','S4'].map(s=>`<div class="${s===S.stage?'cur':(s==='S0'||order.indexOf(s)<order.indexOf(S.stage))?'done':''}">${s}</div>`).join('')}</div>
-    <p>${st.goal}</p>
-    <h3>나에게 필요한 것</h3>
-    <div>${r.needs.length?r.needs.map(n=>`<span class="badge ${NEEDS[n].cls}">${NEEDS[n].name}</span>`).join(''):'<span class="badge b-green">고른 편이에요</span>'}</div>
-    <p class="small">${r.needs.map(n=>NEEDS[n].why).join(' · ')}</p>
-  </div>
-  <div class="card">
-    <h3 style="margin-top:0">이번 주 운동</h3>
-    <ul class="plan">${st.plan.map(x=>`<li>${x}</li>`).join('')}</ul>
-    ${S.stage==='S1'&&r.needs.includes('N2')?'<p class="small">이완·회복이 필요하니 매일 10분 이완부터 지켜 주세요.</p>':''}
-    ${S.stage==='S1'&&r.needs.includes('N5')?'<p class="small">근력 기초가 필요하니 쉬운 근력 2회는 빠뜨리지 않기.</p>':''}
-    ${cautions.map(c=>`<div class="note">${c}</div>`).join('')}
-  </div>
-  <div class="card">
-    <h3 style="margin-top:0">따라 할 영상</h3>
-    <p class="small">지금 단계와 필요 유형에 맞춰 골랐어요. 불편한 부위와 맞지 않는 영상은 뺐어요.</p>
-    ${vids.length?vids.map(v=>`<a class="vid" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">
-      <img src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="">
-      <div><div class="t">${v.t}</div><div class="m">${v.ch} · ${v.min}분 · ${v.lv}${v.ref?' · 참고용':''}</div>${v.tip?`<div class="c">${v.tip}</div>`:''}${r.flags.includes('syncope')&&v.syn?`<div class="c">${v.syn}</div>`:''}</div></a>`).join(''):'<p class="muted">조건에 맞는 영상이 아직 없어요. 위 계획대로 해 주세요.</p>'}
-  </div>
-  <div class="card">
-    <h3 style="margin-top:0">이번 주 식단 습관 하나</h3>
-    <div class="small">${f.id} ${f.name}</div>
-    <p style="font-weight:600">${f.habit}</p>
-    <p class="small">한 번에 하나만 해요. 2주 동안 일주일에 5일 이상 지켜지면 다음 습관으로 넘어가요.</p>
-  </div>
-  <div class="card">
-    <p class="small">이 앱은 진단이나 처방이 아니라 생활 운동·식사 습관 코칭 시제품이에요. 단계 기준 숫자는 전문가 확정 전 실무값입니다.</p>
-    <button class="btn ghost" id="reset">기록 모두 지우기</button>
-  </div>`;
-  $('reset').onclick=()=>{if(confirm('이 기기의 기록을 모두 지울까요?')){localStorage.removeItem(KEY);S={};draft={};page=0;tab='check';render();}};
+  if(r.eight) h+=`<h3>8체질: ${r.eight}체질</h3>${hasAllergy?'<div class="note">알레르기가 있어 8체질 음식 목록은 숨겼어요. 알레르기 제외가 체질 안내보다 항상 우선이에요.</div>':`<p style="font-size:14px">${EIGHT[r.eight]}</p>`}<p class="small">8체질 섭생표는 한의원마다 판본이 조금씩 달라요. 진단받은 한의원의 표를 기준으로 해 주세요.</p>`;
+  h+=`<div class="supp">「보완」 체질별 음식 안내는 한국한의학연구원 국가한의임상정보포털(사상체질)과 8체질 한의원 공개 섭생표를 요약한 것이에요. 체질 식이가 일반 균형식보다 낫다는 임상 근거는 아직 약해요. 한국한의학연구원도 "골고루 먹는 것이 원칙이고, 같은 열량·영양 구성 안에서 체질에 맞는 식품으로 바꾸는 것"이라고 안내해요. 그래서 이 앱은 위의 열량·단백질·식사 반응을 먼저 지키고, 체질 정보로는 같은 영양의 식품을 고를 때만 참고하도록 해요.</div><p class="small"><a href="https://nikom.or.kr" target="_blank" rel="noopener">국가한의임상정보포털</a></p></div>`;
+ }
+ $('view').innerHTML=h;
+}
+function videoSafe(v,r){
+ const avoid=new Set(r.flags);
+ const noImpact=r.flags.includes('knee')||r.bc.bmi>=30||['syncope','hbp','dmmed','kidney'].some(x=>r.flags.includes(x));
+ if(!v.st.includes(S.stage)||v.avoid.some(x=>avoid.has(x))||(noImpact&&v.imp==='충격')) return false;
+ if(['syncope','hbp','dmmed','kidney'].some(x=>r.flags.includes(x))&&v.cat==='hiit') return false;
+ return true;
+}
+function pickVideos(r,cats,n){
+ const tierW={P:3,H:3,E:2,C:1};
+ const typeCardio=['fatexcess','bothhigh','overstd'].includes(r.bc.type),typeStr=['skinnyfat','sarcoobese','weakstd','lean'].includes(r.bc.type);
+ return VIDEOS.filter(v=>videoSafe(v,r)&&cats.includes(v.cat))
+  .map(v=>({...v,score:v.nd.filter(x=>r.needs.includes(x)).length*2+tierW[v.tier]+(typeCardio&&['walk','cardio'].includes(v.cat)?1:0)+(typeStr&&['lower','upper','full'].includes(v.cat)?1:0)}))
+  .sort((x,y)=>y.score-x.score).slice(0,n);
+}
+function vidHTML(v,r){return `<a class="vid" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="" loading="lazy"><div><div class="t">${v.t}</div><div class="m">${v.ch} · ${v.min}분 · ${v.lv} · ${TIER_NAME[v.tier]}</div>${v.tip?`<div class="c">${v.tip}</div>`:''}</div></a>`;}
+let moveFilter='추천';
+function renderMove(){
+ const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
+ if(['pregnant','ed'].includes(r.nu.protected)){$('view').innerHTML=`<div class="card"><h2>개별 운동 계획이 먼저예요</h2>${r.nu.notes.map(n=>`<div class="note">${n}</div>`).join('')}<p class="muted">이 앱은 일반 운동 영상이나 단계 승급을 제안하지 않아요. 담당 전문가가 허용한 움직임만 해 주세요.</p></div>`;return;}
+ const st=STAGES[S.stage];
+ const noInterval=['syncope','hbp','dmmed','kidney'].some(x=>r.flags.includes(x));
+ const planNow=st.plan.map(x=>noInterval?x.replace('유산소 주 150–300분, 인터벌은 선택','유산소 주 150–300분, 고강도 인터벌 제외'):x);
+ const groups={S1:[['이완·가동성',['relax','mob'],2],['코어·정렬',['core','pain'],2],['기초 근력·걷기',['lower','full','walk'],2]],S2:[['워밍업·가동성',['mob','relax'],1],['코어·정렬',['core','pain'],2],['기본 근력',['full','lower','upper'],2],['유산소',['walk','cardio'],1]],S3:[['워밍업',['mob'],1],['근력',['full','lower','upper'],3],['유산소',['cardio','walk','hiit'],2]],S4:[['근력',['full','lower','upper'],3],['유산소·인터벌',['cardio','hiit','walk'],2],['회복',['relax','mob'],1]]}[S.stage];
+ let h=`<div class="card"><div class="small">${S.stage} · ${st.dur}</div><h2>${st.name}</h2><p>${st.goal}</p><h3>이번 주 운동</h3><ul class="plan">${planNow.map(x=>`<li>${x}</li>`).join('')}</ul>
+ <div class="row"><span>체형 유형 반영</span><b>${BODY_TYPES[r.bc.type].ex}</b></div>
+ ${cautionsOf(r).map(c=>`<div class="note">${c}</div>`).join('')}</div>`;
+ h+=`<div class="card"><div class="seg">${['추천',...Object.values(CAT_NAME)].map(f=>`<span class="${f===moveFilter?'on':''}" data-f="${f}">${f}</span>`).join('')}</div>`;
+ if(moveFilter==='추천'){
+  groups.forEach(([name,cats,n])=>{const vs=pickVideos(r,cats,n);if(vs.length) h+=`<h3>${name}</h3>${vs.map(v=>vidHTML(v,r)).join('')}`;});
+ } else {
+  const cat=Object.entries(CAT_NAME).find(([,v])=>v===moveFilter)[0];
+  const vs=VIDEOS.filter(v=>v.cat===cat&&videoSafe(v,r));
+  h+=`<p class="small">${moveFilter} 영상 ${vs.length}편. 현재 단계와 건강 조건에 맞지 않는 영상은 제외했어요.</p>`+vs.map(v=>vidHTML(v,r).replace('</div></a>',`<div class="m">맞는 단계 ${v.st.join('·')}</div></div></a>`)).join('');
+ }
+ h+=`<p class="small" style="margin-top:12px">공공기관·병원·물리치료사·인기 홈트 채널 영상을 링크로 연결해요. 제목의 "뱃살 쏙·독소 배출·체형 교정" 같은 효과 문구는 근거가 약하니 동작 자체만 따라 해 주세요.</p></div>`;
+ $('view').innerHTML=h;
+ document.querySelectorAll('.seg span').forEach(s=>s.onclick=()=>{moveFilter=s.dataset.f;renderMove();});
 }
 function renderCheckin(){
-  const ci=S.checkins||[];
-  $('view').innerHTML=`<div class="card"><h2>주간 체크인</h2><p class="muted">일주일에 한 번, 1분이면 돼요. 결과로 다음 단계로 갈지, 유지할지, 한 단계 쉬어 갈지 알려 드려요.</p>
-  <label class="q">이번 주 운동한 날</label><div class="opts">${['0','1','2','3','4','5+'].map(v=>`<span class="chip" data-k="days" data-v="${v}">${v}일</span>`).join('')}</div>
-  <label class="q">운동 다음날 통증이 더 심해진 적</label><div class="opts"><span class="chip" data-k="worse" data-v="no">없음</span><span class="chip" data-k="worse" data-v="yes">있음</span></div>
-  <label class="q">식단 습관을 지킨 날</label><div class="opts">${['0–2','3–4','5–7'].map(v=>`<span class="chip" data-k="food" data-v="${v}">${v}일</span>`).join('')}</div>
-  ${S.stage==='S2'?`<label class="q">6가지 기본 동작을 각 2세트×10–12회, 다음날 악화 없이 할 수 있나요?</label><div class="opts"><span class="chip" data-k="six" data-v="yes">네</span><span class="chip" data-k="six" data-v="no">아직</span></div>
-  <label class="q">30초 의자 일어서기 다시 재면 (선택, 처음 기록 ${S.baseline?.chair||'-'}회)</label><input type="number" inputmode="numeric" id="chairNow">`:''}
-  <button class="btn blue" id="ciBtn">저장하고 결과 보기</button><div id="ciOut"></div></div>
-  <div class="card"><h3 style="margin-top:0">지난 체크인</h3>${ci.length?ci.slice().reverse().map(c=>`<div class="hist"><span>${c.date} · ${c.stage}</span><span>운동 ${c.days}일 · 식단 ${c.food}일${c.worse==='yes'?' · 통증↑':''}</span></div>`).join(''):'<p class="small">아직 없어요.</p>'}</div>`;
-  const a={};
-  document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{document.querySelectorAll(`.chip[data-k="${c.dataset.k}"]`).forEach(x=>x.classList.remove('on'));c.classList.add('on');a[c.dataset.k]=c.dataset.v;});
-  $('ciBtn').onclick=()=>{
-    if(!a.days||!a.worse||!a.food){alert('세 가지를 골라 주세요.');return;}
-    const days=a.days==='5+'?5:+a.days;
-    const rec={date:today(),stage:S.stage,days:a.days,worse:a.worse,food:a.food};
-    S.checkins=[...(S.checkins||[]),rec];
-    let msg='';const prev=S.checkins.filter(c=>c.stage===S.stage);
-    const wk=weeksBetween(S.stageStart,today())+1;
-    const order=['S1','S2','S3','S4'];
-    if(a.worse==='yes'){msg='다음날 통증이 심해졌다면 이번 주는 운동량을 절반쯤으로 줄여요. 저림이 생기거나 계속 심해지면 진료를 먼저 받아 주세요.';}
-    else if(days<=1&&prev.length>=2&&['0','1'].includes(prev[prev.length-2].days)&&S.stage!=='S1'){S.stage=order[order.indexOf(S.stage)-1];S.stageStart=today();msg=`2주 가까이 쉬었으니 ${S.stage}로 한 단계 내려가서 가볍게 다시 시작해요. 실패가 아니라 원래 그렇게 돌아오는 거예요.`;}
-    else{
-      const last2=prev.slice(-2);
-      const ok2=last2.length===2&&last2.every(c=>(c.days==='5+'?5:+c.days)>=3&&c.worse==='no');
-      if(S.stage==='S1'&&ok2&&wk>=2){S.stage='S2';S.stageStart=today();msg='2주 연속 꾸준했고 통증 악화도 없었어요. S2 안정화·기초 근력으로 넘어가요!';}
-      else if(S.stage==='S2'&&ok2&&wk>=4&&a.six==='yes'){const now=+$('chairNow')?.value;const base=+(S.baseline?.chair||0);if(!now||!base||now-base>=2){S.stage='S3';S.stageStart=today();msg='기본 6동작이 안정됐어요. S3 근력 강화로 넘어가요. 무게는 조금씩만 올려요.';}else msg='동작은 안정됐어요. 의자 일어서기가 처음보다 2회 이상 늘면 다음 단계로 가요.';}
-      else if(S.stage==='S3'&&ok2&&wk>=8){S.stage='S4';S.stageStart=today();msg='8주 넘게 꾸준했어요. 이제 우선 목표에 맞춰 심화해요.';}
-      else msg=`좋아요, 지금 단계를 이어가요. (${S.stage} ${wk}주차 · 다음 기준: ${STAGES[S.stage].next})`;
-    }
-    const foodPrev=S.checkins.slice(-2);
-    if(foodPrev.length===2&&foodPrev.every(c=>c.food==='5–7')&&weeksBetween(S.foodStart,today())>=1&&(S.food||0)<FOOD.length-1){S.food=(S.food||0)+1;S.foodStart=today();msg+=` 식단 습관도 2주 연속 잘 지켜서 다음 습관 「${FOOD[S.food].name}」으로 넘어가요.`;}
-    save(S);
-    $('ciOut').innerHTML=`<div class="note" style="margin-top:14px">${msg}</div>`;
-  };
+ const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
+ if(['pregnant','ed'].includes(r.nu.protected)){$('view').innerHTML=`<div class="card"><h2>일반 체크인을 사용하지 않아요</h2><p class="muted">체중·운동량·단계 승급 대신 담당 전문가와 정한 회복 지표를 기록해 주세요.</p></div>`;return;}
+ const ci=S.checkins||[];
+ const hb=r.ladder[Math.min(S.habit||0,r.ladder.length-1)];
+ $('view').innerHTML=`<div class="card"><h2>주간 체크인</h2><p class="muted">한 주에 한 번 기록해요. 같은 주에 다시 저장하면 기존 기록을 고쳐요.</p>
+ <label class="q">이번 주 운동한 날</label><div class="opts">${['0','1','2','3','4','5+'].map(v=>`<span class="chip" data-k="days" data-v="${v}">${v}일</span>`).join('')}</div>
+ <label class="q">운동 다음날 통증이 더 심해진 적</label><div class="opts"><span class="chip" data-k="worse" data-v="no">없음</span><span class="chip" data-k="worse" data-v="yes">있음</span></div>
+ <label class="q">식단 습관 「${hb.name}」을 지킨 날</label><div class="opts">${['0–2','3–4','5–7'].map(v=>`<span class="chip" data-k="food" data-v="${v}">${v}일</span>`).join('')}</div>
+ <label class="q">이번 주 체중 (kg, 선택)</label><input type="number" inputmode="decimal" id="wNow">
+ ${S.stage==='S2'?`<label class="q">6가지 기본 동작을 각 2세트×10–12회, 다음날 악화 없이 할 수 있나요?</label><div class="opts"><span class="chip" data-k="six" data-v="yes">네</span><span class="chip" data-k="six" data-v="no">아직</span></div><label class="q">30초 의자 일어서기 (처음 ${S.baseline?.chair||'미측정'}회)</label><input type="number" inputmode="numeric" id="chairNow">`:''}
+ ${S.stage==='S3'?`<label class="q">지난 8주 동안 무게·밴드 강도·반복 수 중 하나가 실제로 늘었나요?</label><div class="opts"><span class="chip" data-k="load" data-v="yes">네</span><span class="chip" data-k="load" data-v="no">아직</span></div>`:''}
+ <button class="btn blue" id="ciBtn">저장하고 결과 보기</button><div id="ciOut"></div></div>
+ <div class="card"><h3>지난 체크인</h3>${ci.length?ci.slice().reverse().map(c=>`<div class="hist"><span>${c.date} · ${c.stage}</span><span>운동 ${c.days}일 · 식단 ${c.food}일${c.w?` · ${c.w}kg`:''}${c.worse==='yes'?' · 통증 증가':''}</span></div>`).join(''):'<p class="small">아직 없어요.</p>'}</div>`;
+ const a={};
+ document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{document.querySelectorAll(`.chip[data-k="${c.dataset.k}"]`).forEach(x=>x.classList.remove('on'));c.classList.add('on');a[c.dataset.k]=c.dataset.v;});
+ $('ciBtn').onclick=()=>{
+  if(!a.days||!a.worse||!a.food){alert('위 세 가지를 골라 주세요.');return;}
+  if(S.stage==='S2'&&!a.six){alert('기본 동작 가능 여부를 골라 주세요.');return;}
+  if(S.stage==='S3'&&!a.load){alert('부하 증가 여부를 골라 주세요.');return;}
+  const wNow=num($('wNow').value),chairNow=num($('chairNow')?.value);
+  const entry={date:today(),week:weekKey(today()),stage:S.stage,days:a.days,worse:a.worse,food:a.food,w:wNow,six:a.six||null,load:a.load||null,chair:chairNow};
+  const same=(S.checkins||[]).findIndex(c=>(c.week||weekKey(c.date))===entry.week&&c.stage===entry.stage);
+  if(same>=0) S.checkins[same]=entry; else S.checkins=[...(S.checkins||[]),entry];
+  const currentStage=S.stage, elapsed=daysBetween(S.stageStart,today());
+  const prev=S.checkins.filter(c=>c.stage===currentStage&&new Date(c.date)>=new Date(S.stageStart)).sort((x,y)=>x.date.localeCompare(y.date));
+  const last2=prev.slice(-2), twoWeeks=last2.length===2&&last2[0].week!==last2[1].week&&daysBetween(last2[0].date,last2[1].date)>=6;
+  const ok2=twoWeeks&&last2.every(c=>(c.days==='5+'?5:+c.days)>=3&&c.worse==='no');
+  let msg='';
+  if(a.worse==='yes') msg='다음날 통증이 심해졌다면 이번 주는 운동량을 절반쯤으로 줄여요. 저림이 생기거나 계속 심해지면 진료를 먼저 받아 주세요.';
+  else if(twoWeeks&&last2.every(c=>(c.days==='5+'?5:+c.days)<=1)&&S.stage!=='S1'){S.stage={S4:'S3',S3:'S2',S2:'S1'}[S.stage];S.stageStart=today();msg=`두 주 동안 운동이 거의 없었으니 ${S.stage}로 한 단계 내려가 가볍게 다시 시작해요.`;}
+  else if(S.stage==='S1'&&ok2&&elapsed>=14){S.stage='S2';S.stageStart=today();msg='서로 다른 두 주에 꾸준했고 통증 악화도 없었어요. S2 안정화·기초 근력으로 넘어가요.';}
+  else if(S.stage==='S2'&&ok2&&elapsed>=28&&a.six==='yes'){
+   const base=num(S.baseline?.chair);
+   if(base==null||chairNow==null) msg='기본 동작은 안정됐어요. 다만 의자 일어서기 시작값과 이번 값이 모두 있어야 다음 단계로 넘어가요.';
+   else if(chairNow-base>=2){S.stage='S3';S.stageStart=today();msg='기본 6동작과 기능 지표가 좋아졌어요. S3 근력 강화로 넘어가요.';}
+   else msg='동작은 안정됐어요. 의자 일어서기가 처음보다 2회 이상 늘면 다음 단계로 가요.';
+  }
+  else if(S.stage==='S3'&&ok2&&elapsed>=56&&a.load==='yes'){S.stage='S4';S.stageStart=today();msg='8주 이상 꾸준했고 실제 부하도 늘었어요. S4 목표별 심화·유지로 넘어가요.';}
+  else msg=`좋아요, 지금 단계를 이어가요. 다음 기준: ${STAGES[S.stage].next}`;
+  const foodWeeks=S.checkins.filter(c=>c.food==='5–7'&&new Date(c.date)>=new Date(S.habitStart)).sort((x,y)=>x.date.localeCompare(y.date));
+  const f2=foodWeeks.slice(-2);
+  if(f2.length===2&&weekKey(f2[0].date)!==weekKey(f2[1].date)&&daysBetween(S.habitStart,today())>=14&&(S.habit||0)<r.ladder.length-1){S.habit=(S.habit||0)+1;S.habitStart=today();msg+=` 식단 습관도 서로 다른 두 주에 잘 지켜서 다음 습관 「${r.ladder[S.habit].name}」으로 넘어가요.`;}
+  const ws=S.checkins.filter(c=>c.w).sort((x,y)=>x.date.localeCompare(y.date)).slice(-3);
+  if(ws.length>=2&&r.nu.mode==='lose'){
+   const days=Math.max(1,daysBetween(ws[0].date,ws[ws.length-1].date)),kgWeek=(ws[0].w-ws[ws.length-1].w)*7/days;
+   if(kgWeek>num(S.answers.w)*0.01) msg+=' 최근 감량 속도가 주 1%를 넘어요. 근손실·어지럼이 생기지 않게 식사량을 조금 늘리고 상태를 확인하세요.';
+   else if(days>=14&&kgWeek<=0) msg+=' 2주 이상 체중 변화가 없다면 하루 100–200kcal만 조정하거나 걷기를 조금 늘려 보세요.';
+  }
+  save(S);$('ciOut').innerHTML=`<div class="note" style="margin-top:14px">${msg}</div>`;
+ };
 }
 render();
 </script>
