@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#15233b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="몸 기본기">
-<title>몸 기본기 코치 · 시제품 v0.2</title>
+<title>몸 기본기 코치 · 시제품 v0.3</title>
 <style>
 :root{--navy:#15233b;--blue:#356ee6;--blue-soft:#edf3ff;--ink:#18202c;--muted:#6f7886;--line:#e8ebf0;--bg:#f6f7f9;--card:#fff;--green:#1f9d63;--green-soft:#e6f6ee;--amber:#b7791f;--amber-soft:#fdf4e3;--red:#c94545;--red-soft:#fbeaea;--violet:#6b4fd8;--violet-soft:#f1edfd;--r:14px}
 *{box-sizing:border-box}
@@ -85,7 +85,7 @@ summary{cursor:pointer;font-size:14px;color:var(--blue)}
 </head>
 <body>
 <div class="app">
-  <header><h1>몸 기본기 코치</h1><span class="ver">시제품 v0.2<br>기록은 이 기기에만 저장</span></header>
+  <header><h1>몸 기본기 코치</h1><span class="ver">시제품 v0.3<br>기록은 이 기기에만 저장</span></header>
   <main id="view"></main>
 </div>
 <nav class="tabbar" id="tabbar">
@@ -514,7 +514,7 @@ function analyze(a){
  const needs=needsOf(a,bc);
  const chair=num(a.chair);
  let stage='S1';
- if(!needs.includes('N2')&&!needs.includes('N3')&&!needs.includes('N4')&&a.freq==='3'&&chair!=null&&chair>=25) stage='S2';
+ if(!nu.protected&&!needs.includes('N2')&&!needs.includes('N3')&&!needs.includes('N4')&&a.freq==='3'&&chair!=null&&chair>=25) stage='S2';
  const traits=(a.traits||[]).filter(x=>x!=='none');
  const sas=sasangScore(a.sasang);
  return {stop:rf.length>0,rf,flags,bc,en,nu,needs,stage,traits,sas,eight:a.eight&&a.eight!=='none'?a.eight:null,ladder:habitLadder(a,flags)};
@@ -591,9 +591,115 @@ function cautionsOf(r){
 function stopView(r){
  return `<div class="card"><h2>먼저 확인이 필요해요</h2><div class="stop">답하신 증상(${r.rf.map(x=>({chest:'가슴 통증',faint:'실신·실신할 듯함',breath:'심한 숨참',numb:'저림 악화',pain7:'강한 통증'})[x]).join(', ')})이 있으면 운동·식단 계획보다 진료 확인이 먼저예요. 가슴 통증이 몇 분 이상 이어지거나 식은땀·호흡곤란이 함께 있으면 바로 119에 연락하세요.</div><p class="muted" style="margin-top:12px">확인 후 사전조사를 다시 해 주세요.</p></div>`;
 }
+/* ===== 회복 우선 계획 (보호모드): 숫자 없이 식습관·이완·목표를 안내 ===== */
+const REC_PLATE=['한 접시에 세 칸','한 끼에 밥·곡류, 단백질 반찬(달걀·두부·생선·고기), 채소가 모두 있는지만 확인해요. 양을 재거나 줄이지 않아요.'];
+const REC={
+ ed:{label:'섭식 부담 회복',title:'회복 우선 계획',why:'식사를 극단적으로 제한하거나 먹은 뒤 운동·굶기 등으로 갚으려 한 경험을 선택했기 때문이에요. 이때는 감량 숫자보다 식사의 안정과 몸의 긴장을 낮추는 일이 먼저예요.',
+  lead:'체중·열량·체형 숫자는 보여드리지 않아요. 대신 "규칙적으로 먹기, 몸의 긴장 풀기, 충분히 쉬기" 순서로 2주씩 회복 습관을 쌓아요.',
+  diet:[['하루 일정표 만들기','아침·점심·저녁과 필요하면 간식 1–2번의 시간을 정하고 되도록 그 시간에 먹어요. 시간이 어긋난 날은 가장 가까운 시간에 먹어요.'],REC_PLATE,['먹은 뒤 갚지 않기','많이 먹었다고 느껴도 다음 끼니를 거르거나 운동·구토·하제로 갚지 않아요. 다음 끼니를 평소처럼 먹는 것이 회복이에요.'],['천천히, 편안하게','앉아서 15–20분, 화면은 끄고 먹어요. 가능하면 믿는 사람과 함께 먹어요.'],['음식 규칙 늘리지 않기','"먹으면 안 되는 음식" 목록을 새로 만들지 않아요. 불안한 음식이 있으면 적어 두고 전문가와 이야기해요.']],
+  move:'운동 대신 스트레칭과 천천히 하는 호흡으로 몸의 긴장을 풀어요. 칼로리를 쓰는 용도로 하지 않고, 운동 강도와 횟수는 의료진과 정한 뒤에 늘려요.',
+  seek:'식사·체중·몸매 생각이 하루 대부분을 차지하거나 먹은 뒤 갚으려는 행동이 반복되면, 섭식 문제를 다루는 정신건강의학과·상담 전문가에게 이야기해 주세요. 어지럼, 실신, 가슴 두근거림이 있으면 먼저 진료를 받으세요.',
+  safeTraits:['cold','heat','chill','constip','diarrhea','dairy','wheat','spicy','caffeine'],stretchCats:['relax']},
+ pregnant:{label:'임신·수유 회복',title:'임신·수유 맞춤 편안 계획',why:'임신·수유 중이라고 선택했기 때문이에요. 일반 감량·운동 계산보다 산과 기준에 맞춘 영양, 휴식, 안전한 움직임이 먼저예요.',
+  lead:'임신·수유 중에는 일반 감량·운동 계획과 열량·단백질 숫자를 만들지 않아요. 몸을 편하게 풀고 규칙적으로 먹는 것을 중심에 두고, 세부 영양과 운동은 산과 의료진과 정해요.',
+  diet:[['규칙적으로 나눠 먹기','하루 세 끼와 간식을 비슷한 시간에 먹어요. 입덧이나 속이 불편하면 소량씩 자주 먹어도 좋아요.'],REC_PLATE,['수분과 휴식','목이 마르기 전에 물을 조금씩 자주 마시고, 식후에는 편한 자세로 쉬어요.'],['영양제·식품은 의료진과','영양제, 날것·덜 익힌 식품, 카페인·허브차는 산과 의료진이나 영양사의 안내를 먼저 받아요.']],
+  move:'부드러운 스트레칭과 편안한 호흡으로 몸의 긴장을 풀어요. 의료진이 허용한 범위에서만 걷기를 더하고, 배를 누르거나 숨을 참는 동작은 하지 않아요. 누운 자세가 불편하면 옆으로 눕거나 앉아서 해요.',
+  seek:'질 출혈, 복통, 어지럼, 가슴 통증, 숨참, 양수가 새는 느낌, 태동 감소가 있으면 운동을 멈추고 바로 산과 의료진에게 연락하세요.',
+  safeTraits:['cold','heat','chill','constip','diarrhea','dairy','wheat','spicy','oily','slow'],stretchCats:['relax','mob']},
+ kidney:{label:'신장 상태 맞춤',title:'신장 상태에 맞춘 편안 계획',why:'신장 질환을 선택했기 때문이에요. 질환 단계와 치료에 따라 영양·운동 기준이 달라 일반 계산을 적용하지 않는 것이 안전해요.',
+  lead:'신장 질환은 단계와 투석 여부에 따라 식사 기준이 크게 달라서, 이 앱은 단백질·열량 숫자와 식단 방향을 정하지 않아요. 대신 담당 의료진이 정한 식이를 지키기 쉽게 하는 습관과 몸의 긴장을 푸는 방법을 안내해요.',
+  diet:[['처방 식이 우선','단백질·나트륨·칼륨·인·수분에 대한 처방이 있으면 그대로 따르고, 이 앱의 일반 안내보다 우선해요. 처방이 없다면 다음 진료에서 먼저 물어보세요.'],['끼니 규칙','하루 세 끼를 비슷한 시간에 먹고 천천히 먹어요.'],['새 식품은 먼저 상의','건강기능식품, 단백질 보충제, 한약, 진통소염제는 먹기 전에 의료진이나 약사에게 확인해요.'],['기록해서 보여 주기','먹은 것과 식후 불편감을 한 줄씩 적어 진료 때 보여 주세요.']],
+  move:'가벼운 스트레칭과 호흡으로 몸을 풀어요. 걷기나 근력 운동은 담당 의료진에게 허용 범위를 확인한 뒤 시작해요. 어지럼이 오거나 부종이 늘거나 숨이 차면 멈춰요.',
+  seek:'소변량 변화, 갑작스러운 부종, 숨참, 심한 피로·구역, 어지럼이 있으면 진료를 받으세요.',
+  safeTraits:['cold','heat','chill','diarrhea','wheat','spicy','oily','slow'],stretchCats:['relax','mob']},
+ dmmed:{label:'혈당약 사용 맞춤',title:'저혈당을 피하는 편안 계획',why:'혈당을 낮추는 약이나 인슐린 사용을 선택했기 때문이에요. 식사와 활동 변화가 저혈당으로 이어지지 않도록 규칙성과 대처 계획이 먼저예요.',
+  lead:'혈당을 낮추는 약이나 인슐린을 쓰면 식사량·시간·운동이 저혈당에 직접 영향을 줘서, 이 앱은 감량 목표나 식사량 숫자를 정하지 않아요. 대신 저혈당을 피하면서 몸을 풀고 규칙적으로 먹는 습관을 안내해요.',
+  diet:[['약 시간에 맞춰 먹기','식사 시간을 약·인슐린 시간과 맞추고 끼니를 거르지 않아요. 바꾸고 싶으면 의료진과 먼저 정해요.'],REC_PLATE,['저혈당 대처 확인','떨림·식은땀·어지럼이 올 때 무엇을 먹을지 의료진에게 미리 확인하고 항상 가지고 다녀요.'],['식사 기록','식사 시간과 식후 컨디션을 적어 진료 때 보여 주세요.']],
+  move:'스트레칭과 호흡으로 몸을 풀어요. 걷기를 포함한 운동량·시간대 변화는 저혈당 위험이 있어 의료진과 먼저 정하고, 공복에는 하지 않아요. 떨림·식은땀·어지럼이 오면 바로 멈추고 대처 계획대로 해요.',
+  seek:'혈당이 자주 낮거나 의식이 흐려지면 바로 의료진과 응급 안내를 따르세요.',
+  safeTraits:['cold','heat','chill','constip','diarrhea','dairy','wheat','spicy','oily','slow','hunger','sleepy'],stretchCats:['relax','mob']}
+};
+const PAIN_KO={neck:'목',shoulder:'어깨',back:'허리',hip:'고관절',knee:'무릎',wrist:'손목'};
+function recGoals(r,p){
+ const a=S.answers,g=[];
+ g.push(p==='ed'?['규칙적으로 먹기','세 끼를 비슷한 시간에 먹은 날 주 5일 이상']:['식사 시간 지키기','식사 시간을 비슷하게 지킨 날 주 5일 이상']);
+ g.push(['몸 풀기','스트레칭·호흡 10분, 주 4일 이상 (아프면 줄이고 쉬어도 돼요)']);
+ if(a.sleep==='5') g.push(['잠 지키기','잠드는 시각과 일어나는 시각을 정해 두고 6–7시간을 목표로 해요. 자기 전 화면은 줄여요']);
+ else if(a.stress==='5'||+a.stiff>=4) g.push(['긴장 낮추기','하루 한 번, 숨을 길게 내쉬는 호흡 3–5분. 숨은 참지 않고 어지러우면 멈춰요']);
+ else g.push(['몸 상태 적기','하루 한 번 몸이 얼마나 편한지 0–10으로 적어요']);
+ const pains=(a.painArea||[]).filter(x=>x!=='none').map(x=>PAIN_KO[x]);
+ if(pains.length) g.push(['아픈 부위 지키기',pains.join('·')+'은 통증 없는 범위에서만 움직이고, 통증이 커지면 멈춰요']);
+ if(r.flags.includes('syncope')) g.push(['어지럼 예방','일어날 때 천천히, 공복에는 스트레칭을 하지 않고 숨 참지 않기']);
+ return g;
+}
+function recVideos(r,p){
+ const R=REC[p],tierW={P:3,H:3,E:2,C:1};
+ if(p==='pregnant') return [];
+ const bad=/뱃살|다이어트|체지방|칼로리|지방 ?연소|살 ?빼/;
+ const list=VIDEOS.filter(v=>R.stretchCats.includes(v.cat)&&v.st.includes('S1')&&v.imp==='저'&&!v.avoid.some(x=>r.flags.includes(x))&&!(p==='pregnant'&&v.avoid.includes('pregnant'))&&!bad.test(v.t)&&v.min<=20)
+  .map(v=>({...v,score:v.nd.filter(x=>x==='N2'||x==='N3'||(r.needs.includes(x)&&x!=='N7')).length*2+tierW[v.tier]}))
+  .sort((x,y)=>y.score-x.score);
+ const out=[],used={};for(const v of list){if((used[v.ch]||0)>=2)continue;out.push(v);used[v.ch]=(used[v.ch]||0)+1;if(out.length>=5)break;}
+ return out;
+}
+function recTraitsHTML(r,p){
+ const R=REC[p],ts=r.traits.filter(t=>R.safeTraits.includes(t));
+ if(!ts.length) return '';
+ return `<div class="card"><h3>식사 반응에 맞춘 조절</h3>${ts.map(t=>{const T=TRAITS[t];return `<div style="margin-top:12px"><b style="font-size:14px">${T.label}</b><p style="font-size:14px">${T.tip}</p>${T.flag?`<p class="small">주의: ${T.flag}</p>`:''}</div>`}).join('')}</div>`;
+}
+function recoveryView(section){
+ const r=S.result,p=r.nu.protected,R=REC[p],goals=recGoals(r,p);
+ let h='';
+ const goalsHTML=`<div class="card"><h3>이번 2주 목표</h3>${goals.map((x,i)=>`<div class="row"><span><b>${i+1}. ${x[0]}</b><br><span class="small">${x[1]}</span></span></div>`).join('')}<p class="small">숫자 목표는 몸무게나 열량이 아니라 습관이에요. 2주 뒤 체크인에서 되돌아봐요.</p></div>`;
+ const dietHTML=`<div class="card"><h3>식습관 바꾸기</h3>${R.diet.map((x,i)=>`<div class="row"><span><b>${i+1}. ${x[0]}</b><br><span class="small">${x[1]}</span></span></div>`).join('')}</div>`;
+ const moveHTML=()=>{const vs=recVideos(r,p);return `<div class="card"><h3>운동 대신 스트레칭과 이완</h3><p>${R.move}</p><h3>따라 할 영상 (이완·가동성)</h3>${vs.map(v=>vidHTML(v,r)).join('')||(p==='pregnant'?'<div class="note">임신·수유 중에는 일반 스트레칭 영상을 임의로 연결하지 않아요. 산과 의료진이 허용한 동작이나 임산부 전문 지도자의 안내를 이용해 주세요.</div>':'<p class="small">현재 조건에 안전하게 연결할 영상이 없어요. 영상 없이 편안한 호흡과 통증 없는 범위의 가벼운 관절 움직임부터 시작해요.</p>')}<p class="small" style="margin-top:10px">영상 속 "효과·교정" 문구는 무시하고 동작만 따라 해 주세요. 아프거나 어지러우면 바로 멈춰요.</p></div>`;};
+ const seekHTML=`<div class="card"><h3>이럴 땐 진료·상담을 먼저</h3><div class="note">${R.seek}</div></div>`;
+ const cautions=cautionsOf(r).map(c=>`<div class="note">${c}</div>`).join('');
+ if(section==='home'){
+  h=`<div class="card"><div class="small">${R.label}</div><h2>${R.title}</h2><div class="note"><b>이 계획이 먼저인 이유</b><br>${R.why}</div><p>${R.lead}</p>${cautions}</div>${goalsHTML}${dietHTML}${moveHTML()}${recTraitsHTML(r,p)}${seekHTML}<div class="card"><p class="small">진단이나 처방이 아닌 생활 습관 안내예요. 체형 유형, 열량·단백질·체중 목표, 체질별 음식 목록은 이 상태에서는 만들지 않아요.</p><button class="btn ghost" id="reset">기록 모두 지우기</button></div>`;
+ } else if(section==='diet'){
+  h=`<div class="card"><h2>식습관 회복</h2><p>${R.lead}</p></div>${dietHTML}${recTraitsHTML(r,p)}${goalsHTML}${seekHTML}`;
+ } else if(section==='move'){
+  h=`<div class="card"><h2>스트레칭과 긴장 완화</h2>${cautions}</div>${moveHTML()}${goalsHTML}${seekHTML}`;
+ }
+ $('view').innerHTML=h;
+ if($('reset')) $('reset').onclick=()=>{if(confirm('이 기기의 기록을 모두 지울까요?')){localStorage.removeItem(KEY);S={};draft={};page=0;tab='check';render();}};
+}
+function recoveryCheckin(){
+ const r=S.result,p=r.nu.protected,ci=S.recCheckins||[];
+ const extra={ed:['gap','먹은 뒤 갚으려 한 일(굶기·운동·구토 등)','없음','있음'],dmmed:['low','저혈당 느낌(떨림·식은땀·어지럼)','없음','있음'],pregnant:['warn','출혈·복통·어지럼 같은 경고 증상','없음','있음'],kidney:['warn','부종 증가·숨참·소변량 변화','없음','있음']}[p];
+ $('view').innerHTML=`<div class="card"><h2>회복 체크인</h2><p class="muted">한 주에 한 번, 체중 없이 습관만 기록해요. 같은 주에 다시 저장하면 기존 기록을 고쳐요.</p>
+ <label class="q">규칙적으로 식사한 날</label><div class="opts">${['0–2','3–4','5–7'].map(v=>`<span class="chip" data-k="meal" data-v="${v}">${v}일</span>`).join('')}</div>
+ <label class="q">스트레칭·호흡을 한 날</label><div class="opts">${['0–1','2–3','4–7'].map(v=>`<span class="chip" data-k="str" data-v="${v}">${v}일</span>`).join('')}</div>
+ <label class="q">몸의 긴장</label><div class="opts">${[['low','편함'],['mid','보통'],['high','많이 뻐근함']].map(([v,l])=>`<span class="chip" data-k="ten" data-v="${v}">${l}</span>`).join('')}</div>
+ <label class="q">잠</label><div class="opts">${[['good','잘 잠'],['mid','보통'],['bad','잘 못 잠']].map(([v,l])=>`<span class="chip" data-k="slp" data-v="${v}">${l}</span>`).join('')}</div>
+ <label class="q">${extra[1]}</label><div class="opts"><span class="chip" data-k="${extra[0]}" data-v="no">${extra[2]}</span><span class="chip" data-k="${extra[0]}" data-v="yes">${extra[3]}</span></div>
+ <button class="btn blue" id="rcBtn">저장하고 결과 보기</button><div id="rcOut"></div></div>
+ <div class="card"><h3>지난 체크인</h3>${ci.length?ci.slice().reverse().map(c=>`<div class="hist"><span>${c.date}</span><span>식사 ${c.meal}일 · 이완 ${c.str}일 · 긴장 ${({low:'편함',mid:'보통',high:'높음'})[c.ten]}</span></div>`).join(''):'<p class="small">아직 없어요.</p>'}</div>`;
+ const a={};
+ document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{document.querySelectorAll(`.chip[data-k="${c.dataset.k}"]`).forEach(x=>x.classList.remove('on'));c.classList.add('on');a[c.dataset.k]=c.dataset.v;});
+ $('rcBtn').onclick=()=>{
+  if(!a.meal||!a.str||!a.ten||!a.slp||!a[extra[0]]){alert('모든 항목을 골라 주세요.');return;}
+  const e={date:today(),week:weekKey(today()),meal:a.meal,str:a.str,ten:a.ten,slp:a.slp,flag:a[extra[0]]};
+  const i=(S.recCheckins||[]).findIndex(c=>c.week===e.week);
+  if(i>=0) S.recCheckins[i]=e; else S.recCheckins=[...(S.recCheckins||[]),e];
+  save(S);
+  let msg;
+  if(e.flag==='yes') msg={ed:'갚으려는 행동이 있었다면 의지가 약해서가 아니에요. 다음 끼니를 평소처럼 먹고, 이런 일이 반복되면 섭식 문제를 다루는 전문가와 이야기해 주세요.',dmmed:'저혈당 느낌이 있었다면 처방받은 대처 계획대로 하고, 반복되면 약·식사·운동 계획을 의료진과 다시 정해 주세요.',pregnant:'경고 증상이 있었다면 운동을 멈추고 산과 의료진에게 바로 연락하세요.',kidney:'부종·숨참·소변량 변화가 있었다면 진료를 먼저 받아 주세요.'}[p];
+  else{
+   const last2=S.recCheckins.slice(-2),ok=c=>c.meal==='5–7'&&c.str!=='0–1';
+   if(last2.length===2&&last2[0].week!==last2[1].week&&last2.every(ok)) msg='두 주 연속 식사와 이완 습관이 안정적이에요. 다음 2주는 식사 중 한 끼를 더 천천히 먹거나, 의료진이 허용한 범위의 가벼운 산책을 상의해 보세요.';
+   else if(e.meal==='0–2') msg='이번 주는 식사 시간 맞추기가 어려웠네요. 가장 지키기 쉬운 한 끼(예: 아침)만 시간을 정해 보세요.';
+   else if(e.str==='0–1') msg='스트레칭은 하루 5분도 충분해요. 자기 전이나 아침에 한 가지 동작만 해 보세요.';
+   else msg='잘 하고 있어요. 지금 습관을 그대로 이어가요. 체중이 아니라 습관과 몸의 편안함으로 확인해요.';
+  }
+  $('rcOut').innerHTML=`<div class="note" style="margin-top:14px">${msg}</div>`;
+ };
+}
+
 function renderHome(){
  const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
- if(r.nu.protected){const title={pregnant:'임신·수유 맞춤 계획이 필요해요',ed:'숫자보다 회복이 먼저예요',kidney:'신장 상태에 맞춘 식사 처방이 필요해요',dmmed:'저혈당을 막는 개인 계획이 필요해요'}[r.nu.protected];$('view').innerHTML=`<div class="card"><h2>${title}</h2>${r.nu.notes.map(n=>`<div class="note">${n}</div>`).join('')}<p class="muted">이 앱은 열량·단백질·체중 감량 목표를 만들지 않아요. 담당 의료진과 계획을 정한 뒤에는 기록용으로 활용할 수 있어요.</p>${cautionsOf(r).map(c=>`<div class="note">${c}</div>`).join('')}</div><div class="card"><button class="btn ghost" id="reset">기록 모두 지우기</button></div>`;$('reset').onclick=()=>{if(confirm('이 기기의 기록을 모두 지울까요?')){localStorage.removeItem(KEY);S={};draft={};page=0;tab='check';render();}};return;}
+ if(r.nu.protected){recoveryView('home');return;}
  const bc=r.bc,T=BODY_TYPES[bc.type],st=STAGES[S.stage],order=['S1','S2','S3','S4'],nu=r.nu;
  const wk=weeksBetween(S.stageStart,today())+1;
  const hb=r.ladder[Math.min(S.habit||0,r.ladder.length-1)];
@@ -645,7 +751,7 @@ function proteinPlan(target,a){
 function renderDiet(){
  const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
  const a=S.answers,nu=r.nu,en=r.en,bc=r.bc;
- if(nu.protected){const title={pregnant:'임신·수유 식사는 개별 상담이 필요해요',ed:'규칙적인 식사와 회복이 먼저예요',kidney:'신장 상태에 맞춘 처방을 따라 주세요',dmmed:'저혈당을 막는 개인 계획을 먼저 정해 주세요'}[nu.protected];$('view').innerHTML=`<div class="card"><h2>${title}</h2>${nu.notes.map(n=>`<div class="note">${n}</div>`).join('')}<p class="muted">이 화면은 열량, 단백질, 체중 목표, 식품 제한을 제안하지 않아요. 의료진이 정한 계획이 있다면 그 계획을 우선해 주세요.</p></div>`;return;}
+ if(nu.protected){recoveryView('diet');return;}
  const hbI=Math.min(S.habit||0,r.ladder.length-1);
  const pp=proteinPlan(nu.protein.lo,a);
  const hasAllergy=(a.allergy||[]).some(x=>x!=='none');
@@ -715,7 +821,7 @@ function vidHTML(v,r){return `<a class="vid" href="https://www.youtube.com/watch
 let moveFilter='추천';
 function renderMove(){
  const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
- if(['pregnant','ed'].includes(r.nu.protected)){$('view').innerHTML=`<div class="card"><h2>개별 운동 계획이 먼저예요</h2>${r.nu.notes.map(n=>`<div class="note">${n}</div>`).join('')}<p class="muted">이 앱은 일반 운동 영상이나 단계 승급을 제안하지 않아요. 담당 전문가가 허용한 움직임만 해 주세요.</p></div>`;return;}
+ if(r.nu.protected){recoveryView('move');return;}
  const st=STAGES[S.stage];
  const noInterval=['syncope','hbp','dmmed','kidney'].some(x=>r.flags.includes(x));
  const planNow=st.plan.map(x=>noInterval?x.replace('유산소 주 150–300분, 인터벌은 선택','유산소 주 150–300분, 고강도 인터벌 제외'):x);
@@ -737,7 +843,7 @@ function renderMove(){
 }
 function renderCheckin(){
  const r=S.result;if(r.stop){$('view').innerHTML=stopView(r);return;}
- if(['pregnant','ed'].includes(r.nu.protected)){$('view').innerHTML=`<div class="card"><h2>일반 체크인을 사용하지 않아요</h2><p class="muted">체중·운동량·단계 승급 대신 담당 전문가와 정한 회복 지표를 기록해 주세요.</p></div>`;return;}
+ if(r.nu.protected){recoveryCheckin();return;}
  const ci=S.checkins||[];
  const hb=r.ladder[Math.min(S.habit||0,r.ladder.length-1)];
  $('view').innerHTML=`<div class="card"><h2>주간 체크인</h2><p class="muted">한 주에 한 번 기록해요. 같은 주에 다시 저장하면 기존 기록을 고쳐요.</p>
