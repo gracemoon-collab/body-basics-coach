@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#15233b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="몸 기본기">
+<title>몸 기본기 코치 · 시제품 v0.1</title>
+<style>
+:root{--navy:#15233b;--blue:#356ee6;--blue-soft:#edf3ff;--ink:#18202c;--muted:#6f7886;--line:#e8ebf0;--bg:#f6f7f9;--card:#fff;--green:#1f9d63;--green-soft:#e6f6ee;--amber:#b7791f;--amber-soft:#fdf4e3;--red:#c94545;--red-soft:#fbeaea;--r:14px}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",sans-serif;-webkit-text-size-adjust:100%}
+.app{max-width:560px;margin:0 auto;padding:18px 16px 110px}
+header{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 18px}
+header h1{font-size:19px;margin:0;letter-spacing:-.02em}
+header .ver{font-size:12px;color:var(--muted)}
+.card{background:var(--card);border-radius:var(--r);padding:18px;margin-bottom:12px;border:1px solid var(--line)}
+h2{font-size:18px;margin:0 0 6px;letter-spacing:-.02em}
+h3{font-size:15px;margin:16px 0 8px}
+p{margin:6px 0}
+.muted{color:var(--muted);font-size:14px}
+.small{font-size:13px;color:var(--muted)}
+label.q{display:block;font-weight:600;margin:16px 0 8px;font-size:15px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;font-size:14px;cursor:pointer;user-select:none;color:var(--ink)}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+input[type=number]{width:100%;font-size:17px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:15px;font-size:16px;font-weight:600;background:var(--navy);color:#fff;cursor:pointer;margin-top:18px}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn.blue{background:var(--blue)}
+.steps{display:flex;gap:6px;margin-bottom:14px}
+.steps span{flex:1;height:4px;border-radius:4px;background:var(--line)}
+.steps span.on{background:var(--blue)}
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:600;margin:3px 4px 3px 0}
+.b-blue{background:var(--blue-soft);color:var(--blue)}
+.b-green{background:var(--green-soft);color:var(--green)}
+.b-amber{background:var(--amber-soft);color:var(--amber)}
+.b-red{background:var(--red-soft);color:var(--red)}
+.stagebar{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:12px 0 4px}
+.stagebar div{text-align:center;font-size:11px;color:var(--muted);padding-top:8px;border-top:4px solid var(--line)}
+.stagebar div.done{border-color:#9db8f2}
+.stagebar div.cur{border-color:var(--blue);color:var(--ink);font-weight:700}
+ul.plan{padding-left:18px;margin:6px 0}
+ul.plan li{margin:4px 0}
+.vid{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+.vid:first-of-type{border-top:0}
+.vid img{width:112px;height:63px;object-fit:cover;border-radius:8px;flex:none;background:var(--line)}
+.vid .t{font-size:14px;font-weight:600;line-height:1.35}
+.vid .m{font-size:12px;color:var(--muted);margin-top:3px}
+.vid .c{font-size:12px;color:var(--amber);margin-top:3px}
+.note{background:var(--amber-soft);border-radius:10px;padding:12px;font-size:14px;margin-top:10px}
+.stop{background:var(--red-soft);border-radius:10px;padding:14px;font-size:15px}
+.tabbar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+.tabbar button{flex:1;max-width:180px;border:0;background:none;font-size:13px;color:var(--muted);padding:8px;cursor:pointer}
+.tabbar button.on{color:var(--navy);font-weight:700}
+.hist{font-size:13px;border-top:1px solid var(--line);padding:8px 0;display:flex;justify-content:space-between}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <header><h1>몸 기본기 코치</h1><span class="ver">시제품 v0.1 · 기록은 이 기기에만 저장</span></header>
+  <main id="view"></main>
+</div>
+<nav class="tabbar" id="tabbar">
+  <button data-tab="today">오늘</button>
+  <button data-tab="checkin">주간 체크인</button>
+  <button data-tab="check">자가점검</button>
+</nav>
+<script>
+/* ===== 데이터 (맞춤운동식단 데이터셋 v0.4에서 발췌) ===== */
+const STAGES = {
+  S1:{name:'기본 다지기',dur:'2–4주',goal:'긴장을 풀고 움직임 범위와 정렬 감각을 되찾아요',
+      plan:['매일 이완·가동성 10분','걷기 주 3–5회, 20–30분','쉬운 근력 주 2회, 15분 (브릿지·벽 푸시업·데드버그 변형)'],
+      next:'최소 2주, 주 3회 이상을 2주 연속 + 다음날 통증 악화 없음'},
+  S2:{name:'안정화·기초 근력',dur:'4–6주',goal:'맨몸 기본 6패턴을 바른 자세로 해요',
+      plan:['근력 주 2–3회, 30분 (가동성 워밍업 5–10분 포함)','6패턴: 스쿼트 · 엉덩이 들기 · 밀기 · 당기기(밴드) · 코어 버티기 · 한발 균형','걷기 등 유산소를 주 150분 쪽으로 조금씩'],
+      next:'최소 4주, 6패턴 각 2세트×10–12회를 다음날 악화 없이 + 의자 일어서기 기준선 +2회'},
+  S3:{name:'근력 강화',dur:'6–12주',goal:'부하를 조금씩 올려 근력과 근육을 늘려요',
+      plan:['근력 주 2–4회 (덤벨·밴드)','목표 반복보다 1–2회 더 되면 무게를 조금(2–10%) 올리기','유산소 주 150–300분, 인터벌은 선택'],
+      next:'8주 이상 꾸준히 + 부하 증가 기록'},
+  S4:{name:'목표별 심화·유지',dur:'지속',goal:'우선 목표에 맞추고, 최소 유지량은 지켜요',
+      plan:['근력 주 2회 이상 + 활동 주 150분 이상 유지','8–12주마다 자가점검 다시 하기'],
+      next:'-'}
+};
+const FOOD = [
+  {id:'F0',name:'관찰',habit:'먹은 것을 판단 없이 사진이나 한 줄로 기록하기'},
+  {id:'F1',name:'규칙성',habit:'하루 식사 2–3번의 시간을 대략 고정하기. 거른 뒤 다음 끼니를 줄이지 않기'},
+  {id:'F2',name:'접시 구성',habit:'매 끼 단백질 식품 하나 + 채소 하나 + 밥·빵 적당히'},
+  {id:'F3',name:'질 높이기',habit:'가장 자주 먹는 가공식품이나 단 음료 하나를 다른 걸로 바꾸기'},
+  {id:'F4',name:'유지·유연성',habit:'무너진 날엔 다음 끼니를 평소대로. 굶거나 운동으로 갚지 않기'}
+];
+const NEEDS = {
+  N2:{name:'이완·회복',cls:'b-blue',why:'뻐근함이 잦거나 잠·스트레스 회복이 필요해요'},
+  N3:{name:'가동성',cls:'b-blue',why:'움직임 범위가 좁거나 좌우 차이가 있어요'},
+  N4:{name:'정렬·조절',cls:'b-blue',why:'동작 중 보상이나 균형 흔들림이 보여요'},
+  N5:{name:'근력·근지구력',cls:'b-green',why:'하체·전신 근력 기초가 필요해요'},
+  N6:{name:'심폐체력',cls:'b-green',why:'빠르게 걸을 때 숨이 쉽게 차요'},
+  N7:{name:'체지방 관리',cls:'b-amber',why:'목표로 고르셨거나 허리 기준이 높아요'}
+};
+/* 채널 영상: 평가 결과(19_채널영상라이브러리)에서 '제외' 빼고 수록. avoid = 이 조건이면 숨김 */
+const VIDEOS = [
+  {id:'sLe6jgHoYtk',ch:'자세요정',t:'아침 10분 이완·가동성 루틴',st:['S1'],nd:['N2','N3'],min:12,lv:'왕초보',avoid:[],tip:'누웠다 일어나는 전환은 천천히'},
+  {id:'50WCSpZtdmA',ch:'심으뜸',t:'아침 10분 전신 스트레칭',st:['S1'],nd:['N2','N3'],min:10,lv:'왕초보',avoid:['knee'],tip:'무릎 꿇는 동작은 범위 줄이기'},
+  {id:'kgCj8UUEWjU',ch:'자세요정',t:'목·등 가동성과 견갑 조절',st:['S1','S2'],nd:['N3','N4','N2'],min:11,lv:'초보',avoid:['neck'],tip:'팔 저림이 있으면 먼저 진료 확인'},
+  {id:'Pe75tA4Z7gQ',ch:'자세요정',t:'고관절 안정화·가동성',st:['S1','S2'],nd:['N4','N3','N5'],min:11,lv:'초보',avoid:['hip'],tip:''},
+  {id:'v7UY7ebQV7Y',ch:'자세요정',t:'허리 안정화(코어 조절) 루틴',st:['S1','S2'],nd:['N4','N5','N3'],min:13,lv:'초보',avoid:['back'],tip:'엎드림→네발 전환은 천천히'},
+  {id:'qbh47coIh70',ch:'이지은 다이어트',t:'어깨·팔 가동성과 상체 기초',st:['S1','S2'],nd:['N3','N4','N5'],min:15,lv:'초보',avoid:['shoulder','wrist'],tip:'아프면 참지 말고 멈추기',ref:true},
+  {id:'q6hBSSfokzY',ch:'심으뜸',t:'스쿼트로 하체 기초 근력',st:['S2','S3'],nd:['N5','N6'],min:12,lv:'초보',avoid:['knee'],tip:'처음엔 5분·하프 스쿼트로',syn:'쉬지 않고 10분 반복 → 중간에 쉬기'},
+  {id:'v54Jtmi2BwU',ch:'심으뜸',t:'플랭크(코어 버티기)',st:['S2'],nd:['N4','N5'],min:6,lv:'중급',avoid:['wrist','shoulder','back'],tip:'15–20초나 무릎 플랭크로 시작',syn:'숨 참지 말고 짧게 끊어서'},
+  {id:'uXOUG_VfS78',ch:'이지은 다이어트',t:'코어 조절 8분 (호흡·허리 중립 위주)',st:['S2'],nd:['N4','N5'],min:11,lv:'초보',avoid:['back','pregnant'],tip:'뱃살이 빠진다는 효과는 기대하지 않기',ref:true},
+  {id:'dpBYYEhdofI',ch:'이지은 다이어트',t:'하체 근력 루틴',st:['S2','S3'],nd:['N3','N5','N7'],min:20,lv:'중급',avoid:['knee','back','syncope'],tip:'셀룰라이트·부분 감량 효과는 근거 없음',ref:true},
+  {id:'zruKSHfD7b4',ch:'심으뜸',t:'20분 전신 근력+유산소 (타바타는 선택)',st:['S3'],nd:['N4','N5','N6','N7'],min:19,lv:'중급',avoid:['knee','syncope','hbp'],tip:'앞부분 근력 구간 위주로',ref:true},
+  {id:'g_rbKsabkxA',ch:'이지은 다이어트',t:'전신 유·무산소 루틴',st:['S3'],nd:['N5','N6','N7'],min:22,lv:'중급',avoid:['syncope','hbp','knee','ed'],tip:'먹은 걸 갚는 운동으로 쓰지 않기',ref:true},
+  {id:'J4ewoypgqP4',ch:'SNPE',t:'의자 스쿼트 버티기 참고(SNPE 1번 동작)',st:['S2','S3'],nd:['N4','N5'],min:17,lv:'중급',avoid:['syncope','neck','knee','back'],tip:'10–20초로 시작, 턱 들기 큐는 따르지 않기',ref:true}
+];
+
+/* ===== 저장 ===== */
+const KEY='bodyBasicsCoach.v1';
+const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}};
+const save=s=>localStorage.setItem(KEY,JSON.stringify(s));
+let S=load();
+const $=id=>document.getElementById(id);
+const today=()=>new Date().toISOString().slice(0,10);
+const weeksBetween=(a,b)=>Math.floor((new Date(b)-new Date(a))/(7*864e5));
+
+/* ===== 자가점검 질문 ===== */
+const CHECK=[
+ {page:'안전 확인',items:[
+  {k:'rf',q:'최근 이런 게 있나요? (해당되는 것 모두)',multi:true,opts:[['chest','운동 중 가슴 통증·압박'],['faint','운동 중 실신하거나 쓰러질 듯함'],['breath','평소와 다른 심한 숨참'],['numb','팔다리 저림이 점점 심해짐'],['pain7','통증이 10점 중 7점 이상'],['none','해당 없음']]},
+  {k:'cond',q:'해당되는 건강 상태 (모두)',multi:true,opts:[['syncope','실신·심한 어지럼 이력'],['pregnant','임신 중'],['hbp','고혈압 진단'],['dm','당뇨 진단'],['ed','식사를 극단적으로 제한하거나 먹고 나서 갚으려 한 적이 자주 있음'],['none','해당 없음']]},
+  {k:'painArea',q:'불편한 부위 (모두)',multi:true,opts:[['neck','목'],['shoulder','어깨'],['back','허리'],['hip','고관절'],['knee','무릎'],['wrist','손목'],['none','없음']]}
+ ]},
+ {page:'생활·회복',items:[
+  {k:'stiff',q:'몸이 뻐근하거나 긴장된 날은 일주일에 며칠?',opts:[['0','0–1일'],['2','2–3일'],['4','4–5일'],['6','거의 매일']]},
+  {k:'sleep',q:'평균 수면 시간',opts:[['5','6시간 미만'],['6','6–7시간'],['7','7시간 이상']]},
+  {k:'stress',q:'요즘 스트레스',opts:[['1','낮음'],['3','보통'],['5','높음']]},
+  {k:'sit',q:'하루 앉아 있는 시간',opts:[['4','6시간 미만'],['7','6–8시간'],['9','8시간 이상']]},
+  {k:'freq',q:'최근 한 달 운동 횟수 (주당)',opts:[['0','거의 안 함'],['1','1–2회'],['3','3회 이상']]}
+ ]},
+ {page:'움직임 점검',items:[
+  {k:'chair',q:'① 30초 의자 일어서기: 팔짱 끼고 30초 동안 몇 번? (무릎이 아프면 건너뛰기)',num:true},
+  {k:'slsL',q:'② 한발서기 왼발 (초, 벽 옆에서 눈 뜨고 최대 30초)',num:true},
+  {k:'slsR',q:'② 한발서기 오른발 (초)',num:true},
+  {k:'squat',q:'③ 맨몸 스쿼트 5회를 거울이나 촬영으로 보면 (모두)',multi:true,opts:[['knee','무릎이 안쪽으로 모임'],['heel','뒤꿈치가 들림'],['lumbar','허리가 말리거나 과하게 꺾임'],['shift','몸이 한쪽으로 치우침'],['none','특별히 없음']]},
+  {k:'mob',q:'④ 가동성: 불편하거나 좌우 차이가 큰 것 (모두)',multi:true,opts:[['sh','손을 등 뒤로 닿기'],['wall','벽에 등 대고 팔 머리 위로'],['ham','누워서 한 다리 들기'],['ank','무릎을 벽에 대고 발목 굽히기'],['none','다 편함']]},
+  {k:'bridge',q:'⑤ 바른 자세로 엉덩이 들기 몇 번?',num:true},
+  {k:'talk',q:'⑥ 빠르게 10분 걸으며 문장으로 말할 수 있나요?',opts:[['yes','편하게 가능'],['hard','숨이 차서 끊김']]}
+ ]},
+ {page:'목표',items:[
+  {k:'goal',q:'지금 가장 원하는 것',opts:[['base','몸 기본기·통증 덜하기'],['fat','체지방 줄이기'],['muscle','근육·근력 늘리기'],['stamina','체력 늘리기']]},
+  {k:'h',q:'키 (cm, 선택)',num:true},
+  {k:'w',q:'허리둘레 (cm, 선택 · 배꼽 높이에서 숨 내쉰 뒤)',num:true}
+ ]}
+];
+
+/* ===== 판정 로직 (데이터셋 15_필요유형 · 17_운동단계, 기준값은 실무값) ===== */
+function analyze(a){
+  const has=(k,v)=>(a[k]||[]).includes(v);
+  const rf=(a.rf||[]).filter(x=>x!=='none');
+  const needs=[];
+  if(+a.stiff>=4||a.sleep==='5'||a.stress==='5') needs.push('N2');
+  if((a.mob||[]).some(x=>x!=='none')) needs.push('N3');
+  const comp=(a.squat||[]).filter(x=>x!=='none').length;
+  const L=+a.slsL,R=+a.slsR;
+  const slsWeak=(a.slsL!==''&&a.slsL!=null&&L<20)||(a.slsR!==''&&a.slsR!=null&&R<20)||(L&&R&&Math.abs(L-R)>=10);
+  if(comp>=2||slsWeak||a.sit==='9') needs.push('N4');
+  const chair=a.chair===''||a.chair==null?null:+a.chair;
+  if((chair!=null&&chair<20)||(a.bridge!==''&&a.bridge!=null&&+a.bridge<10)||a.freq==='0') needs.push('N5');
+  if(a.talk==='hard') needs.push('N6');
+  const whtr=(+a.h&&+a.w)?(+a.w/+a.h):null;
+  if(a.goal==='fat'||(whtr&&whtr>=0.5)) needs.push('N7');
+  let stage='S1';
+  if(!needs.includes('N2')&&!needs.includes('N3')&&!needs.includes('N4')&&a.freq==='3'&&chair!=null&&chair>=25) stage='S2';
+  const flags=[...(a.cond||[]),...(a.painArea||[])].filter(x=>x!=='none');
+  return {stop:rf.length>0,rf,needs,stage,flags,whtr,chair};
+}
+
+/* ===== 화면 ===== */
+let tab='today',page=0,draft={};
+function setTab(t){tab=t;render();}
+document.querySelectorAll('#tabbar button').forEach(b=>b.onclick=()=>{if(b.dataset.tab==='check'){draft={};page=0;}setTab(b.dataset.tab)});
+function render(){
+  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
+  if(!S.result&&tab!=='check'){tab='check';page=page||0;}
+  ({today:renderToday,checkin:renderCheckin,check:renderCheck})[tab]();
+  window.scrollTo(0,0);
+}
+function renderCheck(){
+  const P=CHECK[page];
+  let h=`<div class="card"><div class="steps">${CHECK.map((_,i)=>`<span class="${i<=page?'on':''}"></span>`).join('')}</div>
+  <h2>${P.page}</h2>`;
+  if(page===0) h+=`<p class="muted">처음 1주는 '시작 점검'이에요. 몇 가지 질문과 집에서 하는 간단한 테스트로 지금 필요한 것부터 찾습니다. 아프거나 어지러우면 바로 멈추세요.</p>`;
+  if(page===2) h+=`<p class="muted">모르는 항목은 비워도 괜찮아요. 남과 비교하는 점수가 아니라 내 출발점 기록이에요.</p>`;
+  P.items.forEach(it=>{
+    h+=`<label class="q">${it.q}</label>`;
+    if(it.num){h+=`<input type="number" inputmode="numeric" data-k="${it.k}" value="${draft[it.k]??''}">`;}
+    else{h+=`<div class="opts">${it.opts.map(([v,l])=>{const on=it.multi?(draft[it.k]||[]).includes(v):draft[it.k]===v;return `<span class="chip ${on?'on':''}" data-k="${it.k}" data-v="${v}" data-m="${it.multi?1:0}">${l}</span>`}).join('')}</div>`;}
+  });
+  h+=`<button class="btn" id="nextBtn">${page<CHECK.length-1?'다음':'결과 보기'}</button>`;
+  if(page>0) h+=`<button class="btn ghost" id="prevBtn">이전</button>`;
+  h+=`</div>`;
+  $('view').innerHTML=h;
+  document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+    const k=c.dataset.k,v=c.dataset.v;
+    if(c.dataset.m==='1'){let arr=(draft[k]||[]).slice();if(v==='none')arr=['none'];else{arr=arr.filter(x=>x!=='none');arr.includes(v)?arr=arr.filter(x=>x!==v):arr.push(v);}draft[k]=arr;}
+    else draft[k]=v;
+    renderCheckKeep();
+  });
+  document.querySelectorAll('input[type=number]').forEach(i=>i.oninput=()=>draft[i.dataset.k]=i.value);
+  $('nextBtn').onclick=()=>{
+    if(page<CHECK.length-1){page++;render();return;}
+    const r=analyze(draft);
+    S.answers=draft;S.result=r;S.baseline={date:today(),chair:draft.chair||'',slsL:draft.slsL||'',slsR:draft.slsR||''};
+    S.stage=r.stage;S.stageStart=today();S.food=S.food??0;S.foodStart=S.foodStart||today();S.checkins=S.checkins||[];
+    save(S);tab='today';render();
+  };
+  if($('prevBtn')) $('prevBtn').onclick=()=>{page--;render();};
+}
+function renderCheckKeep(){const y=window.scrollY;renderCheck();window.scrollTo(0,y);}
+
+function videosFor(stage,needs,flags){
+  const avoid=new Set(flags);
+  return VIDEOS.filter(v=>v.st.includes(stage)&&!v.avoid.some(x=>avoid.has(x)))
+    .map(v=>({...v,score:v.nd.filter(n=>needs.includes(n)).length+(v.ref?0:0.5)}))
+    .sort((a,b)=>b.score-a.score).slice(0,4);
+}
+function renderToday(){
+  const r=S.result;
+  if(r.stop){
+    $('view').innerHTML=`<div class="card"><h2>먼저 확인이 필요해요</h2><div class="stop">답하신 증상(${r.rf.map(x=>({chest:'가슴 통증',faint:'실신·실신할 듯함',breath:'심한 숨참',numb:'저림 악화',pain7:'강한 통증'})[x]).join(', ')})이 있으면 운동 계획보다 진료 확인이 먼저예요. 가슴 통증이 몇 분 이상 이어지거나 식은땀·호흡곤란이 함께 있으면 바로 119에 연락하세요.</div>
+    <p class="muted" style="margin-top:12px">확인 후 괜찮다는 이야기를 들으면 자가점검을 다시 해 주세요. 그동안은 편안한 걷기와 호흡 정도만 권해요.</p>
+    <button class="btn ghost" onclick="draft={};page=0;setTab('check')">자가점검 다시 하기</button></div>`;return;
+  }
+  const st=STAGES[S.stage],order=['S1','S2','S3','S4'];
+  const vids=videosFor(S.stage,r.needs,r.flags);
+  const f=FOOD[S.food||0];
+  const cautions=[];
+  if(r.flags.includes('syncope')) cautions.push('실신·어지럼 이력: 공복 운동, 숨 참고 버티기, 고강도 인터벌, 갑자기 일어나는 동작은 피하고 천천히 일어나세요.');
+  if(r.flags.includes('pregnant')) cautions.push('임신 중: 일반 계획 대신 산과 의료진이 허용한 범위에서만 해 주세요.');
+  if(r.flags.includes('hbp')) cautions.push('고혈압: 갑작스러운 고강도는 피하고 점진적으로. 수축기 180/이완기 110 이상이면 그날은 쉬어요.');
+  if(r.flags.includes('dm')) cautions.push('당뇨: 혈당을 낮추는 약을 쓰면 운동·식사 변화 전에 저혈당 대처를 의료진과 확인하세요.');
+  if(r.flags.includes('ed')) cautions.push('식사를 극단적으로 줄이거나 갚으려 한 경험이 있다면, 감량보다 규칙적으로 먹기를 우선해요. 힘들면 전문가와 이야기해 보세요.');
+  const wk=weeksBetween(S.stageStart,today())+1;
+  $('view').innerHTML=`
+  <div class="card">
+    <div class="small">지금 단계 · ${wk}주차</div>
+    <h2>${S.stage} ${st.name} <span class="small">(${st.dur})</span></h2>
+    <div class="stagebar">${['S0','S1','S2','S3','S4'].map(s=>`<div class="${s===S.stage?'cur':(s==='S0'||order.indexOf(s)<order.indexOf(S.stage))?'done':''}">${s}</div>`).join('')}</div>
+    <p>${st.goal}</p>
+    <h3>나에게 필요한 것</h3>
+    <div>${r.needs.length?r.needs.map(n=>`<span class="badge ${NEEDS[n].cls}">${NEEDS[n].name}</span>`).join(''):'<span class="badge b-green">고른 편이에요</span>'}</div>
+    <p class="small">${r.needs.map(n=>NEEDS[n].why).join(' · ')}</p>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">이번 주 운동</h3>
+    <ul class="plan">${st.plan.map(x=>`<li>${x}</li>`).join('')}</ul>
+    ${S.stage==='S1'&&r.needs.includes('N2')?'<p class="small">이완·회복이 필요하니 매일 10분 이완부터 지켜 주세요.</p>':''}
+    ${S.stage==='S1'&&r.needs.includes('N5')?'<p class="small">근력 기초가 필요하니 쉬운 근력 2회는 빠뜨리지 않기.</p>':''}
+    ${cautions.map(c=>`<div class="note">${c}</div>`).join('')}
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">따라 할 영상</h3>
+    <p class="small">지금 단계와 필요 유형에 맞춰 골랐어요. 불편한 부위와 맞지 않는 영상은 뺐어요.</p>
+    ${vids.length?vids.map(v=>`<a class="vid" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">
+      <img src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="">
+      <div><div class="t">${v.t}</div><div class="m">${v.ch} · ${v.min}분 · ${v.lv}${v.ref?' · 참고용':''}</div>${v.tip?`<div class="c">${v.tip}</div>`:''}${r.flags.includes('syncope')&&v.syn?`<div class="c">${v.syn}</div>`:''}</div></a>`).join(''):'<p class="muted">조건에 맞는 영상이 아직 없어요. 위 계획대로 해 주세요.</p>'}
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">이번 주 식단 습관 하나</h3>
+    <div class="small">${f.id} ${f.name}</div>
+    <p style="font-weight:600">${f.habit}</p>
+    <p class="small">한 번에 하나만 해요. 2주 동안 일주일에 5일 이상 지켜지면 다음 습관으로 넘어가요.</p>
+  </div>
+  <div class="card">
+    <p class="small">이 앱은 진단이나 처방이 아니라 생활 운동·식사 습관 코칭 시제품이에요. 단계 기준 숫자는 전문가 확정 전 실무값입니다.</p>
+    <button class="btn ghost" id="reset">기록 모두 지우기</button>
+  </div>`;
+  $('reset').onclick=()=>{if(confirm('이 기기의 기록을 모두 지울까요?')){localStorage.removeItem(KEY);S={};draft={};page=0;tab='check';render();}};
+}
+function renderCheckin(){
+  const ci=S.checkins||[];
+  $('view').innerHTML=`<div class="card"><h2>주간 체크인</h2><p class="muted">일주일에 한 번, 1분이면 돼요. 결과로 다음 단계로 갈지, 유지할지, 한 단계 쉬어 갈지 알려 드려요.</p>
+  <label class="q">이번 주 운동한 날</label><div class="opts">${['0','1','2','3','4','5+'].map(v=>`<span class="chip" data-k="days" data-v="${v}">${v}일</span>`).join('')}</div>
+  <label class="q">운동 다음날 통증이 더 심해진 적</label><div class="opts"><span class="chip" data-k="worse" data-v="no">없음</span><span class="chip" data-k="worse" data-v="yes">있음</span></div>
+  <label class="q">식단 습관을 지킨 날</label><div class="opts">${['0–2','3–4','5–7'].map(v=>`<span class="chip" data-k="food" data-v="${v}">${v}일</span>`).join('')}</div>
+  ${S.stage==='S2'?`<label class="q">6가지 기본 동작을 각 2세트×10–12회, 다음날 악화 없이 할 수 있나요?</label><div class="opts"><span class="chip" data-k="six" data-v="yes">네</span><span class="chip" data-k="six" data-v="no">아직</span></div>
+  <label class="q">30초 의자 일어서기 다시 재면 (선택, 처음 기록 ${S.baseline?.chair||'-'}회)</label><input type="number" inputmode="numeric" id="chairNow">`:''}
+  <button class="btn blue" id="ciBtn">저장하고 결과 보기</button><div id="ciOut"></div></div>
+  <div class="card"><h3 style="margin-top:0">지난 체크인</h3>${ci.length?ci.slice().reverse().map(c=>`<div class="hist"><span>${c.date} · ${c.stage}</span><span>운동 ${c.days}일 · 식단 ${c.food}일${c.worse==='yes'?' · 통증↑':''}</span></div>`).join(''):'<p class="small">아직 없어요.</p>'}</div>`;
+  const a={};
+  document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{document.querySelectorAll(`.chip[data-k="${c.dataset.k}"]`).forEach(x=>x.classList.remove('on'));c.classList.add('on');a[c.dataset.k]=c.dataset.v;});
+  $('ciBtn').onclick=()=>{
+    if(!a.days||!a.worse||!a.food){alert('세 가지를 골라 주세요.');return;}
+    const days=a.days==='5+'?5:+a.days;
+    const rec={date:today(),stage:S.stage,days:a.days,worse:a.worse,food:a.food};
+    S.checkins=[...(S.checkins||[]),rec];
+    let msg='';const prev=S.checkins.filter(c=>c.stage===S.stage);
+    const wk=weeksBetween(S.stageStart,today())+1;
+    const order=['S1','S2','S3','S4'];
+    if(a.worse==='yes'){msg='다음날 통증이 심해졌다면 이번 주는 운동량을 절반쯤으로 줄여요. 저림이 생기거나 계속 심해지면 진료를 먼저 받아 주세요.';}
+    else if(days<=1&&prev.length>=2&&['0','1'].includes(prev[prev.length-2].days)&&S.stage!=='S1'){S.stage=order[order.indexOf(S.stage)-1];S.stageStart=today();msg=`2주 가까이 쉬었으니 ${S.stage}로 한 단계 내려가서 가볍게 다시 시작해요. 실패가 아니라 원래 그렇게 돌아오는 거예요.`;}
+    else{
+      const last2=prev.slice(-2);
+      const ok2=last2.length===2&&last2.every(c=>(c.days==='5+'?5:+c.days)>=3&&c.worse==='no');
+      if(S.stage==='S1'&&ok2&&wk>=2){S.stage='S2';S.stageStart=today();msg='2주 연속 꾸준했고 통증 악화도 없었어요. S2 안정화·기초 근력으로 넘어가요!';}
+      else if(S.stage==='S2'&&ok2&&wk>=4&&a.six==='yes'){const now=+$('chairNow')?.value;const base=+(S.baseline?.chair||0);if(!now||!base||now-base>=2){S.stage='S3';S.stageStart=today();msg='기본 6동작이 안정됐어요. S3 근력 강화로 넘어가요. 무게는 조금씩만 올려요.';}else msg='동작은 안정됐어요. 의자 일어서기가 처음보다 2회 이상 늘면 다음 단계로 가요.';}
+      else if(S.stage==='S3'&&ok2&&wk>=8){S.stage='S4';S.stageStart=today();msg='8주 넘게 꾸준했어요. 이제 우선 목표에 맞춰 심화해요.';}
+      else msg=`좋아요, 지금 단계를 이어가요. (${S.stage} ${wk}주차 · 다음 기준: ${STAGES[S.stage].next})`;
+    }
+    const foodPrev=S.checkins.slice(-2);
+    if(foodPrev.length===2&&foodPrev.every(c=>c.food==='5–7')&&weeksBetween(S.foodStart,today())>=1&&(S.food||0)<FOOD.length-1){S.food=(S.food||0)+1;S.foodStart=today();msg+=` 식단 습관도 2주 연속 잘 지켜서 다음 습관 「${FOOD[S.food].name}」으로 넘어가요.`;}
+    save(S);
+    $('ciOut').innerHTML=`<div class="note" style="margin-top:14px">${msg}</div>`;
+  };
+}
+render();
+</script>
+</body>
+</html>
